@@ -1,3 +1,29 @@
+# Incremental 
+
+A game that enables you to click and earn points.
+
+## Goals
+
+### Setting up State
+
+We should set up a click handler and use context or redux or something... How do we get global data to everywhere it needs to be used.
+
+### TODO Research CSS Grid and create a styled layout based on your designs
+
+### Create EmberDisplayComponent
+
+TODO This will display count of embers, for now display count of clicks, and display embers per second.
+
+TODO Bring in the fire icon - display count of embers as in your design - and display embers per second from state
+
+
+### Interfaces
+
+1. Our global app state should be defined in an interface.
+2. started Upgrade interface - Adrian TODO - think about the two types of upgrades and the opportunity to have a shared interface as well as abstract class shared between the two upgrades
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
