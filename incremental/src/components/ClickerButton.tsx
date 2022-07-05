@@ -1,6 +1,7 @@
 import React from "react";
 import { GlobalAppState } from "../model/GlobalAppState";
 import { IGlobalAppProps } from "./App.model";
+import flame from "../images/flame.png";
 
 export default function ClickerButton(props: IGlobalAppProps) {
   const { appState, setAppState } = props;
@@ -9,12 +10,14 @@ export default function ClickerButton(props: IGlobalAppProps) {
     setAppState(newState);
   };
   return (
-    <React.Fragment>
-      <div>Total Clicks: {appState.totalClicks}</div>
-      <div>Embers: {appState.embers}</div>
-      <div className="clicker-button" onClick={handleClick}>
-        Clicking Area
+    <div className={"clicker-area"}>
+      <div className={"counters"}>
+          <div className={"ember-count"}>Embers: {appState.embers}</div>
+          <div className={"ember-per-second"}>Total Clicks: {appState.totalClicks}</div>
       </div>
-    </React.Fragment>
+      <div className="clicker-button" onClick={handleClick}>
+          <img src={flame} alt={"Flame level 1"}/>
+      </div>
+    </div>
   );
 }

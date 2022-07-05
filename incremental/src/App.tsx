@@ -34,7 +34,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      {/*<Header />*/}
       {/* NOTE: For local dev only */}
       {/* <div>App Component {JSON.stringify(appState)}</div> */}
       <ClickerButton appState={appState} setAppState={setAppState} />

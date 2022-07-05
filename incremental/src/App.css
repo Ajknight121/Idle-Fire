@@ -2,18 +2,75 @@ html {
   background: burlywood;
 }
 
+body {
+  margin: 0;
+}
+
 .App {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
   text-align: center;
+  position: relative;
+}
+
+.clicker-area {
+  float: right;
+  background: burlywood;
+  display: block;
+  height: 100vh;
+  width: 60%;
 }
 
 .clicker-button {
-  background: orange;
+  background: rgb(255, 199, 90);
+  height: 100vh;
+  text-align: center;
+  padding: 90px;
 }
 
-.upgrade-container {
-  background: brown;
+.counters {
+  background: rgb(202,202,202);
+  display: block;
+  position: absolute;
+  width: 400px;
+  height: 70px;
+  border: none;
+  border-bottom-right-radius: 60px;
+}
+
+.ember-count {
+  font-size: 20px;
+}
+
+.ember-per-second {
+
 }
 
 .upgrade-label {
-  
+  font-size: 20px;
+  color: white;
+}
+
+.upgrade-container {
+  position: absolute;
+  background: brown;
+  display: block;
+  height: 100vh;
+  width: clamp(200px, 300px, 400px);
+}
+
+.upgrade {
+  position: relative;
+  background: orange;
+  margin: 4px 5px;
+  height: 50px;
+}
+
+.upgrade-name {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: large;
+
 }
