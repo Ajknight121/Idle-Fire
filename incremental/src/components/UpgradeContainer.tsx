@@ -24,14 +24,14 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
   };
   return (
     <div className="upgrade-container">
-      <div className="upgrade-label">Total Clicks {props.appState.embers}</div>
+      <div className="upgrade-label">Total Embers {props.appState.embers}</div>
       <div className="upgrade-label">Upgrades</div>
       {props.appState.embers > 3 && <Upgrade upgradeName={"Upgrade 1"} upgradeCost={"4"}/>}
       {props.appState.embers > 6 && <Upgrade upgradeName={"Upgrade 2"} upgradeCost={"7"}/>}
       {props.appState.embers > 9 && <Upgrade upgradeName={"Upgrade 3"} upgradeCost={"10"}/>}
       {/* // Right now the upgrade works but since our increase of ember is on a tick interval, we're losing context of the embers per second */}
       {props.appState.embers > 12 && (
-        <div onClick={() => buyUpgrade()} className="upgrade">
+        <div onClick={() => buyUpgrade()} className="upgrade-available">
           <div className={"upgrade-name"}>Add 1 ember per sec</div>
         </div>
       )}

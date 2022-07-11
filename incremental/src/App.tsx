@@ -37,8 +37,9 @@ function App() {
       {/*<Header />*/}
       {/* NOTE: For local dev only */}
       {/* <div>App Component {JSON.stringify(appState)}</div> */}
-      <ClickerButton appState={appState} setAppState={setAppState} />
       <UpgradeContainer appState={appState} setAppState={setAppState} />
+      <ClickerButton appState={appState} setAppState={setAppState} />
+
     </div>
   );
 }

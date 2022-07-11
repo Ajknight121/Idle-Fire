@@ -3,7 +3,8 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .App {
@@ -11,22 +12,28 @@ body {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   text-align: center;
+  height: 100vh;
+  width: 100vh;
+  background-size: cover;
+  display: inline;
   position: relative;
+  overflow: hidden;
 }
 
 .clicker-area {
-  float: right;
-  background: burlywood;
+  float: none;
+  background: aqua;
   display: block;
-  height: 100vh;
-  width: 60%;
+  overflow: auto;
 }
 
 .clicker-button {
   background: rgb(255, 199, 90);
-  height: 100vh;
   text-align: center;
   padding: 90px;
+  overflow: hidden;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .counters {
@@ -50,20 +57,30 @@ body {
 .upgrade-label {
   font-size: 20px;
   color: white;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .upgrade-container {
-  position: absolute;
+  float: left;
   background: brown;
   display: block;
+  width: 400px;
   height: 100vh;
-  width: clamp(200px, 300px, 400px);
+  overflow: auto;
 }
 
-.upgrade {
+.upgrade-available {
   position: relative;
   background: orange;
-  margin: 4px 5px;
+  margin: 5px 10px;
+  height: 50px;
+}
+
+.upgrade-unavailable {
+  position: relative;
+  background: dimgrey;
+  margin: 5px 10px;
   height: 50px;
 }
 
