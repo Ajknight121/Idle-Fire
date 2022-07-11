@@ -26,6 +26,12 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
     <div className="upgrade-container">
       <div className="upgrade-label">Total Embers {props.appState.embers}</div>
       <div className="upgrade-label">Upgrades</div>
+      <div className={"upgrade-quantity"}>
+        Buy:
+        <input type={"radio"} value={"1"}/> x1
+        <input type={"radio"} value={"10"}/> x10
+        <input type={"radio"} value={"100"}/> x100
+      </div>
       {props.appState.embers > 3 && <Upgrade upgradeName={"Upgrade 1"} upgradeCost={"4"}/>}
       {props.appState.embers > 6 && <Upgrade upgradeName={"Upgrade 2"} upgradeCost={"7"}/>}
       {props.appState.embers > 9 && <Upgrade upgradeName={"Upgrade 3"} upgradeCost={"10"}/>}
