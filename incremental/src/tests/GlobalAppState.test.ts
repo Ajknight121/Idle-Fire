@@ -38,7 +38,7 @@ describe("global app state", () => {
       expect(newState.embers).toBe(mockEmbers + mockClickPower);
     });
   });
-  it("deductEmbers ", () => {
+  it("deductEmbers", () => {
     //Arrange
     const mockDeduction = 10;
     const mockEmbers = 10;
@@ -49,7 +49,7 @@ describe("global app state", () => {
     //Assert
     expect(newState.embers).toBe(mockEmbers - mockDeduction);
   });
-  describe("upgradeEmbersPerClick ", () => {
+  describe("upgradeEmbersPerClick", () => {
     const mockDeduction = 10;
     const mockEmbers = 10;
     let mockState = new GlobalAppState();
@@ -67,7 +67,7 @@ describe("global app state", () => {
       //Assert
       expect(newState.embers).toBe(mockEmbers - mockDeduction);
     });
-    it("it add click power", () => {
+    it("adds click power", () => {
       //Act
       const newState = GlobalAppState.upgradeEmbersPerClick(
         mockDeduction,
