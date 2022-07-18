@@ -1,6 +1,20 @@
 import { GlobalAppState } from "../model/GlobalAppState";
 /** The global app state is our SUT aka subject under test, so all assertions in this test suite should be on our SUT */
 describe("global app state", () => {
+  it("addToEmbersPerSec", ()=> {
+    //Arrange
+    const epsToAdd = 1;
+    const mockEmbersPerSecond = 0;
+    const mockEmbers = 10;
+    let mockState = new GlobalAppState();
+    mockState.embers = mockEmbers;
+    mockState.embersPerSecond = mockEmbersPerSecond;
+    //Act
+    const newState = GlobalAppState.addToEmbersPerSec(epsToAdd, mockState);
+    //Assert
+    expect(newState.embersPerSecond).toBe(epsToAdd);
+    expect(newState.embers).toBe(mockEmbers);
+  })
   it("addEmbersPerSecondOnTick", () => {
     //Arrange
     const mockEmbersPerSecond = 5;
