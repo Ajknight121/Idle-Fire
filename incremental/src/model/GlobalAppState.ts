@@ -1,9 +1,9 @@
 export interface IGlobalAppState {
   time: number;
   clickPower: number; //Increased by ClickPowerUpgrade
-  embers: number; //continue to accumulate
+  embers: number; //Currency to accumulate
   embersPerSecond: number; //Increased by EmbersPerSecondUpgrade
-  totalClicks: number; //TODO Adrian think about the logic for when different kinds of upgrades become available - my thought is that clicks per second upgrade are driven number of total click but not sure
+  totalClicks: number;
 }
 
 /**  */
@@ -61,12 +61,12 @@ export class GlobalAppState implements IGlobalAppState {
 
   /** Every time you buy something we need to deduct your embers. */
   static deductEmbers = (
-    duduction: number,
+    deduction: number,
     { embers, ...restState }: IGlobalAppState
   ): IGlobalAppState => {
     const newState = {
       ...restState,
-      embers: embers - duduction,
+      embers: embers - deduction,
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
@@ -74,13 +74,13 @@ export class GlobalAppState implements IGlobalAppState {
 
   /** Every time you buy something we need to deduct your embers. */
   static upgradeEmbersPerClick = (
-    duduction: number,
+    deduction: number,
     { embers, ...restState }: IGlobalAppState
   ): IGlobalAppState => {
     const newState = {
       ...restState,
-      embers: embers - duduction,
-      clickPower: restState.clickPower + 1,
+      embers: embers - deduction,
+      clickPower: restState.clickPower + 1, // TODO give the quantity to add as a parameter
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
