@@ -1,6 +1,7 @@
 import React from "react"
+import { IUpgrade } from "../model/Upgrade"
 
-export default function Upgrade(props:any) {
+export default function Upgrade(props:IUpgrade) {
     return (
         <div className={"upgrade-available"}>
             <div className={"upgrade-name"}>{props.upgradeName}</div>
