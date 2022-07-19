@@ -1,0 +1,99 @@
+html {
+  background: burlywood;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.App {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  text-align: center;
+  height: 100vh;
+  width: 100vh;
+  background-size: cover;
+  display: inline;
+  position: relative;
+  overflow: hidden;
+}
+
+.clicker-area {
+  float: none;
+  background: aqua;
+  display: block;
+  overflow: auto;
+}
+
+.clicker-button {
+  background: rgb(255, 199, 90);
+  text-align: center;
+  padding: 90px;
+  overflow: hidden;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.counters {
+  background: rgb(202,202,202);
+  display: block;
+  position: absolute;
+  width: 400px;
+  height: 70px;
+  border: none;
+  border-bottom-right-radius: 60px;
+  padding-top: 10px;
+  box-sizing: border-box;
+}
+
+.ember-count {
+  font-size: 20px;
+}
+
+.ember-per-second {
+
+}
+
+.upgrade-label {
+  font-size: 20px;
+  color: white;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.upgrade-container {
+  float: left;
+  background: brown;
+  display: block;
+  width: 400px;
+  height: 100vh;
+  overflow: auto;
+}
+
+.upgrade-quantity {
+  color: white;
+}
+
+.upgrade-available {
+  position: relative;
+  background: orange;
+  margin: 5px 10px;
+  height: 50px;
+}
+
+.upgrade-unavailable {
+  position: relative;
+  background: dimgrey;
+  margin: 5px 10px;
+  height: 50px;
+}
+
+.upgrade-name {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: large;
+
+}
