@@ -32,18 +32,20 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
         <input type={"radio"} value={"10"} name={"quantity"} /> x10
         <input type={"radio"} value={"100"} name={"quantity"} /> x100
       </div>
-      {gameUpgrades.map((upgrade) =>
-        props.appState.embers >= upgrade.upgradeCost ? (
-          <Upgrade upgradeName={"Upgrade 1"} upgradeCost={4} />
-        ) : null
-      )}
+        <div className={"upgrades"}>
+          {gameUpgrades.map((upgrade) =>
+            props.appState.embers >= upgrade.upgradeCost ? (
+              <Upgrade upgradeName={upgrade.upgradeName} upgradeCost={upgrade.upgradeCost} lvl={upgrade.lvl}/>
+            ) : null
+          )}
 
-      {/* // Right now the upgrade works but since our increase of ember is on a tick interval, we're losing context of the embers per second */}
-      {props.appState.embers > 12 && (
-        <div onClick={() => buyUpgrade()} className="upgrade-available">
-          <div className={"upgrade-name"}>Add 1 ember per sec</div>
+          {/* // Right now the upgrade works but since our increase of ember is on a tick interval, we're losing context of the embers per second */}
+          {props.appState.embers > 12 && (
+            <div onClick={() => buyUpgrade()} className="upgrade-unavailable">
+              <div className={"upgrade-name"}>Add 1 ember per sec</div>
+            </div>
+          )}
         </div>
-      )}
     </div>
   );
 }
