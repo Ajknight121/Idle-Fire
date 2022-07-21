@@ -8,16 +8,19 @@ export class GameUpgradesFactory {
   static getGameUpgrades(): IUpgrade[] {
     return [
       {
+        unlocked: true,
         upgradeName: "Upgrade 1",
         upgradeCost: 3,
         lvl: 1,
       },
       {
+        unlocked: true,
         upgradeName: "Upgrade 2",
         upgradeCost: 6,
         lvl: 1,
       },
       {
+        unlocked: true,
         upgradeName: "Upgrade 3",
         upgradeCost: 9,
         lvl: 1,

@@ -4,17 +4,19 @@ import { IGlobalAppProps } from "./App.model";
 import Upgrade from "./Upgrade";
 
 export default function UpgradeContainer(props: IGlobalAppProps) {
-  const costOfUpgrade = 12;
-  const buyUpgrade = () => {
+  // const costOfUpgrade = 12;
+  const buyUpgrade = (embers: number, cost: number) => {
     console.log(`Buying upgrade`);
     //This pattern is what you'll learn when you start implementing actions and reducers as in the Redux pattern. Main point, we keep state immutable, hence spread operator to create new copies of state or in order words, we never mutate state directly as in
     // props.appState.clickPower = props.appState.clickPower + 1
 
     //Two pure functions aka no side effects - easy to test
     //Adrian: Figure out how to implement test coverage for our Global App State static functions TODO
-
+    if (embers < cost) {
+        return;
+    }
     const deductedEmbersState = GlobalAppState.deductEmbers(
-      costOfUpgrade,
+      cost,
       props.appState
     );
 
@@ -34,17 +36,23 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
       </div>
         <div className={"upgrades"}>
           {gameUpgrades.map((upgrade) =>
-            props.appState.embers >= upgrade.upgradeCost ? (
-              <Upgrade upgradeName={upgrade.upgradeName} upgradeCost={upgrade.upgradeCost} lvl={upgrade.lvl}/>
-            ) : null
+              <Upgrade
+                  unlocked={upgrade.unlocked}
+                  classname={props.appState.embers >= upgrade.upgradeCost ? "upgrade-available" : "upgrade-unavailable"}
+                  upgradeName={upgrade.upgradeName}
+                  upgradeCost={upgrade.upgradeCost}
+                  lvl={upgrade.lvl}
+              />
           )}
-
-          {/* // Right now the upgrade works but since our increase of ember is on a tick interval, we're losing context of the embers per second */}
-          {props.appState.embers > 12 && (
-            <div onClick={() => buyUpgrade()} className="upgrade-unavailable">
-              <div className={"upgrade-name"}>Add 1 ember per sec</div>
+            <div onClick={() => buyUpgrade(props.appState.embers, 20)}>
+              <Upgrade
+                  unlocked={true}
+                  classname={props.appState.embers >= 20 ? "upgrade-available" : "upgrade-unavailable"}
+                  upgradeName={"Add 1 ember"}
+                  upgradeCost={20}
+                  lvl={1}
+              />
             </div>
-          )}
         </div>
     </div>
   );

@@ -95,6 +95,7 @@ body {
 }
 
 .upgrades {
+  margin-top: 10px;
   margin-right: 5px;
   margin-left: 10px;
 }
@@ -121,8 +122,8 @@ body {
 
 .upgrade-available:active {
   position: relative;
-  left: -4px;
-  top: -3px;
+  left: -2px;
+  top: -1px;
   background: #fdba0e;
   margin: 10px 10px;
   height: 50px;
@@ -133,7 +134,7 @@ body {
   left: -4px;
   top: -4px;
   background: #bb7202;
-  margin: 5px 10px;
+  margin: 10px 10px;
   height: 50px;
 }
 
