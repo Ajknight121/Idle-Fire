@@ -2,7 +2,7 @@ import React from "react"
 import { IUpgrade } from "../model/Upgrade"
 
 export default function Upgrade(props:IUpgrade) {
-    console.log(props)
+
     if (!props.unlocked) {
         return <div/>
     } else {
