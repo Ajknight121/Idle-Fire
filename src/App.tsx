@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
+import SparkClickAnimation from "./components/CanvasControl";
 import ClickerButton from "./components/ClickerButton";
 import UpgradeContainer from "./components/UpgradeContainer";
 import { GlobalAppState } from "./model/GlobalAppState";
@@ -17,12 +18,32 @@ function App() {
     Logger.log(`Interval triggered times ${countOfInterval}`);
   }, [appState]);
 
+  const handleMouseMove = (e: MouseEvent) => {
+    const newState = GlobalAppState.updateStateWithCursorMovement(
+      appState,
+      e.clientX,
+      e.clientY
+    );
+    setAppState(newState);
+  };
+  const beginCaptureOfCursorMovement = () => {
+    Logger.log(`Begin capturing cursor movement`);
+    document.addEventListener("mousemove", handleMouseMove);
+  };
+
   useEffect(() => {
+    // Begin capturing cursor movement
+    beginCaptureOfCursorMovement();
+
+    // Begin updating embers per second
     const interval = setInterval(() => {
       conditionallyUpdateEmbers();
     }, 1000);
-    return () => clearInterval(interval);
-  }, [conditionallyUpdateEmbers]);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [conditionallyUpdateEmbers, beginCaptureOfCursorMovement]);
 
   return (
     <div className="App">
@@ -31,6 +52,7 @@ function App() {
       {/* <div>App Component {JSON.stringify(appState)}</div> */}
       <UpgradeContainer appState={appState} setAppState={setAppState} />
       <ClickerButton appState={appState} setAppState={setAppState} />
+      <SparkClickAnimation appState={appState} setAppState={setAppState} />
     </div>
   );
 }

@@ -1,0 +1,1 @@
+export const TIME_TO_DISPLAY_CLICK_ANIMATION = 2000;

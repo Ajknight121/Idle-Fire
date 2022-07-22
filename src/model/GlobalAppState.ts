@@ -4,16 +4,24 @@ export interface IGlobalAppState {
   embers: number; //Currency to accumulate
   embersPerSecond: number; //Increased by EmbersPerSecondUpgrade
   totalClicks: number;
+  //Cursor
+  currCursorX: number;
+  currCursorY: number;
+  displayAnimationForClick: boolean;
 }
 
 /**  */
 export class GlobalAppState implements IGlobalAppState {
-  time = 0
+  time = 0;
   clickPower = 1;
   embers = 0;
   embersPerSecond = 0;
   totalClicks = 0;
-  
+  //Cursor
+  currCursorX = 0;
+  currCursorY = 0;
+  displayAnimationForClick = false;
+
   // TODO Move to config file so its always on for local dev and always off for deployed env
   static shouldLog = true;
 
@@ -50,14 +58,24 @@ export class GlobalAppState implements IGlobalAppState {
     embers,
     ...restState
   }: IGlobalAppState): IGlobalAppState => {
-    const newState = {
+    const newState: IGlobalAppState = {
       ...restState,
       embers: embers + restState.clickPower,
       totalClicks: restState.totalClicks + 1,
+      //We'll reset this based on a contant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
+      displayAnimationForClick: true,
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
   };
+
+  /** Gets called after a certain amount of time after a click gets handled */
+  static resetClickAnimationToHidden(appState: IGlobalAppState) {
+    return {
+      ...appState,
+      displayAnimationForClick: false,
+    };
+  }
 
   /** Every time you buy something we need to deduct your embers. */
   static deductEmbers = (
@@ -85,4 +103,17 @@ export class GlobalAppState implements IGlobalAppState {
     GlobalAppState.logStateToConsole(newState);
     return newState;
   };
+
+  /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
+  static updateStateWithCursorMovement(
+    appState: GlobalAppState,
+    clientX: number,
+    clientY: number
+  ) {
+    return {
+      ...appState,
+      currCursorX: clientX,
+      currCursorY: clientY,
+    };
+  }
 }
