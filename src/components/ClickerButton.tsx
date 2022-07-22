@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect } from "react";
+import { CSSProperties, useCallback } from "react";
 import { TIME_TO_DISPLAY_CLICK_ANIMATION } from "../domain/contants";
 import flame from "../images/flame.png";
 import { GlobalAppState } from "../model/GlobalAppState";
@@ -6,12 +6,18 @@ import { IGlobalAppProps } from "./App.model";
 
 export default function ClickerButton(props: IGlobalAppProps) {
   const { appState, setAppState } = props;
-  const updateStateWithHiddenClickAnimation = useCallback(() => {
-    const newState = GlobalAppState.resetClickAnimationToHidden(appState);
-    setAppState(newState);
-  }, [appState, setAppState]);
+
   const handleClick = () => {
+    //Setting state back to display of false is problematic right now
+    // if (appState.displayAnimationForClick === false) {
+    //   setTimeout(() => {
+    //     const newHiddenAnimationState =
+    //       GlobalAppState.resetClickAnimationToHidden(appState);
+    //     setAppState(newHiddenAnimationState);
+    //   }, TIME_TO_DISPLAY_CLICK_ANIMATION);
+    // }
     const newState = GlobalAppState.addsEmberToTotal(appState);
+    //Set a timeout to hide the animation icon if showing for the first time
     setAppState(newState);
   };
 
@@ -22,14 +28,6 @@ export default function ClickerButton(props: IGlobalAppProps) {
     height: `${appState.embersPerSecond + 3}vh`, //Give it a 3 percent of monitor height first size
   };
 
-  //When the component loads trigger a set timeout if the click animation is visible
-  useEffect(() => {
-    if (appState.displayAnimationForClick) {
-      setTimeout(() => {
-        updateStateWithHiddenClickAnimation();
-      }, TIME_TO_DISPLAY_CLICK_ANIMATION);
-    }
-  }, [updateStateWithHiddenClickAnimation, appState.displayAnimationForClick]);
   return (
     <div className="clicker-area" onClick={handleClick}>
       <div className="counters">
