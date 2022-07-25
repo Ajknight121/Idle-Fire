@@ -19,6 +19,7 @@ function App() {
   }, [appState]);
 
   const handleMouseMove = (e: MouseEvent) => {
+    console.log("handleMouseMove")
     const newState = GlobalAppState.updateStateWithCursorMovement(
       appState,
       e.clientX,

@@ -1,3 +1,5 @@
+import {Logger} from "../utils/logger";
+
 export interface IGlobalAppState {
   time: number;
   clickPower: number; //Increased by ClickPowerUpgrade
@@ -26,13 +28,14 @@ export class GlobalAppState implements IGlobalAppState {
   static shouldLog = true;
 
   static logStateToConsole = (state: IGlobalAppState) => {
-    console.table(state);
+    Logger.table(state);
   };
 
   /** Every tick of application logic should increase the number of embers by the number of embers per second
    * @param appState Is used to construct a new state with an updated embers value only if ___
    */
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
+    console.log("adding embers")
     const newState = {
       ...appState,
       embers: appState.embers + appState.embersPerSecond,
