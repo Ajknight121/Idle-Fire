@@ -39,6 +39,11 @@ body {
 .clicker-button > img {
   height: 100%;
   width: auto;
+  transform-origin: bottom center;
+  animation-name: sway;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 .spark {
@@ -162,5 +167,19 @@ body {
 
   to {
     background: #fdba0e;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(-6deg);
+  }
+
+  to {
+    transform: rotate(8deg);
   }
 }
