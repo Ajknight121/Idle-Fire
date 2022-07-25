@@ -33,9 +33,9 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
         <input type={"radio"} value={"100"} name={"quantity"} /> x100
       </div>
         <div className={"upgrades"}>
-          {gameUpgrades.map((upgrade) =>
+          {gameUpgrades.map((upgrade, index) =>
             props.appState.embers >= upgrade.upgradeCost ? (
-              <Upgrade upgradeName={upgrade.upgradeName} upgradeCost={upgrade.upgradeCost} lvl={upgrade.lvl}/>
+              <Upgrade key={index} upgradeName={upgrade.upgradeName} upgradeCost={upgrade.upgradeCost} lvl={upgrade.lvl}/>
             ) : null
           )}
 
