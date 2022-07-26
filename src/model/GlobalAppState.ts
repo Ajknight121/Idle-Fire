@@ -4,16 +4,20 @@ export interface IGlobalAppState {
   embers: number; //Currency to accumulate
   embersPerSecond: number; //Increased by EmbersPerSecondUpgrade
   totalClicks: number;
+  totalEmbers: number;
+  buyQuantity: number;
 }
 
-/**  */
+
 export class GlobalAppState implements IGlobalAppState {
   time = 0
   clickPower = 1;
   embers = 0;
   embersPerSecond = 0;
   totalClicks = 0;
-  
+  buyQuantity = 1;
+  totalEmbers = 0;
+
   // TODO Move to config file so its always on for local dev and always off for deployed env
   static shouldLog = true;
 
@@ -28,6 +32,7 @@ export class GlobalAppState implements IGlobalAppState {
     const newState = {
       ...appState,
       embers: appState.embers + appState.embersPerSecond,
+      totalEmbers: appState.totalEmbers + appState.embersPerSecond,
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
@@ -48,12 +53,14 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every time you click the fire, you earn an ember based on your click power and we increment the global count of total clicks for the app game session. */
   static addsEmberToTotal = ({
     embers,
+    totalEmbers,
     ...restState
   }: IGlobalAppState): IGlobalAppState => {
     const newState = {
       ...restState,
       embers: embers + restState.clickPower,
       totalClicks: restState.totalClicks + 1,
+      totalEmbers: totalEmbers + restState.clickPower,
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
@@ -85,4 +92,10 @@ export class GlobalAppState implements IGlobalAppState {
     GlobalAppState.logStateToConsole(newState);
     return newState;
   };
+
+  static updateBuyQuantity(buyQuantity:number, appState:IGlobalAppState):IGlobalAppState {
+    return {
+      ...appState, buyQuantity
+    }
+  }
 }
