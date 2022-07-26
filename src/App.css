@@ -153,7 +153,13 @@ body {
   top: 5px;
   left: 10px;
   font-size: large;
+}
 
+.statistics {
+  background: antiquewhite;
+  width: 90%;
+  border-style: double;
+  margin: 0 20px;
 }
 
 @keyframes boxHighlight {

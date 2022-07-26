@@ -1,7 +1,8 @@
-import { gameUpgrades } from "../domain/gameUpgrades";
+import {GameUpgradesFactory} from "../domain/gameUpgrades";
 import { GlobalAppState } from "../model/GlobalAppState";
 import { IGlobalAppProps } from "./App.model";
 import Upgrade from "./Upgrade";
+import Statistics from "./Statistics";
 
 export default function UpgradeContainer(props: IGlobalAppProps) {
   // const costOfUpgrade = 12;
@@ -24,21 +25,25 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
 
     props.setAppState(newState);
   };
+  const upgradeQuantity = (e:React.ChangeEvent<HTMLInputElement>, buyQuantity:number):void => {
+    props.setAppState(GlobalAppState.updateBuyQuantity(buyQuantity, props.appState))
+  }
+
   return (
     <div className="upgrade-container">
       <div className="upgrade-label">Upgrades</div>
       <div className="upgrade-label">Total Embers {props.appState.embers}</div>
       <div className={"upgrade-quantity"}>
         Buy:
-        <input type={"radio"} value={"1"} name={"quantity"} /> x1
-        <input type={"radio"} value={"10"} name={"quantity"} /> x10
-        <input type={"radio"} value={"100"} name={"quantity"} /> x100
+        <input type={"radio"} value={"1"} name={"quantity"} onChange={event => upgradeQuantity(event, 1)} checked={props.appState.buyQuantity === 1}/> x1
+        <input type={"radio"} value={"10"} name={"quantity"} onChange={event => upgradeQuantity(event, 10)} checked={props.appState.buyQuantity === 10}/> x10
+        <input type={"radio"} value={"100"} name={"quantity"} onChange={event => upgradeQuantity(event, 100)} checked={props.appState.buyQuantity === 100}/> x100
       </div>
         <div className={"upgrades"}>
-          {gameUpgrades.map((upgrade) =>
+          {GameUpgradesFactory.getGameUpgrades(props.appState).map((upgrade) =>
               <Upgrade
                   {...upgrade}
-                  classname={props.appState.embers >= upgrade.upgradeCost ? "upgrade-available" : "upgrade-unavailable"}
+                  classname={GameUpgradesFactory.isAvailable(upgrade,props.appState.embers) ? "upgrade-available" : "upgrade-unavailable"}
               />
           )}
             <div onClick={() => buyUpgrade(props.appState.embers, 20)}>
@@ -51,6 +56,7 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
               />
             </div>
         </div>
+        <Statistics {...props.appState}/>
     </div>
   );
 }
