@@ -37,11 +37,8 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
         <div className={"upgrades"}>
           {gameUpgrades.map((upgrade) =>
               <Upgrade
-                  unlocked={upgrade.unlocked}
+                  {...upgrade}
                   classname={props.appState.embers >= upgrade.upgradeCost ? "upgrade-available" : "upgrade-unavailable"}
-                  upgradeName={upgrade.upgradeName}
-                  upgradeCost={upgrade.upgradeCost}
-                  lvl={upgrade.lvl}
               />
           )}
             <div onClick={() => buyUpgrade(props.appState.embers, 20)}>

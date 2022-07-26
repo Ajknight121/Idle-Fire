@@ -14,7 +14,7 @@ export class GameUpgradesFactory {
         lvl: 1,
       },
       {
-        unlocked: true,
+        unlocked: false,
         upgradeName: "Upgrade 2",
         upgradeCost: 6,
         lvl: 1,
