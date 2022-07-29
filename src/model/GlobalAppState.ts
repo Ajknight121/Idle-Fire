@@ -1,3 +1,5 @@
+import {Logger} from "../utils/logger";
+
 export interface IGlobalAppState {
   time: number;
   clickPower: number; //Increased by ClickPowerUpgrade
@@ -8,9 +10,8 @@ export interface IGlobalAppState {
   buyQuantity: number;
 }
 
-
 export class GlobalAppState implements IGlobalAppState {
-  time = 0
+  time = 0;
   clickPower = 1;
   embers = 0;
   embersPerSecond = 0;
@@ -19,10 +20,10 @@ export class GlobalAppState implements IGlobalAppState {
   totalEmbers = 0;
 
   // TODO Move to config file so its always on for local dev and always off for deployed env
-  static shouldLog = true;
+  static shouldLog = false;
 
   static logStateToConsole = (state: IGlobalAppState) => {
-    console.table(state);
+    Logger.table(state);
   };
 
   /** Every tick of application logic should increase the number of embers by the number of embers per second
@@ -50,7 +51,8 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   }
 
-  /** Every time you click the fire, you earn an ember based on your click power and we increment the global count of total clicks for the app game session. */
+  /** Every time you click the fire, you earn a number of embers based on your click power and we increment the global
+   *  count of total clicks for the app game session. */
   static addsEmberToTotal = ({
     embers,
     totalEmbers,
@@ -93,9 +95,13 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   };
 
-  static updateBuyQuantity(buyQuantity:number, appState:IGlobalAppState):IGlobalAppState {
+  static updateBuyQuantity(
+    buyQuantity: number,
+    appState: IGlobalAppState
+  ): IGlobalAppState {
     return {
-      ...appState, buyQuantity
-    }
+      ...appState,
+      buyQuantity,
+    };
   }
 }
