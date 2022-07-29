@@ -19,13 +19,16 @@ describe("global app state", () => {
     //Arrange
     const mockEmbersPerSecond = 5;
     const mockEmbers = 10;
+    const totalMockEmbers = 10;
     let mockState = new GlobalAppState();
     mockState.embers = mockEmbers;
     mockState.embersPerSecond = mockEmbersPerSecond;
+    mockState.totalEmbers = totalMockEmbers;
     //Act
     const newState = GlobalAppState.addEmbersPerSecondOnTick(mockState);
     //Assert
     expect(newState.embers).toBe(mockEmbers + mockEmbersPerSecond);
+    expect(newState.totalEmbers).toBe(totalMockEmbers + mockEmbersPerSecond);
   });
   describe("addsEmberToTotal", () => {
     let mockState: GlobalAppState;
@@ -50,6 +53,12 @@ describe("global app state", () => {
       const newState = GlobalAppState.addsEmberToTotal(mockState);
       //Assert
       expect(newState.embers).toBe(mockEmbers + mockClickPower);
+    });
+    it("increases totalEmbers", () => {
+      //Act
+      const newState = GlobalAppState.addsEmberToTotal(mockState);
+      //Assert
+      expect(newState.totalEmbers).toBe(mockEmbers + mockClickPower);
     });
   });
   it("deductEmbers", () => {
