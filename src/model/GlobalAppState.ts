@@ -1,4 +1,6 @@
 import {Logger} from "../utils/logger";
+import {IUpgrade} from "./Upgrade";
+import {GameUpgradesFactory} from "../domain/gameUpgrades";
 
 export interface IGlobalAppState {
   time: number;
@@ -8,9 +10,14 @@ export interface IGlobalAppState {
   totalClicks: number;
   totalEmbers: number;
   buyQuantity: number;
+  upgrades: {};
 }
 
 export class GlobalAppState implements IGlobalAppState {
+  private upgrades() {
+    const upgradeArray = GameUpgradesFactory.getGameUpgrades(this)
+    upgradeArray.forEach((upgrade) => this._upgrades[upgrade.upgradeName] = upgrade)
+  }
   time = 0;
   clickPower = 1;
   embers = 0;
@@ -18,6 +25,7 @@ export class GlobalAppState implements IGlobalAppState {
   totalClicks = 0;
   buyQuantity = 1;
   totalEmbers = 0;
+  private _upgrades = this.upgrades()
 
   // TODO Move to config file so its always on for local dev and always off for deployed env
   static shouldLog = false;
@@ -104,4 +112,16 @@ export class GlobalAppState implements IGlobalAppState {
       buyQuantity,
     };
   }
+
+  static increaseUpgradeLvl(
+      upgrade: IUpgrade,
+      appState: IGlobalAppState,
+  ): IGlobalAppState {
+    upgrade.lvl += 1;
+    return {
+      ...appState,
+    }
+  }
+
+
 }
