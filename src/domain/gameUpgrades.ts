@@ -13,6 +13,7 @@ export class GameUpgradesFactory {
           upgradeName: "Stick Thrower",
           originalUpgradeCost: 20,
           upgradeCost: 20 * appState.buyQuantity,
+          value: 5,
           lvl: 1,
         },
         appState.totalEmbers
@@ -22,6 +23,7 @@ export class GameUpgradesFactory {
           upgradeName: "Lighter thrower",
           originalUpgradeCost: 50,
           upgradeCost: 50 * appState.buyQuantity,
+            value: 10,
           lvl: 1,
         },
         appState.totalEmbers
@@ -31,6 +33,7 @@ export class GameUpgradesFactory {
           upgradeName: "Log chucker",
           originalUpgradeCost: 100,
           upgradeCost: 100 * appState.buyQuantity,
+            value: 25,
           lvl: 0,
         },
         appState.totalEmbers
@@ -40,6 +43,7 @@ export class GameUpgradesFactory {
           upgradeName: "Gasoline thrower",
           originalUpgradeCost: 250,
           upgradeCost: 250 * appState.buyQuantity,
+            value: 100,
           lvl: 0,
         },
         appState.totalEmbers
@@ -49,6 +53,7 @@ export class GameUpgradesFactory {
           upgradeName: "Tire dumper",
           originalUpgradeCost: 500,
           upgradeCost: 500 * appState.buyQuantity,
+            value: 250,
           lvl: 0,
         },
         appState.totalEmbers
@@ -58,6 +63,7 @@ export class GameUpgradesFactory {
           upgradeName: "Coal shucker",
           originalUpgradeCost: 1000,
           upgradeCost: 1000 * appState.buyQuantity,
+            value: 400,
           lvl: 0,
         },
         appState.totalEmbers
