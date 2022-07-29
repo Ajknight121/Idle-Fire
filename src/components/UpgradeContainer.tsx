@@ -1,4 +1,4 @@
-import {GameUpgradesFactory} from "../domain/gameUpgrades";
+import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { GlobalAppState } from "../model/GlobalAppState";
 import { IGlobalAppProps } from "./App.model";
 import Upgrade from "./Upgrade";
@@ -11,10 +11,8 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
     //This pattern is what you'll learn when you start implementing actions and reducers as in the Redux pattern. Main point, we keep state immutable, hence spread operator to create new copies of state or in order words, we never mutate state directly as in
     // props.appState.clickPower = props.appState.clickPower + 1
 
-    //Two pure functions aka no side effects - easy to test
-    //Adrian: Figure out how to implement test coverage for our Global App State static functions TODO
     if (embers < cost) {
-        return;
+      return;
     }
     const deductedEmbersState = GlobalAppState.deductEmbers(
       cost,
@@ -40,21 +38,26 @@ export default function UpgradeContainer(props: IGlobalAppProps) {
         <input type={"radio"} value={"100"} name={"quantity"} onChange={event => upgradeQuantity(event, 100)} checked={props.appState.buyQuantity === 100}/> x100
       </div>
         <div className={"upgrades"}>
+          {/*TODO: An onclick event could be added to the upgrades div that identifies which upgrade was clicked*/}
+          <div onClick={() => buyUpgrade(props.appState.embers, 10)}>
+            <Upgrade
+                key={"Grass plucker"}
+                unlocked={true}
+                classname={props.appState.embers >= 10 ? "upgrade-available" : "upgrade-unavailable"}
+                upgradeName={"Grass plucker"}
+                originalUpgradeCost={10}
+                upgradeCost={10}
+                lvl={1}
+            />
+          </div>
           {GameUpgradesFactory.getGameUpgrades(props.appState).map((upgrade) =>
               <Upgrade
+                  key={upgrade.upgradeName}
                   {...upgrade}
-                  classname={GameUpgradesFactory.isAvailable(upgrade,props.appState.embers) ? "upgrade-available" : "upgrade-unavailable"}
+                  classname={(upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade,props.appState.embers)) ? "upgrade-available" : "upgrade-unavailable"}
               />
           )}
-            <div onClick={() => buyUpgrade(props.appState.embers, 20)}>
-              <Upgrade
-                  unlocked={true}
-                  classname={props.appState.embers >= 20 ? "upgrade-available" : "upgrade-unavailable"}
-                  upgradeName={"Add 1 ember"}
-                  upgradeCost={20}
-                  lvl={1}
-              />
-            </div>
+
         </div>
         <Statistics {...props.appState}/>
     </div>

@@ -69,6 +69,7 @@ body {
   border-bottom-right-radius: 60px;
   padding-top: 10px;
   box-sizing: border-box;
+  z-index: 9;
 }
 
 .ember-count {
@@ -95,8 +96,16 @@ body {
   overflow: auto;
 }
 
-.upgrade-quantity {
-  color: white;
+.upgrade-level {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.upgrade-cost {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
 }
 
 .upgrades {
