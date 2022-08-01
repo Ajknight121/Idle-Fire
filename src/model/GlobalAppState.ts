@@ -1,6 +1,7 @@
 import {Logger} from "../utils/logger";
 import {IUpgrade} from "./Upgrade";
 import {GameUpgradesFactory} from "../domain/gameUpgrades";
+import app from "../App";
 
 export interface IGlobalAppState {
   time: number;
@@ -10,14 +11,10 @@ export interface IGlobalAppState {
   totalClicks: number;
   totalEmbers: number;
   buyQuantity: number;
-  upgrades: {};
+  upgrades: IUpgrade[];
 }
 
 export class GlobalAppState implements IGlobalAppState {
-  private upgrades() {
-    const upgradeArray = GameUpgradesFactory.getGameUpgrades(this)
-    upgradeArray.forEach((upgrade) => this._upgrades[upgrade.upgradeName] = upgrade)
-  }
   time = 0;
   clickPower = 1;
   embers = 0;
@@ -25,7 +22,7 @@ export class GlobalAppState implements IGlobalAppState {
   totalClicks = 0;
   buyQuantity = 1;
   totalEmbers = 0;
-  private _upgrades = this.upgrades()
+  upgrades = GameUpgradesFactory.getInitialUpgrades();
 
   // TODO Move to config file so its always on for local dev and always off for deployed env
   static shouldLog = false;
@@ -37,14 +34,28 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every tick of application logic should increase the number of embers by the number of embers per second
    * @param appState Is used to construct a new state with an updated embers value only if ___
    */
+  /** Updates the state of each upgrade with updated unlock status based on totalEmbers
+   *
+   * @param appState
+   */
+  static updateStateUpgrades(appState: IGlobalAppState): IGlobalAppState {
+    return {
+      ...appState,
+      upgrades: appState.upgrades.map(u => GameUpgradesFactory.getEmberBasedUpgrade(u, appState.totalEmbers))
+
+    }
+  }
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
-    const newState = {
+    const updatedEmbers = {
       ...appState,
       embers: appState.embers + appState.embersPerSecond,
       totalEmbers: appState.totalEmbers + appState.embersPerSecond,
     };
-    GlobalAppState.logStateToConsole(newState);
-    return newState;
+    GlobalAppState.logStateToConsole(updatedEmbers);
+    debugger
+    const finalState = this.updateStateUpgrades(updatedEmbers);
+    GlobalAppState.logStateToConsole(finalState);
+    return finalState;
   }
 
   static addToEmbersPerSec(
@@ -107,17 +118,45 @@ export class GlobalAppState implements IGlobalAppState {
     buyQuantity: number,
     appState: IGlobalAppState
   ): IGlobalAppState {
-    return {
+    const updatedBuyState = {
       ...appState,
       buyQuantity,
+    }
+    return this.updateStateUpgrades(updatedBuyState);
+  }
+  static buyUpgrade(
+      upgrade: IUpgrade,
+      appState: IGlobalAppState
+  ): IGlobalAppState {
+    // if (buyQuantity !== 0 || appState.embers < deduct) { check all conditions before
+    //
+    // }
+    const upgrades = appState.upgrades.map(u => {
+      if (upgrade.upgradeName !== u.upgradeName) {
+        return u
+      } else {
+        let copyOfClickedUpgrade = Object.assign({}, upgrade);
+        copyOfClickedUpgrade.quantity += appState.buyQuantity;
+        copyOfClickedUpgrade.upgradeCost += 5 * appState.buyQuantity;
+        return copyOfClickedUpgrade
+      }
+    })
+    const newState: IGlobalAppState = {
+      ...appState,
+      embers: appState.embers - (upgrade.upgradeCost * appState.buyQuantity),
+      upgrades,
+      embersPerSecond: appState.embersPerSecond + (upgrade.EPS * appState.buyQuantity)
+      // embersPerSecond: appState.embersPerSecond + upgrade.embersPerSecond, //need to add embers per second for that particular upgrade or decide how to track it
     };
+    GlobalAppState.logStateToConsole(newState);
+    return newState;
   }
 
   static increaseUpgradeLvl(
       upgrade: IUpgrade,
       appState: IGlobalAppState,
   ): IGlobalAppState {
-    upgrade.lvl += 1;
+    upgrade.quantity += 1;
     return {
       ...appState,
     }

@@ -1,93 +1,98 @@
 import { IUpgrade } from "../model/Upgrade";
 import { IGlobalAppState } from "../model/GlobalAppState";
+import { fireTenders } from "../upgradeData";
+
+export enum UpgradeNames {
+  stickThrower = "Stick Thrower",
+  lighterThrower = "lighter Thrower",
+  logChucker = "log Chucker",
+}
 
 /** Example of the factory design pattern from GoF book
  * https://en.wikipedia.org/wiki/Factory_method_pattern
  */
 export class GameUpgradesFactory {
   constructor() {}
-  static getGameUpgrades(appState: IGlobalAppState): IUpgrade[] {
+  static getInitialUpgrades(
+    appState: IGlobalAppState = {} as IGlobalAppState
+  ): IUpgrade[] {
     return [
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Stick Thrower",
-          originalUpgradeCost: 20,
-          upgradeCost: 20 * appState.buyQuantity,
-          value: 5,
-          lvl: 1,
+          upgradeName: UpgradeNames.stickThrower,
+          upgradeCost: 20,
+          EPS: 5,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: "Lighter thrower",
-          originalUpgradeCost: 50,
-          upgradeCost: 50 * appState.buyQuantity,
-            value: 10,
-          lvl: 1,
+          upgradeCost: 50,
+          EPS: 10,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: "Log chucker",
-          originalUpgradeCost: 100,
-          upgradeCost: 100 * appState.buyQuantity,
-            value: 25,
-          lvl: 0,
+          upgradeCost: 100,
+          EPS: 25,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: "Gasoline thrower",
-          originalUpgradeCost: 250,
-          upgradeCost: 250 * appState.buyQuantity,
-            value: 100,
-          lvl: 0,
+          upgradeCost: 250,
+          EPS: 100,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: "Tire dumper",
-          originalUpgradeCost: 500,
-          upgradeCost: 500 * appState.buyQuantity,
-            value: 250,
-          lvl: 0,
+          upgradeCost: 500,
+          EPS: 250,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
-      GameUpgradesFactory.getBaseUpgrade(
+      GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: "Coal shucker",
-          originalUpgradeCost: 1000,
-          upgradeCost: 1000 * appState.buyQuantity,
-            value: 400,
-          lvl: 0,
+          upgradeCost: 1000,
+          EPS: 400,
+          quantity: 0,
         },
-        appState.totalEmbers
+        appState.totalEmbers ?? 0
       ),
     ];
   }
-  static canAfford(u: IUpgrade, e: number): boolean {
-    return u.upgradeCost <= e;
+
+  // static buyUpgrades(cost, lvl, quantity) {
+  //     upgradeCost = upgradeCost * lvl * buyQuantity
+  // }
+
+  static canAfford(u: IUpgrade, appState: IGlobalAppState): boolean {
+    return u.upgradeCost * appState.buyQuantity <= appState.embers;
   }
 
-  static isUnlocked(u: IUpgrade, e: number): boolean {
-    return u.originalUpgradeCost <= e;
+  static isUnlocked(u: IUpgrade | Partial<IUpgrade>, e: number): boolean {
+    return (u.upgradeCost?? 999) <= e;
   }
 
-  static getBaseUpgrade(
-    customProps: Partial<IUpgrade>,
+  static getEmberBasedUpgrade(
+    customProps: IUpgrade | Partial<IUpgrade>,
     totalEmbers: number
   ): IUpgrade {
     return {
-      unlocked: GameUpgradesFactory.isUnlocked(
-        customProps as IUpgrade,
-        totalEmbers
-      ),
       ...customProps,
+      unlocked: GameUpgradesFactory.isUnlocked(customProps, totalEmbers),
     } as IUpgrade;
   }
 }
