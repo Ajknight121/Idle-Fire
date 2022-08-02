@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import ClickerButton from "./components/ClickerButton";
 import UpgradeContainer from "./components/UpgradeContainer";
-import { GlobalAppState } from "./model/GlobalAppState";
+import {GlobalAppState, IGlobalAppState} from "./model/GlobalAppState";
 import { Logger } from "./utils/logger";
 
 let countOfInterval = 0;
 function App() {
-  const [appState, setAppState] = useState(new GlobalAppState());
+  const [appState, setAppState] = useState<IGlobalAppState>(new GlobalAppState());
   const conditionallyUpdateEmbers = useCallback(() => {
     countOfInterval += 1;
     Logger.log(`App State object in interval function`);

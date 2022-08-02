@@ -2,17 +2,7 @@ export interface IUpgrade {
   classname?: string;
   unlocked: boolean;
   upgradeName: string;
-  originalUpgradeCost: number;
-  upgradeCost: number; //cost in embers that were created
-  lvl: number; // Number of times upgrade is purchased
-  // unlock(condition:number):void; // Function to change upgrade from locked/hidden to unlocked/shown
-  // multiplierPercent: number  //3.5 of an ember
+  upgradeCost: number;
+  EPS: number; // Value added on purchase
+  quantity: number; // Number of times upgrade is purchased
 }
-
-// export interface AutoClickUpgrade extends IUpgrade {
-
-// }
-
-// export class Upgrade implements IUpdate {
-//     multiplierPercent = 60  //3.5 of an ember
-// }
