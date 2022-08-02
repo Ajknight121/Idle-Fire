@@ -77,14 +77,15 @@ export class GlobalAppState implements IGlobalAppState {
     totalEmbers,
     ...restState
   }: IGlobalAppState): IGlobalAppState => {
-    const newState = {
+    const updatedEmbers = {
       ...restState,
       embers: embers + restState.clickPower,
       totalClicks: restState.totalClicks + 1,
       totalEmbers: totalEmbers + restState.clickPower,
     };
-    GlobalAppState.logStateToConsole(newState);
-    return newState;
+    const updatedUpgrades = this.updateStateUpgrades(updatedEmbers)
+    GlobalAppState.logStateToConsole(updatedUpgrades);
+    return updatedUpgrades;
   };
 
   /** Every time you buy something we need to deduct your embers. */
