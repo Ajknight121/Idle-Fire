@@ -46,6 +46,20 @@ body {
   animation-direction: alternate;
 }
 
+.growing-flame-container {
+  display: grid;
+  justify-content: center;
+  align-content: flex-end;
+  height: 100vh;
+}
+.growing-flame-container > img {
+  transform-origin: bottom center;
+  animation-name: sway;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
 .spark {
   display: block;
   position: absolute;

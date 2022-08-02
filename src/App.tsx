@@ -17,12 +17,30 @@ function App() {
     Logger.log(`Interval triggered times ${countOfInterval}`);
   }, [appState]);
 
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    console.log("handleMouseMove")
+    const newState = GlobalAppState.updateStateWithCursorMovement(
+      appState,
+      e.clientX,
+      e.clientY
+    );
+    setAppState(newState);
+  }, [appState]);
+  let interval:any;
   useEffect(() => {
-    const interval = setInterval(() => {
+    // Begin capturing cursor movement
+    document.addEventListener("mousemove", handleMouseMove);
+
+    // Begin updating embers per second
+    interval = setInterval(() => {
       conditionallyUpdateEmbers();
     }, 1000);
-    return () => clearInterval(interval);
-  }, [conditionallyUpdateEmbers]);
+    return () => {
+      console.log("clear")
+      clearInterval(interval);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [interval]);
 
   return (
     <div className="App">

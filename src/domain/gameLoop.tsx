@@ -17,9 +17,7 @@ export default function GameLoop(props: { embersPerSecond: number }) {
 
   // console.table(appState);
   const updateEmberPerSecond = () => {
-    debugger
     if (props.embersPerSecond > 0) {
-      debugger
       const newState = GlobalAppState.addEmbersPerSecondOnTick(appState);
       setAppState(newState);
       // setEmbersPerSecond(newState.embersPerSecond);
