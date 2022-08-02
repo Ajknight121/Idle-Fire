@@ -1,7 +1,6 @@
 import {Logger} from "../utils/logger";
 import {IUpgrade} from "./Upgrade";
 import {GameUpgradesFactory} from "../domain/gameUpgrades";
-import app from "../App";
 
 export interface IGlobalAppState {
   time: number;
@@ -12,6 +11,10 @@ export interface IGlobalAppState {
   totalEmbers: number;
   buyQuantity: number;
   upgrades: IUpgrade[];
+  //Cursor
+  currCursorX: number;
+  currCursorY: number;
+  displayAnimationForClick: boolean;
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -23,6 +26,10 @@ export class GlobalAppState implements IGlobalAppState {
   buyQuantity = 1;
   totalEmbers = 0;
   upgrades = GameUpgradesFactory.getInitialUpgrades();
+  //Cursor
+  currCursorX = 0;
+  currCursorY = 0;
+  displayAnimationForClick = false;
 
   // TODO Move to config file so its always on for local dev and always off for deployed env
   static shouldLog = false;
@@ -52,7 +59,6 @@ export class GlobalAppState implements IGlobalAppState {
       totalEmbers: appState.totalEmbers + appState.embersPerSecond,
     };
     GlobalAppState.logStateToConsole(updatedEmbers);
-    debugger
     const finalState = this.updateStateUpgrades(updatedEmbers);
     GlobalAppState.logStateToConsole(finalState);
     return finalState;
@@ -82,11 +88,21 @@ export class GlobalAppState implements IGlobalAppState {
       embers: embers + restState.clickPower,
       totalClicks: restState.totalClicks + 1,
       totalEmbers: totalEmbers + restState.clickPower,
+      //We'll reset this based on a contant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
+      displayAnimationForClick: true,
     };
     const updatedUpgrades = this.updateStateUpgrades(updatedEmbers)
     GlobalAppState.logStateToConsole(updatedUpgrades);
     return updatedUpgrades;
   };
+
+  /** Gets called after a certain amount of time after a click gets handled */
+  static resetClickAnimationToHidden(appState: IGlobalAppState) {
+    return {
+      ...appState,
+      displayAnimationForClick: false,
+    };
+  }
 
   /** Every time you buy something we need to deduct your embers. */
   static deductEmbers = (
@@ -163,5 +179,16 @@ export class GlobalAppState implements IGlobalAppState {
     }
   }
 
-
+  /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
+  static updateStateWithCursorMovement(
+      appState: GlobalAppState,
+      clientX: number,
+      clientY: number
+  ) {
+    return {
+      ...appState,
+      currCursorX: clientX,
+      currCursorY: clientY,
+    };
+  }
 }
