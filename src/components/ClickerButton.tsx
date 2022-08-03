@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import { GlobalAppState } from "../model/GlobalAppState";
-import { IGlobalAppProps } from "./App.model";
+import { CSSProperties, useContext } from "react";
+import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
+import { GlobalAppState } from "../model/GlobalAppState";
+import SparkClickAnimation from "./CanvasControl";
+import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
 
-const Spark = (prop: any) => {
-  return (
-    <div className={"spark"}>
-      <img src={flame} alt={"spark"} draggable="false" />
-    </div>
-  );
-};
-
-export default function ClickerButton(props: IGlobalAppProps) {
-  const { appState, setAppState } = props;
-  const [sparkList, setSparkState] = useState<JSX.Element[]>([]);
+export default function ClickerButton() {
+  const { appState, dispatchAppAction } = useContext(AppStateContext);
   const handleClick = () => {
-    setSparkState(sparkList.concat(<Spark key={sparkList.length} />));
-    const newState = GlobalAppState.addsEmberToTotal(appState);
-    setAppState(newState);
+    dispatchAppAction(createActionWithPayload(AppActionsNames.FIRE_CLICK));
   };
+
+  /** Use app start to grow the image */
+  const flameImageStyle: CSSProperties = {
+    display: "grid",
+    placeContent: "center",
+    height: `${Math.min(appState.embersPerSecond + 3, 100)}vh`, //Give it a 3 percent of monitor height first size
+  };
+
   return (
     <div className={"clicker-area"}>
       <div className={"counters"}>
@@ -27,9 +26,17 @@ export default function ClickerButton(props: IGlobalAppProps) {
           Embers per sec: {appState.embersPerSecond}
         </div>
       </div>
-      <div className="clicker-button" onClick={handleClick}>
-        {sparkList}
-        <img src={flame} alt={"Flame level 1"} draggable="false" />
+      <div className="clicker-button" onClick={() => handleClick()}>
+        <div className="growing-flame-container">
+          <img
+            style={flameImageStyle}
+            src={flame}
+            alt={"Flame level 1"}
+            draggable="false"
+          />
+        </div>
+        <SparkClickAnimation />
+        {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>
     </div>
   );
