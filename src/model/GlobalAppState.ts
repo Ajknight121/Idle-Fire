@@ -1,6 +1,7 @@
-import {Logger} from "../utils/logger";
-import {IUpgrade} from "./Upgrade";
-import {GameUpgradesFactory} from "../domain/gameUpgrades";
+import { IAppAction } from "../domain/appActions";
+import { GameUpgradesFactory } from "../domain/gameUpgrades";
+import { Logger } from "../utils/logger";
+import { IUpgrade } from "./Upgrade";
 
 export interface IGlobalAppState {
   time: number;
@@ -31,9 +32,6 @@ export class GlobalAppState implements IGlobalAppState {
   currCursorY = 0;
   displayAnimationForClick = false;
 
-  // TODO Move to config file so its always on for local dev and always off for deployed env
-  static shouldLog = false;
-
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
   };
@@ -48,25 +46,26 @@ export class GlobalAppState implements IGlobalAppState {
   static updateStateUpgrades(appState: IGlobalAppState): IGlobalAppState {
     return {
       ...appState,
-      upgrades: appState.upgrades.map(u => GameUpgradesFactory.getEmberBasedUpgrade(u, appState.totalEmbers))
-
-    }
+      upgrades: appState.upgrades.map((u) =>
+        GameUpgradesFactory.getEmberBasedUpgrade(u, appState.totalEmbers)
+      ),
+    };
   }
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
-    const updatedEmbers = {
+    const updatedEmbers: IGlobalAppState = {
       ...appState,
       embers: appState.embers + appState.embersPerSecond,
       totalEmbers: appState.totalEmbers + appState.embersPerSecond,
     };
-    GlobalAppState.logStateToConsole(updatedEmbers);
-    const finalState = this.updateStateUpgrades(updatedEmbers);
+    const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
     GlobalAppState.logStateToConsole(finalState);
     return finalState;
   }
 
+  //TODO Is this still used?
   static addToEmbersPerSec(
-    numberOfEmbersPerSecToAdd: number,
-    appState: IGlobalAppState
+    appState: IGlobalAppState,
+    numberOfEmbersPerSecToAdd: number
   ): IGlobalAppState {
     const newState = {
       ...appState,
@@ -78,20 +77,18 @@ export class GlobalAppState implements IGlobalAppState {
 
   /** Every time you click the fire, you earn a number of embers based on your click power and we increment the global
    *  count of total clicks for the app game session. */
-  static addsEmberToTotal = ({
-    embers,
-    totalEmbers,
-    ...restState
-  }: IGlobalAppState): IGlobalAppState => {
-    const updatedEmbers = {
-      ...restState,
-      embers: embers + restState.clickPower,
-      totalClicks: restState.totalClicks + 1,
-      totalEmbers: totalEmbers + restState.clickPower,
+  static handleUserFireClick = (appState: IGlobalAppState): IGlobalAppState => {
+    const { embers, clickPower, totalClicks, totalEmbers } = appState;
+    const updatedEmbersState: IGlobalAppState = {
+      ...appState,
+      embers: embers + clickPower,
+      totalClicks: totalClicks + 1,
+      totalEmbers: totalEmbers + clickPower,
       //We'll reset this based on a contant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
       displayAnimationForClick: true,
     };
-    const updatedUpgrades = this.updateStateUpgrades(updatedEmbers)
+    const updatedUpgrades =
+      GlobalAppState.updateStateUpgrades(updatedEmbersState);
     GlobalAppState.logStateToConsole(updatedUpgrades);
     return updatedUpgrades;
   };
@@ -104,65 +101,85 @@ export class GlobalAppState implements IGlobalAppState {
     };
   }
 
+  /** A wrapper function for the two discrete mutations of deducting embers and adding to embers per second */
+  static handleUpgradePurchase = (
+    appState: GlobalAppState,
+    action: IAppAction
+  ) => {
+    //Consider consolitdating these state mutations into one function, here if sub functions aren't used elsewhere
+    const deductedEmbersState = GlobalAppState.deductEmbers(
+      appState,
+      action.payload.cost
+    );
+
+    const newState = GlobalAppState.addToEmbersPerSec(
+      deductedEmbersState,
+      action.payload.value
+    );
+    return newState;
+  };
+
   /** Every time you buy something we need to deduct your embers. */
   static deductEmbers = (
-    deduction: number,
-    { embers, ...restState }: IGlobalAppState
+    appState: IGlobalAppState,
+    deduction: number
   ): IGlobalAppState => {
     const newState = {
-      ...restState,
-      embers: embers - deduction,
+      ...appState,
+      embers: appState.embers - deduction,
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
   };
 
+  //TODO Uncomment when going to be used to reduce confusing during refactoring and debugging
   /** Every time you buy something we need to deduct your embers. */
-  static upgradeEmbersPerClick = (
-    deduction: number,
-    { embers, ...restState }: IGlobalAppState
-  ): IGlobalAppState => {
-    const newState = {
-      ...restState,
-      embers: embers - deduction,
-      clickPower: restState.clickPower + 1, // TODO give the quantity to add as a parameter
-    };
-    GlobalAppState.logStateToConsole(newState);
-    return newState;
-  };
+  // static upgradeEmbersPerClick = (
+  //   deduction: number,
+  //   { embers, ...restState }: IGlobalAppState
+  // ): IGlobalAppState => {
+  //   const newState = {
+  //     ...restState,
+  //     embers: embers - deduction,
+  //     clickPower: restState.clickPower + 1, // TODO give the quantity to add as a parameter
+  //   };
+  //   GlobalAppState.logStateToConsole(newState);
+  //   return newState;
+  // };
 
+  /** Handles payload with a number for a new buy quantity */
   static updateBuyQuantity(
-    buyQuantity: number,
-    appState: IGlobalAppState
+    appState: IGlobalAppState,
+    payload: number
   ): IGlobalAppState {
+    debugger;
     const updatedBuyState = {
       ...appState,
-      buyQuantity,
-    }
-    return this.updateStateUpgrades(updatedBuyState);
+      buyQuantity: payload,
+    };
+    return GlobalAppState.updateStateUpgrades(updatedBuyState);
   }
+
   static buyUpgrade(
-      upgrade: IUpgrade,
-      appState: IGlobalAppState
+    appState: IGlobalAppState,
+    upgrade: IUpgrade
   ): IGlobalAppState {
-    // if (buyQuantity !== 0 || appState.embers < deduct) { check all conditions before
-    //
-    // }
-    const upgrades = appState.upgrades.map(u => {
+    const upgrades = appState.upgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
-        return u
+        return u;
       } else {
         let copyOfClickedUpgrade = Object.assign({}, upgrade);
         copyOfClickedUpgrade.quantity += appState.buyQuantity;
         copyOfClickedUpgrade.upgradeCost += 5 * appState.buyQuantity;
-        return copyOfClickedUpgrade
+        return copyOfClickedUpgrade;
       }
-    })
+    });
     const newState: IGlobalAppState = {
       ...appState,
-      embers: appState.embers - (upgrade.upgradeCost * appState.buyQuantity),
+      embers: appState.embers - upgrade.upgradeCost * appState.buyQuantity,
       upgrades,
-      embersPerSecond: appState.embersPerSecond + (upgrade.EPS * appState.buyQuantity)
+      embersPerSecond:
+        appState.embersPerSecond + upgrade.EPS * appState.buyQuantity,
       // embersPerSecond: appState.embersPerSecond + upgrade.embersPerSecond, //need to add embers per second for that particular upgrade or decide how to track it
     };
     GlobalAppState.logStateToConsole(newState);
@@ -170,25 +187,24 @@ export class GlobalAppState implements IGlobalAppState {
   }
 
   static increaseUpgradeLvl(
-      upgrade: IUpgrade,
-      appState: IGlobalAppState,
+    appState: IGlobalAppState,
+    upgrade: IUpgrade
   ): IGlobalAppState {
     upgrade.quantity += 1;
     return {
       ...appState,
-    }
+    };
   }
 
   /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
   static updateStateWithCursorMovement(
-      appState: GlobalAppState,
-      clientX: number,
-      clientY: number
+    appState: GlobalAppState,
+    event: { clientX: number; clientY: number }
   ) {
     return {
       ...appState,
-      currCursorX: clientX,
-      currCursorY: clientY,
+      currCursorX: event.clientX,
+      currCursorY: event.clientY,
     };
   }
 }

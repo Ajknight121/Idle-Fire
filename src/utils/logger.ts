@@ -1,5 +1,5 @@
 export class Logger {
-  private static _localLogMode = false;
+  private static _localLogMode = true;
 
   static log(message: string) {
     if (Logger._localLogMode) {
