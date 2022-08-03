@@ -35,7 +35,7 @@ export default function UpgradeContainer() {
   return (
     <div className="upgrade-container">
       <div className="upgrade-label">Upgrades</div>
-      <div className="upgrade-label">Total Embers {appState.embers}</div>
+      <div className="upgrade-label">Total Embers {appState.embers.toLocaleString()}</div>
       <div className={"upgrade-quantity"}>
         Buy:
         <input

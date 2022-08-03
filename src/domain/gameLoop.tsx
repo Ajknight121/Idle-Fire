@@ -1,11 +1,10 @@
-// let countOfGameLoopInvocations = 0;
-
 import { useContext, useEffect } from "react";
 import ClickerButton from "../components/ClickerButton";
 import UpgradeContainer from "../components/UpgradeContainer";
 import { AppActionsNames, createActionWithPayload } from "./appActions";
 import { AppStateContext } from "./appContext";
 
+// let countOfGameLoopInvocations = 0;
 /** Main entry point into game logic */
 export default function GameLoop() {
   const { dispatchAppAction } = useContext(AppStateContext);

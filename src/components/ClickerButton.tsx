@@ -1,7 +1,6 @@
 import { CSSProperties, useContext } from "react";
 import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
-import { GlobalAppState } from "../model/GlobalAppState";
 import SparkClickAnimation from "./CanvasControl";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
 
@@ -21,9 +20,9 @@ export default function ClickerButton() {
   return (
     <div className={"clicker-area"}>
       <div className={"counters"}>
-        <div className={"ember-count"}>Embers: {appState.embers}</div>
+        <div className={"ember-count"}>Embers: {appState.embers.toLocaleString()}</div>
         <div className={"ember-per-second"}>
-          Embers per sec: {appState.embersPerSecond}
+          Embers per sec: {appState.embersPerSecond.toLocaleString()}
         </div>
       </div>
       <div className="clicker-button" onClick={() => handleClick()}>

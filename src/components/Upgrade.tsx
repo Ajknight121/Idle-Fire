@@ -46,7 +46,7 @@ export default function Upgrade(props: UpgradeComponentProps) {
             : ""}
         </div>
         <div className={"upgrade-cost"}>
-          {props.upgradeProps.upgradeCost * appState.buyQuantity} Embers
+          {(props.upgradeProps.upgradeCost * appState.buyQuantity).toLocaleString()} Embers
         </div>
       </div>
     );
