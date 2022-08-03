@@ -6,10 +6,10 @@ export default function Statistics() {
   return (
     <div className={"statistics"}>
       <div className={"statistics-label"}>Stats</div>
-      Time played: {appState.time} seconds <br />
-      Total embers produced: {appState.totalEmbers}
+      Time played: {appState.time.toLocaleString()} seconds <br />
+      Total embers produced: {appState.totalEmbers.toLocaleString()}
       <br />
-      Fire clicks: {appState.totalClicks}
+      Fire clicks: {appState.totalClicks.toLocaleString()}
       <br />
       Embers from clicking: unknown
       <br />
