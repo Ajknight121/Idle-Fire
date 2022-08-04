@@ -1,8 +1,9 @@
-import { IUpgrade } from "../model/Upgrade";
+import {IClickUpgrade, IUpgrade} from "../model/Upgrade";
 import { IGlobalAppState } from "../model/GlobalAppState";
-import { fireTenders } from "../upgradeData";
 
 export enum UpgradeNames {
+  clickPower = "Click Power",
+  clickMultiplier = "Click Multiplier",
   grassPlucker = "Grass Plucker",
   stickThrower = "Stick Thrower",
   lighterThrower = "lighter Thrower",
@@ -31,7 +32,7 @@ export class GameUpgradesFactory {
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: UpgradeNames.stickThrower,
-          upgradeCost: 20,
+          upgradeCost: 125,
           EPS: 5,
           quantity: 0,
         },
@@ -39,8 +40,8 @@ export class GameUpgradesFactory {
       ),
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Lighter thrower",
-          upgradeCost: 50,
+          upgradeName: UpgradeNames.lighterThrower,
+          upgradeCost: 1500,
           EPS: 10,
           quantity: 0,
         },
@@ -48,8 +49,8 @@ export class GameUpgradesFactory {
       ),
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Log chucker",
-          upgradeCost: 100,
+          upgradeName: UpgradeNames.logChucker,
+          upgradeCost: 25000,
           EPS: 25,
           quantity: 0,
         },
@@ -57,8 +58,8 @@ export class GameUpgradesFactory {
       ),
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Gasoline thrower",
-          upgradeCost: 250,
+          upgradeName: UpgradeNames.gasolineThrower,
+          upgradeCost: 300000,
           EPS: 100,
           quantity: 0,
         },
@@ -66,8 +67,8 @@ export class GameUpgradesFactory {
       ),
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Tire dumper",
-          upgradeCost: 500,
+          upgradeName: UpgradeNames.tireDumper,
+          upgradeCost: 500000,
           EPS: 250,
           quantity: 0,
         },
@@ -75,8 +76,8 @@ export class GameUpgradesFactory {
       ),
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
-          upgradeName: "Coal shucker",
-          upgradeCost: 1000,
+          upgradeName: UpgradeNames.coalShucker,
+          upgradeCost: 1000000,
           EPS: 400,
           quantity: 0,
         },
@@ -89,12 +90,12 @@ export class GameUpgradesFactory {
   //     upgradeCost = upgradeCost * lvl * buyQuantity
   // }
 
-  static canAfford(u: IUpgrade, appState: IGlobalAppState): boolean {
+  static canAfford(u: IUpgrade | IClickUpgrade, appState: IGlobalAppState): boolean {
     return u.upgradeCost * appState.buyQuantity <= appState.embers;
   }
 
   static isUnlocked(u: IUpgrade | Partial<IUpgrade>, e: number): boolean {
-    return (u.upgradeCost?? 999) <= e;
+    return ((u.upgradeCost ?? 999) * .2) <= e + 125;
   }
 
   static getEmberBasedUpgrade(
@@ -106,4 +107,23 @@ export class GameUpgradesFactory {
       unlocked: GameUpgradesFactory.isUnlocked(customProps, totalEmbers),
     } as IUpgrade;
   }
+
+    static getInitialClickUpgrades(): IClickUpgrade[] {
+        return [
+            {
+                unlocked: true,
+                upgradeName: UpgradeNames.clickPower,
+                upgradeCost: 50,
+                EPC: 1,
+                quantity: 0,
+            },
+            {
+                unlocked: true,
+                upgradeName: UpgradeNames.clickMultiplier,
+                upgradeCost: 5000,
+                EPC: 1.0,
+                quantity: 0,
+            },
+        ]
+    }
 }
