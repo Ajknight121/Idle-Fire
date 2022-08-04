@@ -1,17 +1,19 @@
 import { IAppAction } from "../domain/appActions";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { Logger } from "../utils/logger";
-import { IUpgrade } from "./Upgrade";
+import {IClickUpgrade, IUpgrade} from "./Upgrade";
 
 export interface IGlobalAppState {
   time: number;
   clickPower: number; //Increased by ClickPowerUpgrade
   embers: number; //Currency to accumulate
   embersPerSecond: number; //Increased by EmbersPerSecondUpgrade
+  embersFromFire: number; //Embers from clicking the fire
   totalClicks: number;
   totalEmbers: number;
   buyQuantity: number;
   upgrades: IUpgrade[];
+  clickUpgrades: IClickUpgrade[];
   //Cursor
   currCursorX: number;
   currCursorY: number;
@@ -23,10 +25,12 @@ export class GlobalAppState implements IGlobalAppState {
   clickPower = 1;
   embers = 0;
   embersPerSecond = 0;
+  embersFromFire = 0;
   totalClicks = 0;
   buyQuantity = 1;
   totalEmbers = 0;
-  upgrades = GameUpgradesFactory.getInitialUpgrades();
+  upgrades = GameUpgradesFactory.getInitialUpgrades()
+  clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades()
   //Cursor
   currCursorX = 0;
   currCursorY = 0;
@@ -78,18 +82,21 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every time you click the fire, you earn a number of embers based on your click power and we increment the global
    *  count of total clicks for the app game session. */
   static handleUserFireClick = (appState: IGlobalAppState): IGlobalAppState => {
-    const { embers, clickPower, totalClicks, totalEmbers } = appState;
+
+    const { embers, clickPower, totalClicks, totalEmbers, embersFromFire } = appState;
     const updatedEmbersState: IGlobalAppState = {
       ...appState,
       embers: embers + clickPower,
       totalClicks: totalClicks + 1,
       totalEmbers: totalEmbers + clickPower,
-      //We'll reset this based on a contant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
+      embersFromFire: embersFromFire + clickPower,
+      //We'll reset this based on a constant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
       displayAnimationForClick: true,
     };
     const updatedUpgrades =
       GlobalAppState.updateStateUpgrades(updatedEmbersState);
     GlobalAppState.logStateToConsole(updatedUpgrades);
+    console.log("fire 1");
     return updatedUpgrades;
   };
 
@@ -132,32 +139,42 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   };
 
-  //TODO Uncomment when going to be used to reduce confusing during refactoring and debugging
-  /** Every time you buy something we need to deduct your embers. */
-  // static upgradeEmbersPerClick = (
-  //   deduction: number,
-  //   { embers, ...restState }: IGlobalAppState
-  // ): IGlobalAppState => {
-  //   const newState = {
-  //     ...restState,
-  //     embers: embers - deduction,
-  //     clickPower: restState.clickPower + 1, // TODO give the quantity to add as a parameter
-  //   };
-  //   GlobalAppState.logStateToConsole(newState);
-  //   return newState;
-  // };
-
   /** Handles payload with a number for a new buy quantity */
   static updateBuyQuantity(
     appState: IGlobalAppState,
     payload: number
   ): IGlobalAppState {
-    debugger;
     const updatedBuyState = {
       ...appState,
       buyQuantity: payload,
     };
     return GlobalAppState.updateStateUpgrades(updatedBuyState);
+  }
+
+  /** Every time you buy something we need to deduct your embers. */
+  static upgradeEmbersPerClick = (
+      appState: GlobalAppState,
+      upgrade: IClickUpgrade
+  ): IGlobalAppState => {
+    const clickUpgrades = appState.clickUpgrades.map((u) => {
+      if (upgrade.upgradeName !== u.upgradeName) {
+        return u;
+      } else {
+        let updatedUpgrade = Object.assign({}, upgrade);
+        updatedUpgrade.quantity += appState.buyQuantity;
+        updatedUpgrade.EPC = ((updatedUpgrade.EPC * 2) * appState.buyQuantity);
+        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * .25) * appState.buyQuantity;
+        return updatedUpgrade;
+      }
+    });
+    const newState = {
+      ...appState,
+      embers: appState.embers - upgrade.upgradeCost,
+      clickUpgrades,
+      clickPower: appState.clickPower + 1, // TODO give the quantity to add as a parameter
+    };
+    GlobalAppState.logStateToConsole(newState);
+    return newState;
   }
 
   static buyUpgrade(
@@ -186,15 +203,6 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   }
 
-  static increaseUpgradeLvl(
-    appState: IGlobalAppState,
-    upgrade: IUpgrade
-  ): IGlobalAppState {
-    upgrade.quantity += 1;
-    return {
-      ...appState,
-    };
-  }
 
   /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
   static updateStateWithCursorMovement(

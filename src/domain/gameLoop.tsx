@@ -9,7 +9,7 @@ import { AppStateContext } from "./appContext";
 export default function GameLoop() {
   const { dispatchAppAction } = useContext(AppStateContext);
 
-  console.log("Game Loop Started");
+  // console.log("Game Loop Started");
 
   const dispatchMousemove = (event: MouseEvent) => {
     dispatchAppAction(
@@ -30,7 +30,7 @@ export default function GameLoop() {
     }, 1000);
     // }
     return () => {
-      console.log("clear");
+      // console.log("clear");
       clearInterval(interval);
       document.removeEventListener("mousemove", dispatchMousemove);
     };
