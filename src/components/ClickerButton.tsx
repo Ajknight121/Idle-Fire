@@ -14,7 +14,8 @@ export default function ClickerButton() {
   const flameImageStyle: CSSProperties = {
     display: "grid",
     placeContent: "center",
-    height: `${Math.min(appState.embersPerSecond + 3, 100)}vh`, //Give it a 3 percent of monitor height first size
+    height: `${Math.min((appState.embersPerSecond/ 500) + 5, 100)}vh`, //Give it a 3 percent of monitor height first
+    // size
   };
 
   return (

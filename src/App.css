@@ -58,6 +58,7 @@ body {
   animation-duration: 5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
+  transition: height ease-out 10s;
 }
 
 .spark {
