@@ -170,7 +170,7 @@ export class GlobalAppState implements IGlobalAppState {
       } else {
         let copyOfClickedUpgrade = Object.assign({}, upgrade);
         copyOfClickedUpgrade.quantity += appState.buyQuantity;
-        copyOfClickedUpgrade.upgradeCost += 5 * appState.buyQuantity;
+        copyOfClickedUpgrade.upgradeCost += Math.ceil(copyOfClickedUpgrade.upgradeCost * .25) * appState.buyQuantity;
         return copyOfClickedUpgrade;
       }
     });

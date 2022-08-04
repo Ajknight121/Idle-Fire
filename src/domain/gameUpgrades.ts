@@ -3,9 +3,13 @@ import { IGlobalAppState } from "../model/GlobalAppState";
 import { fireTenders } from "../upgradeData";
 
 export enum UpgradeNames {
+  grassPlucker = "Grass Plucker",
   stickThrower = "Stick Thrower",
   lighterThrower = "lighter Thrower",
   logChucker = "log Chucker",
+  gasolineThrower = "Gasoline thrower",
+  tireDumper = "Tire dumper",
+  coalShucker = "Coal shucker",
 }
 
 /** Example of the factory design pattern from GoF book
@@ -17,6 +21,13 @@ export class GameUpgradesFactory {
     appState: IGlobalAppState = {} as IGlobalAppState
   ): IUpgrade[] {
     return [
+      {
+        unlocked: true,
+        upgradeName: UpgradeNames.grassPlucker,
+        upgradeCost: 20,
+        EPS: 1,
+        quantity: 0,
+      },
       GameUpgradesFactory.getEmberBasedUpgrade(
         {
           upgradeName: UpgradeNames.stickThrower,
