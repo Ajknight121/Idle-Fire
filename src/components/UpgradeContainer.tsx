@@ -2,13 +2,27 @@ import { useContext } from "react";
 import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
 import { AppStateContext } from "../domain/appContext";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
-import { IUpgrade } from "../model/Upgrade";
+import {IClickUpgrade, IUpgrade} from "../model/Upgrade";
 import Statistics from "./Statistics";
 import Upgrade from "./Upgrade";
+import ClickPowerUpgrade from "./ClickPowerUpgrade";
 
 export default function UpgradeContainer() {
   const { appState, dispatchAppAction } = useContext(AppStateContext);
-  
+
+    const getClickUpgrades = (
+        upgrade: IClickUpgrade,
+        index: number,
+        array: IClickUpgrade[]
+    ) => {
+        const classForUpgrade =
+            upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
+                ? "click-upgrade-available"
+                : "click-upgrade-unavailable";
+        return (
+            <ClickPowerUpgrade key={index} upgradeProps={upgrade} classname={classForUpgrade} />
+        );
+    };
   const getUpgradeContent = (
     upgrade: IUpgrade,
     index: number,
@@ -63,9 +77,13 @@ export default function UpgradeContainer() {
         />{" "}
         x100
       </div>
-      <div className={"upgrades"}>
+        <div className={"upgrades"}>
+            <div className={"click-upgrades"}>
+                {appState.clickUpgrades.map(getClickUpgrades)}
+            </div>
+            <hr/>
         {appState.upgrades.map(getUpgradeContent)}
-      </div>
+        </div>
       <Statistics />
     </div>
   );

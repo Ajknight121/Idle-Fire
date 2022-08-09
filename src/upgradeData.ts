@@ -7,7 +7,7 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 20,
     EPS: 5,
     quantity: 1,
-    // description: "",
+    description: "",
   },
   {
     unlocked: false,
@@ -15,7 +15,7 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 50,
     EPS: 10,
     quantity: 1,
-    // description: "",
+    description: "",
   },
   {
     unlocked: false,
@@ -23,7 +23,7 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 100,
     EPS: 25,
     quantity: 0,
-    // description: "",
+    description: "",
   },
   {
     unlocked: false,
@@ -31,7 +31,7 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 250 ,
     EPS: 100,
     quantity: 0,
-    // description: "",
+    description: "",
   },
   {
     unlocked: false,
@@ -39,7 +39,7 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 500 ,
     EPS: 250,
     quantity: 0,
-    // description: "",
+    description: "",
   },
   {
     unlocked: false,
@@ -47,6 +47,6 @@ export const fireTenders: IUpgrade[] = [
     upgradeCost: 1000,
     EPS: 400,
     quantity: 0,
-    // description: "",
+    description: "",
   },
 ];

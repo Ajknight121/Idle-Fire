@@ -11,7 +11,7 @@ export default function Statistics() {
       <br />
       Fire clicks: {appState.totalClicks.toLocaleString()}
       <br />
-      Embers from clicking: unknown
+      Embers from clicking: {appState.embersFromFire.toLocaleString()}
       <br />
     </div>
   );
