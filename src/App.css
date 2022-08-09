@@ -200,8 +200,7 @@ body {
   background: #ffa400;
   height: 50px;
   width: 170px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
   box-shadow: -4px -3px 2px;
 }
 
@@ -227,11 +226,22 @@ body {
 
 .click-upgrade-unavailable {
   position:relative;
-  width: 40%;
+  width: 170px;
   display: inline-block;
-  left: -4px;
-  top: -4px;
+  left: -2px;
+  top: -2px;
   background: #bb7202;
+  margin: 10px;
+  height: 50px;
+}
+
+.click-upgrade-unavailable:active {
+  position:relative;
+  width: 170px;
+  display: inline-block;
+  left: -3px;
+  top: -3px;
+  background: #a96801;
   margin: 10px;
   height: 50px;
 }

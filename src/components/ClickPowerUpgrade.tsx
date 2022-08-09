@@ -42,36 +42,47 @@ export default function ClickPowerUpgrade(props: UpgradeComponentProps) {
     };
 
     return (
-        <HtmlTooltip title={
-            <React.Fragment>
-                <div className={"tooltip-name"}>{props.upgradeProps.quantity > 0 ? props.upgradeProps.upgradeName : "???"}</div>
-                <div className={"tooltip-description"}>{props.upgradeProps.quantity > 0 ? props.upgradeProps.description : "???"}</div>
-                <hr />
-                {props.upgradeProps.quantity > 0 ? <div className={"tooltip-values"}>
-                    <div>{`Each ${props.upgradeProps.upgradeName} produces ${props.upgradeProps.EPC} embers per second`}</div>
-                </div> : ""}
-                <div className={"tooltip-cost"}>Ember cost: {(props.upgradeProps.upgradeCost * appState.buyQuantity).toLocaleString()}</div>
-            </React.Fragment>
-        }>
-            <div
-                className={props.classname}
-                onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
-                    handleUpgradeClick()
-                }
-            >
-                <div className={"upgrade-name"}>
-                    {props.upgradeProps.upgradeName}
-                </div>
-                <div className={"upgrade-level"}>
-                    {props.upgradeProps.quantity > 0
-                        ? "Lv." + props.upgradeProps.quantity
-                        : ""}
-                </div>
-                <div className={"upgrade-cost"}>
-                    {(props.upgradeProps.upgradeCost * appState.buyQuantity).toLocaleString()} Embers
-                </div>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <div className={"tooltip-name"}>
+              {props.upgradeProps.upgradeName}
             </div>
-        </HtmlTooltip>
-
+            <div className={"tooltip-description"}>
+              {props.upgradeProps.description}
+            </div>
+            <hr />
+            <div className={"tooltip-values"}>
+              <div>{`Each fire click produces ${props.upgradeProps.EPC} ${props.upgradeProps.EPC > 1 ? "embers" : "ember"}`}</div>
+            </div>
+            <div className={"tooltip-cost"}>
+              Ember cost:{" "}
+              {(
+                props.upgradeProps.upgradeCost * appState.buyQuantity
+              ).toLocaleString()}
+            </div>
+          </React.Fragment>
+        }
+      >
+        <div
+          className={props.classname}
+          onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+            handleUpgradeClick()
+          }
+        >
+          <div className={"upgrade-name"}>{props.upgradeProps.upgradeName}</div>
+          <div className={"upgrade-level"}>
+            {props.upgradeProps.quantity > 0
+              ? "Lv." + props.upgradeProps.quantity
+              : ""}
+          </div>
+          <div className={"upgrade-cost"}>
+            {(
+              props.upgradeProps.upgradeCost * appState.buyQuantity
+            ).toLocaleString()}{" "}
+            Embers
+          </div>
+        </div>
+      </HtmlTooltip>
     );
 }

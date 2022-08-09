@@ -163,7 +163,7 @@ export class GlobalAppState implements IGlobalAppState {
         let updatedUpgrade = Object.assign({}, upgrade);
         updatedUpgrade.quantity += appState.buyQuantity;
         updatedUpgrade.EPC = ((updatedUpgrade.EPC * 2) * appState.buyQuantity);
-        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 2) * appState.buyQuantity;
+        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 1.5) * appState.buyQuantity;
         return updatedUpgrade;
       }
     });
