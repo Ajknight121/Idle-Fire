@@ -28,7 +28,6 @@ const descriptions: string[] = [
  * https://en.wikipedia.org/wiki/Factory_method_pattern
  */
 export class GameUpgradesFactory {
-  constructor() {}
   static getInitialUpgrades(
     appState: IGlobalAppState = {} as IGlobalAppState
   ): IUpgrade[] {
@@ -137,14 +136,14 @@ export class GameUpgradesFactory {
         quantity: 1,
           description: "Each upgrade doubles click power"
       },
-      {
-        unlocked: true,
-        upgradeName: UpgradeNames.clickMultiplier,
-        upgradeCost: 5000,
-        EPC: 1.0,
-        quantity: 0,
-          description: "Each upgrade raises the maximum click multiplier"
-      },
+      // {
+      //   unlocked: true,
+      //   upgradeName: UpgradeNames.clickMultiplier,
+      //   upgradeCost: 5000,
+      //   EPC: 1.0,
+      //   quantity: 0,
+      //     description: "Each upgrade raises the maximum click multiplier"
+      // },
     ];
   }
 }
