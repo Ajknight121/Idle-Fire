@@ -16,6 +16,7 @@ export default function ClickerButton() {
     placeContent: "center",
     height: `${Math.min((appState.embersPerSecond/ 100) + 5, 95)}vh`, //Give it a 3 percent of monitor height first
     // size
+    // TODO use Math.log for fire growth
   };
 
   return (
