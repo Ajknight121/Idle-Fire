@@ -83,7 +83,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.tireDumper,
           upgradeCost: 500000,
-          EPS: 7600,
+          EPS: 17600,
           quantity: 0,
             description: descriptions[5],
         },
