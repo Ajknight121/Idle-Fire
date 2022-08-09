@@ -45,7 +45,7 @@ export class GameUpgradesFactory {
         unlocked: true,
         upgradeName: UpgradeNames.stickThrower,
         upgradeCost: 125,
-        EPS: 5,
+        EPS: 10,
         quantity: 0,
           description: descriptions[1],
       },
@@ -53,7 +53,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.lighterThrower,
           upgradeCost: 1500,
-          EPS: 10,
+          EPS: 80,
           quantity: 0,
             description: descriptions[2],
         },
@@ -63,7 +63,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.logChucker,
           upgradeCost: 25000,
-          EPS: 25,
+          EPS: 400,
           quantity: 0,
             description: descriptions[3],
         },
@@ -73,7 +73,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.gasolineThrower,
           upgradeCost: 300000,
-          EPS: 100,
+          EPS: 1100,
           quantity: 0,
             description: descriptions[4],
         },
@@ -83,7 +83,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.tireDumper,
           upgradeCost: 500000,
-          EPS: 250,
+          EPS: 7600,
           quantity: 0,
             description: descriptions[5],
         },
@@ -93,7 +93,7 @@ export class GameUpgradesFactory {
         {
           upgradeName: UpgradeNames.coalShucker,
           upgradeCost: 1000000,
-          EPS: 400,
+          EPS: 12000,
           quantity: 0,
             description: descriptions[6],
         },
@@ -114,7 +114,7 @@ export class GameUpgradesFactory {
   }
 
   static isUnlocked(u: IUpgrade | Partial<IUpgrade>, e: number): boolean {
-    return (u.upgradeCost ?? 999) * 0.2 <= e || u.unlocked === true;
+    return (u.upgradeCost ?? 999) * 0.15 <= e || u.unlocked === true;
   }
 
   static getEmberBasedUpgrade(
@@ -134,7 +134,8 @@ export class GameUpgradesFactory {
         upgradeName: UpgradeNames.clickPower,
         upgradeCost: 50,
         EPC: 1,
-        quantity: 0,
+        quantity: 1,
+          description: "Each upgrade doubles click power"
       },
       {
         unlocked: true,
@@ -142,6 +143,7 @@ export class GameUpgradesFactory {
         upgradeCost: 5000,
         EPC: 1.0,
         quantity: 0,
+          description: "Each upgrade raises the maximum click multiplier"
       },
     ];
   }
