@@ -62,7 +62,7 @@ body {
   animation-duration: 5s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
-  transition: height ease-out 10s;
+  transition: height ease-out 7s;
 }
 
 .spark {
@@ -71,6 +71,7 @@ body {
   height: auto;
   width: 50px;
   opacity: 5%;
+  pointer-events: none;
 }
 
 .spark > img {
@@ -233,6 +234,11 @@ body {
   background: #bb7202;
   margin: 10px;
   height: 50px;
+}
+
+.upgrades > hr {
+  border: 1px solid black;
+  margin-right: 5px;
 }
 
 .statistics {
