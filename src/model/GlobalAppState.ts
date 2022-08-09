@@ -96,7 +96,7 @@ export class GlobalAppState implements IGlobalAppState {
     const updatedUpgrades =
       GlobalAppState.updateStateUpgrades(updatedEmbersState);
     GlobalAppState.logStateToConsole(updatedUpgrades);
-    console.log("fire 1");
+    // console.log("fire");
     return updatedUpgrades;
   };
 
@@ -163,7 +163,7 @@ export class GlobalAppState implements IGlobalAppState {
         let updatedUpgrade = Object.assign({}, upgrade);
         updatedUpgrade.quantity += appState.buyQuantity;
         updatedUpgrade.EPC = ((updatedUpgrade.EPC * 2) * appState.buyQuantity);
-        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * .25) * appState.buyQuantity;
+        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 2) * appState.buyQuantity;
         return updatedUpgrade;
       }
     });
@@ -171,7 +171,7 @@ export class GlobalAppState implements IGlobalAppState {
       ...appState,
       embers: appState.embers - upgrade.upgradeCost,
       clickUpgrades,
-      clickPower: appState.clickPower + 1, // TODO give the quantity to add as a parameter
+      clickPower: clickUpgrades[0].EPC, // TODO give the quantity to add as a parameter
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;

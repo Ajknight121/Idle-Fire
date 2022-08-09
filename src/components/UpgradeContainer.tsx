@@ -81,6 +81,7 @@ export default function UpgradeContainer() {
             <div className={"click-upgrades"}>
                 {appState.clickUpgrades.map(getClickUpgrades)}
             </div>
+            <hr/>
         {appState.upgrades.map(getUpgradeContent)}
         </div>
       <Statistics />
