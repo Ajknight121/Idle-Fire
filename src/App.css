@@ -39,6 +39,30 @@ body {
 .clicker-button > img {
   height: 100%;
   width: auto;
+  transform-origin: bottom center;
+  animation-name: sway;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.growing-flame-container {
+  display: grid;
+  background: rgb(255, 199, 90);
+  justify-content: center;
+  align-content: flex-end;
+  height: 100vh;
+  padding-bottom: 40px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.growing-flame-container > img {
+  transform-origin: bottom center;
+  animation-name: sway;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  transition: height ease-out 7s;
 }
 
 .spark {
@@ -47,6 +71,7 @@ body {
   height: auto;
   width: 50px;
   opacity: 5%;
+  pointer-events: none;
 }
 
 .spark > img {
@@ -64,6 +89,7 @@ body {
   border-bottom-right-radius: 60px;
   padding-top: 10px;
   box-sizing: border-box;
+  z-index: 9;
 }
 
 .ember-count {
@@ -74,14 +100,8 @@ body {
 
 }
 
-.upgrade-label {
-  font-size: 20px;
-  color: white;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-
 .upgrade-container {
+  position: relative;
   float: left;
   background: brown;
   display: block;
@@ -90,8 +110,30 @@ body {
   overflow: auto;
 }
 
-.upgrade-quantity {
+.upgrade-label {
+  font-size: 20px;
   color: white;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.upgrade-name {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: large;
+}
+
+.upgrade-level {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.upgrade-cost {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
 }
 
 .upgrades {
@@ -148,11 +190,65 @@ body {
   box-shadow: none;
 }
 
-.upgrade-name {
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  font-size: large;
+.click-upgrades {
+  /*margin-right: 5px;*/
+}
+
+.click-upgrade-available {
+  position: relative;
+  display: inline-block;
+  background: #ffa400;
+  height: 50px;
+  width: 170px;
+  margin: 10px;
+  box-shadow: -4px -3px 2px;
+}
+
+.click-upgrade-available:hover {
+  position: relative;
+  left: 1px;
+  top: 1px;
+  background: #fdba0e;
+  height: 50px;
+  box-shadow: -5px -4px 3px;
+  animation-duration: .25s;
+  animation-name: boxHighlight;
+}
+
+.click-upgrade-available:active {
+  position: relative;
+  left: -2px;
+  top: -1px;
+  background: #fdba0e;
+  height: 50px;
+  box-shadow: 0 0 3px;
+}
+
+.click-upgrade-unavailable {
+  position:relative;
+  width: 170px;
+  display: inline-block;
+  left: -2px;
+  top: -2px;
+  background: #bb7202;
+  margin: 10px;
+  height: 50px;
+}
+
+.click-upgrade-unavailable:active {
+  position:relative;
+  width: 170px;
+  display: inline-block;
+  left: -3px;
+  top: -3px;
+  background: #a96801;
+  margin: 10px;
+  height: 50px;
+}
+
+.upgrades > hr {
+  border: 1px solid black;
+  margin-right: 5px;
 }
 
 .statistics {
@@ -169,5 +265,19 @@ body {
 
   to {
     background: #fdba0e;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(-6deg);
+  }
+
+  to {
+    transform: rotate(8deg);
   }
 }
