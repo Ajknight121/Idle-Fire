@@ -23,12 +23,12 @@ export interface IGlobalAppState {
 export class GlobalAppState implements IGlobalAppState {
   time = 0;
   clickPower = 1;
-  embers = 0;
+  embers = 10000000;
   embersPerSecond = 0;
   embersFromFire = 0;
-  totalClicks = 0;
+  totalClicks = 10000000;
   buyQuantity = 1;
-  totalEmbers = 0;
+  totalEmbers = 10000000;
   upgrades = GameUpgradesFactory.getInitialUpgrades()
   clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades()
   //Cursor
