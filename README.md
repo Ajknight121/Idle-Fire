@@ -22,7 +22,18 @@ TODO Bring in the fire icon - display count of embers as in your design - and di
 1. Our global app state should be defined in an interface.
 2. started Upgrade interface - Adrian TODO - think about the two types of upgrades and the opportunity to have a shared interface as well as abstract class shared between the two upgrades
 
+## File breakdown
 
+### GlobalAppState.ts
+
+This file contains the global state for the game. The state is modified by the functions inside.
+
+### Global function structure
+
+1. set params:`appsState:` - Contains the properties
+2. create new `appState`
+   1. spread appState properties and decompose relevant property
+   2. use relevant property in update state function
 
 # Getting Started with Create React App
 
