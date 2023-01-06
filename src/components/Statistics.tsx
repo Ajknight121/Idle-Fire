@@ -1,8 +1,12 @@
 import { useContext } from "react";
 import { AppStateContext } from "../domain/appContext";
+import {AppActionsNames, createActionWithPayload} from "../domain/appActions";
 
 export default function Statistics() {
-  const { appState } = useContext(AppStateContext);
+  const { appState, dispatchAppAction } = useContext(AppStateContext);
+  const clearGame = () => {
+        dispatchAppAction(createActionWithPayload(AppActionsNames.CLEAR_GAME_DATA));
+    }
   return (
     <div className={"statistics"}>
       <div className={"statistics-label"}>Stats</div>
@@ -13,6 +17,7 @@ export default function Statistics() {
       <br />
       Embers from clicking: {appState.embersFromFire.toLocaleString()}
       <br />
+        <button onClick={clearGame}>Reset Game</button>
     </div>
   );
 }
