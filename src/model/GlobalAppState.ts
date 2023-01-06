@@ -2,6 +2,7 @@ import { IAppAction } from "../domain/appActions";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { Logger } from "../utils/logger";
 import {IClickUpgrade, IUpgrade} from "./Upgrade";
+import {gameDataKey} from "../domain/appContext";
 
 export interface IGlobalAppState {
   time: number;
@@ -47,6 +48,20 @@ export class GlobalAppState implements IGlobalAppState {
    *
    * @param appState
    */
+
+  static clearGameData(appState: IGlobalAppState): GlobalAppState {
+    GlobalAppState.clearGameDataInStorage();
+    return new GlobalAppState();
+  }
+
+  static clearGameDataInStorage(): void {
+    localStorage.removeItem(gameDataKey);
+  }
+
+  static saveGameData(appState: IGlobalAppState): void{
+    localStorage.setItem(gameDataKey, JSON.stringify(appState));
+  }
+
   static updateStateUpgrades(appState: IGlobalAppState): IGlobalAppState {
     return {
       ...appState,
@@ -63,6 +78,8 @@ export class GlobalAppState implements IGlobalAppState {
     };
     const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
     GlobalAppState.logStateToConsole(finalState);
+    //Extract once redux side effect is implemented
+    GlobalAppState.saveGameData(appState);
     return finalState;
   }
 

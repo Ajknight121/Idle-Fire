@@ -1,9 +1,13 @@
 import React, { createContext, useReducer } from "react";
-import { GlobalAppState } from "../model/GlobalAppState";
+import {GlobalAppState, IGlobalAppState} from "../model/GlobalAppState";
 import { IAppAction } from "./appActions";
 import { AppReducer } from "./appReducer";
 
-const initialAppState = new GlobalAppState();
+export const gameDataKey = 'gameData';
+//TO DO implement service for all localStorage actions (separate file, could be by api/web request).
+const storedState: IGlobalAppState = JSON.parse(localStorage.getItem(gameDataKey) ?? '{}');
+
+const initialAppState = (Object.keys(storedState).length) ? storedState : new GlobalAppState();
 
 export type GlobalContext = {
   appState: GlobalAppState;

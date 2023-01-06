@@ -2,6 +2,8 @@ import { GlobalAppState } from "../model/GlobalAppState";
 
 export enum AppActionsNames {
   GAME_LOOP_TICK = "GAME_LOOP_TICK",
+  CLEAR_GAME_DATA = "CLEAR_GAME_DATA",
+
 
   FIRE_CLICK = "FIRE_CLICK",
   MOUSE_MOVE = "MOUSE_MOVE",
@@ -26,6 +28,7 @@ export interface IAppAction {
 
 export const ActionToFuncMap: Record<AppActionsNames, Function> = {
   [AppActionsNames.GAME_LOOP_TICK]: GlobalAppState.addEmbersPerSecondOnTick,
+  [AppActionsNames.CLEAR_GAME_DATA]: GlobalAppState.clearGameData,
 
   //User Cursor Actions
   [AppActionsNames.FIRE_CLICK]: GlobalAppState.handleUserFireClick,
