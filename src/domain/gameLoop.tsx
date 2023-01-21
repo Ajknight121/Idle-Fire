@@ -11,12 +11,13 @@ export default function GameLoop() {
 
   // console.log("Game Loop Started");
 
-  const dispatchMousemove = (event: MouseEvent) => {
-    dispatchAppAction(
-      createActionWithPayload(AppActionsNames.MOUSE_MOVE, event)
-    );
-  };
+
   useEffect(() => {
+    const dispatchMousemove = (event: MouseEvent) => {
+      dispatchAppAction(
+          createActionWithPayload(AppActionsNames.MOUSE_MOVE, event)
+      );
+    };
     console.log("use effect");
 
     // Begin capturing cursor movement
@@ -34,7 +35,7 @@ export default function GameLoop() {
       clearInterval(interval);
       document.removeEventListener("mousemove", dispatchMousemove);
     };
-  }, []);
+  }, [dispatchAppAction]);
   return (
     <>
       {/*<Header />*/}
