@@ -4,6 +4,7 @@ import { AppStateContext } from "../domain/appContext";
 import {IClickUpgrade} from "../model/Upgrade";
 import {styled} from "@mui/material/styles";
 import Tooltip, {tooltipClasses, TooltipProps} from "@mui/material/Tooltip";
+import {UpgradeNames} from "../domain/gameUpgrades";
 
 export interface UpgradeComponentProps {
     upgradeProps: IClickUpgrade;
@@ -32,15 +33,42 @@ export default function ClickPowerUpgrade(props: UpgradeComponentProps) {
         ) {
             return;
         } else {
-            dispatchAppAction(
-                createActionWithPayload(
-                    AppActionsNames.CLICK_PURCHASE,
-                    props.upgradeProps
-                )
-            );
+            switch (props.upgradeProps.upgradeName) {
+                case UpgradeNames.clickPower:
+                    dispatchAppAction(
+                        createActionWithPayload(
+                            AppActionsNames.CLICK_PURCHASE,
+                            props.upgradeProps
+                        )
+                    );
+                    break;
+                case UpgradeNames.globalMultiplier:
+                    dispatchAppAction(
+                        createActionWithPayload(
+                            AppActionsNames.GLOBAL_MULTIPLIER_PURCHASE,
+                            props.upgradeProps
+                        )
+                    );
+                    break;
+            }
+
         }
     };
-
+    let Description;
+    switch (props.upgradeProps.upgradeName) {
+        case UpgradeNames.clickPower:
+            Description = (
+                <div className={"tooltip-values"}>
+                    <div>{`Each fire click produces ${props.upgradeProps.EPC} ${props.upgradeProps.EPC > 1 ? "embers" : "ember"}`}</div>
+                </div>)
+            break;
+        case UpgradeNames.globalMultiplier:
+            Description = (
+                <div className={"tooltip-values"}>
+                    <div>{`Current multiplier: x${props.upgradeProps.EPC}`}</div>
+                </div>)
+            break;
+    }
     return (
       <HtmlTooltip
         title={
@@ -52,9 +80,7 @@ export default function ClickPowerUpgrade(props: UpgradeComponentProps) {
               {props.upgradeProps.description}
             </div>
             <hr />
-            <div className={"tooltip-values"}>
-              <div>{`Each fire click produces ${props.upgradeProps.EPC} ${props.upgradeProps.EPC > 1 ? "embers" : "ember"}`}</div>
-            </div>
+              {Description}
             <div className={"tooltip-cost"}>
               Ember cost:{" "}
               {(

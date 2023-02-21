@@ -8,9 +8,10 @@ export enum AppActionsNames {
   FIRE_CLICK = "FIRE_CLICK",
   MOUSE_MOVE = "MOUSE_MOVE",
 
-  MULTIPLIER_CHANGE = "MULTIPLIER_CHANGE",
+  QUANTITY_CHANGE = "QUANTITY_CHANGE",
   UPGRADE_PURCHASE = "UPGRADE_PURCHASE",
-  CLICK_PURCHASE = "CLICK_PURCHASE"
+  CLICK_PURCHASE = "CLICK_PURCHASE",
+  GLOBAL_MULTIPLIER_PURCHASE = "GLOBAL_MULTIPLIER_PURCHASE",
 }
 /** Utility function to dispatch actions with an optional payload with a passed type */
 export const createActionWithPayload = <T>(
@@ -36,6 +37,7 @@ export const ActionToFuncMap: Record<AppActionsNames, Function> = {
 
   //User Left Menu Interactions
   [AppActionsNames.UPGRADE_PURCHASE]: GlobalAppState.buyUpgrade,
-  [AppActionsNames.MULTIPLIER_CHANGE]: GlobalAppState.updateBuyQuantity,
+  [AppActionsNames.QUANTITY_CHANGE]: GlobalAppState.updateBuyQuantity,
   [AppActionsNames.CLICK_PURCHASE]: GlobalAppState.upgradeEmbersPerClick,
+  [AppActionsNames.GLOBAL_MULTIPLIER_PURCHASE]: GlobalAppState.upgradeGlobalMultiplier,
 };

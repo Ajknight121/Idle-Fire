@@ -3,6 +3,7 @@ import { IGlobalAppState } from "../model/GlobalAppState";
 
 export enum UpgradeNames {
   clickPower = "Click Power",
+  globalMultiplier = "Global Multiplier",
   clickMultiplier = "Click Multiplier",
   grassPlucker = "Grass Plucker",
   stickThrower = "Stick Thrower",
@@ -134,8 +135,17 @@ export class GameUpgradesFactory {
         upgradeCost: 50,
         EPC: 1,
         quantity: 1,
-          description: "Each upgrade doubles click power"
+        description: "Each upgrade doubles click power"
       },
+        {
+            unlocked: true,
+            upgradeName: UpgradeNames.globalMultiplier,
+            upgradeCost: 150,
+            EPC: 1,
+            quantity: 1,
+            description: "Multiplies ember gain from all sources!"
+
+        }
       // {
       //   unlocked: true,
       //   upgradeName: UpgradeNames.clickMultiplier,
