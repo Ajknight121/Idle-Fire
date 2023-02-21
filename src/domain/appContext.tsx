@@ -8,17 +8,17 @@ export const gameDataKey = 'gameData';
 const storedState: IGlobalAppState = JSON.parse(localStorage.getItem(gameDataKey) ?? '{}');
 
 const initialAppState = (Object.keys(storedState).length) ? storedState : new GlobalAppState();
-
+const sessionStartTimes = [...initialAppState.sessionStartTimes, new Date().valueOf()]
 export type GlobalContext = {
   appState: GlobalAppState;
   dispatchAppAction: React.Dispatch<IAppAction>;
 };
 
 export const AppStateContext = createContext<GlobalContext>({
-  appState: initialAppState,
+  appState: {...initialAppState, sessionStartTimes},
   dispatchAppAction: () => {},
 });
-
+console.log(sessionStartTimes)
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
   const [appState, dispatch] = useReducer(AppReducer, initialAppState);
   return (
