@@ -12,6 +12,7 @@ export enum AppActionsNames {
   UPGRADE_PURCHASE = "UPGRADE_PURCHASE",
   CLICK_PURCHASE = "CLICK_PURCHASE",
   GLOBAL_MULTIPLIER_PURCHASE = "GLOBAL_MULTIPLIER_PURCHASE",
+  TOGGLE_FIREMAN = "TOGGLE_FIREMAN"
 }
 /** Utility function to dispatch actions with an optional payload with a passed type */
 export const createActionWithPayload = <T>(
@@ -40,4 +41,5 @@ export const ActionToFuncMap: Record<AppActionsNames, Function> = {
   [AppActionsNames.QUANTITY_CHANGE]: GlobalAppState.updateBuyQuantity,
   [AppActionsNames.CLICK_PURCHASE]: GlobalAppState.upgradeEmbersPerClick,
   [AppActionsNames.GLOBAL_MULTIPLIER_PURCHASE]: GlobalAppState.upgradeGlobalMultiplier,
+  [AppActionsNames.TOGGLE_FIREMAN]: GlobalAppState.toggleFireman
 };

@@ -17,3 +17,10 @@ export interface IClickUpgrade {
   quantity: number; // Number of times upgrade is purchased
   description?: string;
 }
+
+export interface IEvent {
+  classname?: string;
+  unlocked: boolean;
+  eventName: string;
+  isActive: boolean;
+}

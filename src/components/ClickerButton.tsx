@@ -3,6 +3,7 @@ import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
 import SparkClickAnimation from "./CanvasControl";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
+import FireMarshal from "./FireMarshal";
 
 export default function ClickerButton() {
   const { appState, dispatchAppAction } = useContext(AppStateContext);
@@ -36,6 +37,7 @@ export default function ClickerButton() {
             draggable="false"
           />
         </div>
+        <FireMarshal />
         <SparkClickAnimation />
         {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>

@@ -1,8 +1,9 @@
 import { IAppAction } from "../domain/appActions";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { Logger } from "../utils/logger";
-import {IClickUpgrade, IUpgrade} from "./Upgrade";
+import {IClickUpgrade, IEvent, IUpgrade} from "./Upgrade";
 import {gameDataKey} from "../domain/appContext";
+import app from "../App";
 
 export interface IGlobalAppState {
   time: number;
@@ -19,9 +20,12 @@ export interface IGlobalAppState {
   currCursorX: number;
   currCursorY: number;
   displayAnimationForClick: boolean;
+  //Multipliers
   clickMultiplier: number;
   tickMultiplier: number;
   globalMultiplier: number;
+  //Events
+  FireMarshal: IEvent;
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -39,9 +43,12 @@ export class GlobalAppState implements IGlobalAppState {
   currCursorX = 0;
   currCursorY = 0;
   displayAnimationForClick = false;
+  //Multiplier
   clickMultiplier = 1;
   tickMultiplier = 1;
   globalMultiplier = 1;
+  //Events
+  FireMarshal = {unlocked: true, eventName: "Fireman", isActive: false}
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
@@ -77,6 +84,12 @@ export class GlobalAppState implements IGlobalAppState {
     };
   }
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
+    //Event activation
+    console.log(appState.totalEmbers % 100);
+    if (appState.totalEmbers % 100 > 40) {
+      console.log("TOGGLE FIREMAN");
+      GlobalAppState.toggleFireman(appState, true);
+    }
     const updatedEmbers: IGlobalAppState = {
       ...appState,
       embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier),
@@ -245,6 +258,22 @@ export class GlobalAppState implements IGlobalAppState {
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
+  }
+
+  static toggleFireman(
+      appstate: GlobalAppState,
+      payload: boolean
+  ): IGlobalAppState {
+    console.log("toggling fireman")
+    const newFireman = {
+      ...appstate.FireMarshal,
+      isActive: payload
+    }
+    const newState: IGlobalAppState = {
+      ...appstate,
+      FireMarshal: newFireman
+    }
+    return newState
   }
 
   /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
