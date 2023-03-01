@@ -282,3 +282,7 @@ body {
     transform: rotate(8deg);
   }
 }
+
+#spark {
+  animation: sway 2s;
+}

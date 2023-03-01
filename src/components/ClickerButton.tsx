@@ -20,6 +20,8 @@ export default function ClickerButton() {
     // TODO use Math.log for fire growth
   };
 
+  let sparks = appState.sparks;
+
   return (
     <div className={"clicker-area"}>
       <div className={"counters"}>
@@ -39,6 +41,7 @@ export default function ClickerButton() {
         </div>
         <FireMarshal />
         <SparkClickAnimation />
+        <div>{sparks}</div>
         {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>
     </div>
