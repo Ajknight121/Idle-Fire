@@ -3,8 +3,6 @@ import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { Logger } from "../utils/logger";
 import {IClickUpgrade, IEvent, IUpgrade} from "./Upgrade";
 import {gameDataKey} from "../domain/appContext";
-import app from "../App";
-import Confetti from "../components/svgFire";
 
 export interface IGlobalAppState {
   time: number;
@@ -21,14 +19,14 @@ export interface IGlobalAppState {
   currCursorX: number;
   currCursorY: number;
   displayAnimationForClick: boolean;
-  // SVG
-  sparks: JSX.Element[];
   //Multipliers
   clickMultiplier: number;
   tickMultiplier: number;
   globalMultiplier: number;
   //Events
   FireMarshal: IEvent;
+  //SVG
+  showConfetti: boolean;
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -46,14 +44,14 @@ export class GlobalAppState implements IGlobalAppState {
   currCursorX = 0;
   currCursorY = 0;
   displayAnimationForClick = false;
-  // SVG
-  sparks = [Confetti(0,0)];
   //Multiplier
   clickMultiplier = 1;
   tickMultiplier = 1;
   globalMultiplier = 1;
   //Events
   FireMarshal = {unlocked: true, eventName: "Fireman", isActive: false}
+  //SVG
+  showConfetti = false;
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
@@ -122,7 +120,6 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every time you click the fire, you earn a number of embers based on your click power and we increment the global
    *  count of total clicks for the app game session. */
   static handleUserFireClick = (appState: IGlobalAppState): IGlobalAppState => {
-    const spark = Confetti(appState.currCursorX, appState.currCursorY);
     const { embers, clickPower, totalClicks, totalEmbers, embersFromFire } = appState;
     const updatedEmbersState: IGlobalAppState = {
       ...appState,
@@ -130,7 +127,6 @@ export class GlobalAppState implements IGlobalAppState {
       totalEmbers: totalEmbers + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       totalClicks: totalClicks + 1,
       embersFromFire: embersFromFire + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
-      sparks: [...appState.sparks, spark],
       //We'll reset this based on a constant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
       displayAnimationForClick: true,
     };
