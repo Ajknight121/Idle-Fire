@@ -282,3 +282,19 @@ body {
     transform: rotate(8deg);
   }
 }
+
+#spark {
+  animation: sway 2s;
+}
+
+/* Fire css styles */
+.st0 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #ec6f59;
+}
+.st1 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #fad15c;
+}

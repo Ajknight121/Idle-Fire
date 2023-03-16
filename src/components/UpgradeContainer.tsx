@@ -42,7 +42,7 @@ export default function UpgradeContainer() {
     buyQuantity: number
   ): void => {
     dispatchAppAction(
-      createActionWithPayload(AppActionsNames.MULTIPLIER_CHANGE, buyQuantity)
+      createActionWithPayload(AppActionsNames.QUANTITY_CHANGE, buyQuantity)
     );
   };
 

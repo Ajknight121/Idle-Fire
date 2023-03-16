@@ -3,11 +3,15 @@ import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
 import SparkClickAnimation from "./CanvasControl";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
+import FireMarshal from "./FireMarshal";
+import Confetti from "./svgFire";
+import Fire from "../images/fire.svg"
 
 export default function ClickerButton() {
   const { appState, dispatchAppAction } = useContext(AppStateContext);
   const handleClick = () => {
     dispatchAppAction(createActionWithPayload(AppActionsNames.FIRE_CLICK));
+    // spark = Confetti(appState.currCursorX, appState.currCursorY);
   };
 
   /** Use app start to grow the image */
@@ -18,7 +22,7 @@ export default function ClickerButton() {
     // size
     // TODO use Math.log for fire growth
   };
-
+  // let spark = <div></div>;
   return (
     <div className={"clicker-area"}>
       <div className={"counters"}>
@@ -36,7 +40,10 @@ export default function ClickerButton() {
             draggable="false"
           />
         </div>
-        <SparkClickAnimation />
+        <FireMarshal />
+        <svg path={Fire}></svg>
+
+        {/*<div>{spark}</div>*/}
         {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>
     </div>
