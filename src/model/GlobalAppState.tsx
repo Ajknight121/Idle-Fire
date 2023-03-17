@@ -1,8 +1,8 @@
 import { IAppAction } from "../domain/appActions";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
 import { Logger } from "../utils/logger";
-import {IClickUpgrade, IEvent, IUpgrade} from "./Upgrade";
-import {gameDataKey} from "../domain/appContext";
+import { IClickUpgrade, IEvent, IUpgrade } from "./Upgrade";
+import { gameDataKey } from "../domain/appContext";
 
 export interface IGlobalAppState {
   time: number;
@@ -25,8 +25,6 @@ export interface IGlobalAppState {
   globalMultiplier: number;
   //Events
   FireMarshal: IEvent;
-  //SVG
-  showConfetti: boolean;
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -49,9 +47,7 @@ export class GlobalAppState implements IGlobalAppState {
   tickMultiplier = 1;
   globalMultiplier = 1;
   //Events
-  FireMarshal = {unlocked: true, eventName: "Fireman", isActive: false}
-  //SVG
-  showConfetti = false;
+  FireMarshal = { unlocked: true, eventName: "Fireman", isActive: false }
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
@@ -74,7 +70,7 @@ export class GlobalAppState implements IGlobalAppState {
     localStorage.removeItem(gameDataKey);
   }
 
-  static saveGameData(appState: IGlobalAppState): void{
+  static saveGameData(appState: IGlobalAppState): void {
     localStorage.setItem(gameDataKey, JSON.stringify(appState));
   }
 
@@ -90,7 +86,7 @@ export class GlobalAppState implements IGlobalAppState {
     //Event activation
     // console.log(appState.totalEmbers % 100);
     if (appState.totalEmbers % 100 > 40) {
-      console.log("TOGGLE FIREMAN");
+      // console.log("TOGGLE FIREMAN");
       GlobalAppState.toggleFireman(appState, true);
     }
     const updatedEmbers: IGlobalAppState = {
@@ -128,11 +124,10 @@ export class GlobalAppState implements IGlobalAppState {
       totalClicks: totalClicks + 1,
       embersFromFire: embersFromFire + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       //We'll reset this based on a constant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
-      displayAnimationForClick: true,
+      displayAnimationForClick: true
     };
-    const updatedUpgrades =
-      GlobalAppState.updateStateUpgrades(updatedEmbersState);
-      GlobalAppState.logStateToConsole(updatedUpgrades);
+    const updatedUpgrades = GlobalAppState.updateStateUpgrades(updatedEmbersState);
+    GlobalAppState.logStateToConsole(updatedUpgrades);
     return updatedUpgrades;
   };
 
@@ -140,7 +135,7 @@ export class GlobalAppState implements IGlobalAppState {
   static resetClickAnimationToHidden(appState: IGlobalAppState) {
     return {
       ...appState,
-      displayAnimationForClick: false,
+      displayAnimationForClick: false
     };
   }
 
@@ -188,8 +183,8 @@ export class GlobalAppState implements IGlobalAppState {
 
   /** Every time you buy something we need to deduct your embers. */
   static upgradeEmbersPerClick = (
-      appState: GlobalAppState,
-      upgrade: IClickUpgrade
+    appState: GlobalAppState,
+    upgrade: IClickUpgrade
   ): IGlobalAppState => {
     const clickUpgrades = appState.clickUpgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
@@ -212,8 +207,8 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   }
   static upgradeGlobalMultiplier = (
-      appState: IGlobalAppState,
-      upgrade: IClickUpgrade
+    appState: IGlobalAppState,
+    upgrade: IClickUpgrade
   ): IGlobalAppState => {
     const clickUpgrades = appState.clickUpgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
@@ -263,10 +258,10 @@ export class GlobalAppState implements IGlobalAppState {
   }
 
   static toggleFireman(
-      appstate: GlobalAppState,
-      payload: boolean
+    appstate: GlobalAppState,
+    payload: boolean
   ): IGlobalAppState {
-    console.log("toggling fireman")
+    // console.log("toggling fireman")
     const newFireman = {
       ...appstate.FireMarshal,
       isActive: payload
@@ -287,6 +282,6 @@ export class GlobalAppState implements IGlobalAppState {
       ...appState,
       currCursorX: event.clientX,
       currCursorY: event.clientY,
-    };
+    }
   }
 }

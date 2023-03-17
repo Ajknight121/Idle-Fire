@@ -298,3 +298,7 @@ body {
   clip-rule: evenodd;
   fill: #fad15c;
 }
+#confetti{
+  position: absolute;
+  top: 0;
+}

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import ClickerButton from "../components/ClickerButton";
 import UpgradeContainer from "../components/UpgradeContainer";
 import { AppActionsNames, createActionWithPayload } from "./appActions";

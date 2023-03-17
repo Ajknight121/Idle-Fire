@@ -1,15 +1,17 @@
-import { CSSProperties, useContext } from "react";
+import { CSSProperties, useContext, useEffect, useRef } from "react";
 import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
 import SparkClickAnimation from "./CanvasControl";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
 import FireMarshal from "./FireMarshal";
-import Confetti from "./svgFire";
 import Fire from "../images/fire.svg"
 
 export default function ClickerButton() {
-  const { appState, dispatchAppAction } = useContext(AppStateContext);
+  const { appState, dispatchAppAction, confettiFn } = useContext(AppStateContext);
+
   const handleClick = () => {
+    console.log(`handle click`)
+    confettiFn(appState.currCursorX, appState.currCursorY)
     dispatchAppAction(createActionWithPayload(AppActionsNames.FIRE_CLICK));
     // spark = Confetti(appState.currCursorX, appState.currCursorY);
   };
@@ -18,7 +20,7 @@ export default function ClickerButton() {
   const flameImageStyle: CSSProperties = {
     display: "grid",
     placeContent: "center",
-    height: `${Math.min((appState.embersPerSecond/ 100) + 5, 95)}vh`, //Give it a 3 percent of monitor height first
+    height: `${Math.min((appState.embersPerSecond / 100) + 5, 95)}vh`, //Give it a 3 percent of monitor height first
     // size
     // TODO use Math.log for fire growth
   };

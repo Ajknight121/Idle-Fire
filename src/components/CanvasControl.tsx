@@ -1,33 +1,72 @@
-import { CSSProperties, useContext } from "react";
-import { AppStateContext } from "../domain/appContext";
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 
-import flame from "../images/flame.png";
+import ReactDOM from "react-dom";
 import Confetti from "./svgFire";
+import { createRoot } from "react-dom/client";
 
-export default function SparkClickAnimation() {
-  // const { appState } = useContext(AppStateContext);
+export default function SparkClickAnimation(): Function {
+  // const { appState: {currCursorX, currCursorY, showConfetti} } = useContext(AppStateContext);
+  // console.log(`SparkClickAnimation`)
+  // console.log(showConfetti)
+
+  const rootSelector: HTMLElement = document.getElementById("confetti") as HTMLElement
+  // if(!showConfetti){
+  //   return null
+  // }
+  const [elements, setElements] = useState([]);
+  const containerRef = useRef(null);
 
   const containerSize = 60;
-  const cssInJs: CSSProperties = {
+  const cssInJs = (x: number, y: number): CSSProperties => ({
     // top: appState.currCursorY - 70, //minus 15 for center of cursor
     // left: appState.currCursorX - 400 - 15, //400 for upgrade container // 15
-    top: 300,
-    left: 300,
+    top: y - containerSize,
+    left: x - containerSize,
     height: `${containerSize}px`,
     width: `${containerSize}px`,
-    display: `${true ? "block" : "none"}`,
+    // display: `${true ? "block" : "none"}`,
     position: "absolute",
     // opacity: `${(appState.embersPerSecond + 1) * 2}%`,
+  });
+  useEffect(() => {
+    if (elements.length > 0) {
+      const lastElement: any = elements[elements.length - 1];
+      const timeoutId = setTimeout(() => {
+        setElements(prevElements => prevElements.filter((el: any) => el.id !== lastElement.id));
+        rootSelector.removeChild(lastElement.element)
+      }, 300);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [elements]);
+
+
+
+  const getConfetti = (x: number, y: number) => <div style={cssInJs(x, y)}>
+    {Confetti(x, y)}
+  </div>
+
+  const addElement = (x: number, y: number) => {
+
+    const el = document.createElement("div");
+    const id = Date.now();
+
+    setTimeout(() => {
+      console.log(`Calling timeout on el ${id}`)
+      el.style.opacity = "0"
+      el.style.transition = `1000ms`
+    }, 1000);
+
+    rootSelector?.appendChild(el)
+    const reactRoot = createRoot(el)
+    reactRoot.render(getConfetti(x, y))
+    setElements(prevElements => [...prevElements, { id, element: el }] as any);
   };
 
-  const svgElement = Confetti(300,300);
-
-  return (
-      <div style={cssInJs}>
-        {svgElement}
-      </div>
-    // <div style={cssInJs} className={"spark"}>
-    //   {/*<img src={flame} alt={"spark"} draggable="false" />*/}
-    // </div>
-  );
+  return (x: number, y: number) => {
+    console.log(`${x}, ${y}`)
+    addElement(x, y)
+  }
 }
