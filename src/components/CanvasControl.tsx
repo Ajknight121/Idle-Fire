@@ -1,6 +1,5 @@
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 
-import ReactDOM from "react-dom";
 import Confetti from "./svgFire";
 import { createRoot } from "react-dom/client";
 
@@ -20,8 +19,8 @@ export default function SparkClickAnimation(): Function {
   const cssInJs = (x: number, y: number): CSSProperties => ({
     // top: appState.currCursorY - 70, //minus 15 for center of cursor
     // left: appState.currCursorX - 400 - 15, //400 for upgrade container // 15
-    top: y - containerSize,
-    left: x - containerSize,
+    top: y + 10,
+    left: x - 100,
     height: `${containerSize}px`,
     width: `${containerSize}px`,
     // display: `${true ? "block" : "none"}`,
@@ -34,7 +33,7 @@ export default function SparkClickAnimation(): Function {
       const timeoutId = setTimeout(() => {
         setElements(prevElements => prevElements.filter((el: any) => el.id !== lastElement.id));
         rootSelector.removeChild(lastElement.element)
-      }, 300);
+      }, 600);
 
       return () => {
         clearTimeout(timeoutId);
@@ -56,8 +55,8 @@ export default function SparkClickAnimation(): Function {
     setTimeout(() => {
       console.log(`Calling timeout on el ${id}`)
       el.style.opacity = "0"
-      el.style.transition = `1000ms`
-    }, 1000);
+      el.style.transition = `500ms`
+    }, 100);
 
     rootSelector?.appendChild(el)
     const reactRoot = createRoot(el)

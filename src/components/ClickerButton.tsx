@@ -1,10 +1,8 @@
 import { CSSProperties, useContext, useEffect, useRef } from "react";
 import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
-import SparkClickAnimation from "./CanvasControl";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
 import FireMarshal from "./FireMarshal";
-import Fire from "../images/fire.svg"
 
 export default function ClickerButton() {
   const { appState, dispatchAppAction, confettiFn } = useContext(AppStateContext);
@@ -43,9 +41,6 @@ export default function ClickerButton() {
           />
         </div>
         <FireMarshal />
-        <svg path={Fire}></svg>
-
-        {/*<div>{spark}</div>*/}
         {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>
     </div>
