@@ -1,5 +1,5 @@
 import fireIMG from "../images/fire.svg";
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties } from "react";
 
 export default function Confetti(cursorX: number, cursorY: number) {
     const randInt = (min: number, max: number) => {
@@ -84,14 +84,10 @@ export default function Confetti(cursorX: number, cursorY: number) {
         </g>
     }
 
-
-
-
     // make sure number of flakes is a number
     if (!c.flakes || Number.isNaN(c.flakes * 1)) {
         c.flakes = 100;
     }
-    //   console.log(animatedConfetti);
 
     const centerY: number = cursorY;
     const centerX: number = cursorX;
@@ -107,59 +103,27 @@ export default function Confetti(cursorX: number, cursorY: number) {
     }
     let overlayId: string = `conf${randInt(0, 1000)}etti${randInt(0, 1000)}ver${randInt(0, 1000)}lay`;
 
-    //Make it a node to avoid the dangerous "document.body.innerHTML = svg"
-    // let wrapper = document.createElement("div");
-    //
-    // wrapper.innerHTML = svg;
-    // let doc = wrapper.firstChild;
-    //
-    // document.body.appendChild(doc);
     const sizeReduction = .2
     style = {
         height: `${window.innerHeight * sizeReduction}px`,
-        width: `${window.innerWidth * sizeReduction}px`,
+        width: `${window.innerWidth * (sizeReduction * .7)}px`,
+        left: `${-(window.innerWidth * sizeReduction) / 3}px`,
+        position: "absolute",
+        overflow: "hidden",
+        // height: `${100}px`,
+        // width: `${50}px`,
     }
     let svgDiv = <div style={style}>
-        <svg id={overlayId} viewBox={`0 0 ${ww} ${hh}`} preserveAspectRatio={"xMaxYMax"} style={style}>
+        <svg id={overlayId} viewBox={`0 0 ${ww} ${hh}`} preserveAspectRatio={"xMaxYMax"}>
             <filter id="blur1" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="0" />
             </filter>
             <filter id="blur2" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
             </filter>
-            <path id="motionPath1" fill="none" stroke="none" d={`M ${ww * 0.5} -${hh * 0} Q ${ww * 0.3} ${hh * 0.25} ${ww * 0.5} ${hh * 0.5} Q ${ww * 0.7} ${hh * 0.75} ${ww * 0.5} ${hh * 1.1}`} />
-            <path id="motionPath2" fill="none" stroke="none" d={`M ${ww * 0.5} -${hh * 0} Q ${ww * 0.7} ${hh * 0.25} ${ww * 0.5} ${hh * 0.5} Q ${ww * 0.3} ${hh * 0.75} ${ww * 0.5} ${hh * 1.1}`} />
+            <path id="motionPath1" fill="none" stroke="none" d={`M ${ww * 0.5} -${0} Q ${ww * 0.3} ${hh * 0.25} ${ww * 0.5} ${hh * 0.5} Q ${ww * 0.7} ${hh * 0.75} ${ww * 0.5} ${hh * 1.1}`} />
+            <path id="motionPath2" fill="none" stroke="none" d={`M ${ww * 0.5} -${0} Q ${ww * 0.7} ${hh * 0.25} ${ww * 0.5} ${hh * 0.5} Q ${ww * 0.3} ${hh * 0.75} ${ww * 0.5} ${hh * 1.1}`} />
             {new Array(c.flakes).fill(0).map((_, i: number) => returnSpark(i))}
         </svg></div>;
-
-    // //make it the height and width
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         let cssProp: CSSProperties = {
-    //
-    //         }
-    //         svgDiv.props.style = cssProp;
-    //         console.log("timer");
-    //     }, c.delay);
-    // }, []);
-    // are we fading the confetti out?
-    // if (c.fadeout) {
-    //     setTimeout(() => {
-    //         svgDiv.type.style = {
-    //             ...svgDiv.type.style,
-    //             opacity: 0,
-    //             transition:`${c.speed / 4}ms`
-    //         }
-    //     }, c.speed / 4);
-    // }
-    //
-
-    // setTimeout(() => {
-    //     const element = document.getElementById(overlayId);
-    //     element?.remove();
-    // }, c.speed);
-
-    // console.log(svgDiv);
     return (svgDiv)
 }

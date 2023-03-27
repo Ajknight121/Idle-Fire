@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 
 import Confetti from "./svgFire";
 import { createRoot } from "react-dom/client";
@@ -13,16 +13,14 @@ export default function SparkClickAnimation(): Function {
   //   return null
   // }
   const [elements, setElements] = useState([]);
-  const containerRef = useRef(null);
 
-  const containerSize = 60;
   const cssInJs = (x: number, y: number): CSSProperties => ({
     // top: appState.currCursorY - 70, //minus 15 for center of cursor
     // left: appState.currCursorX - 400 - 15, //400 for upgrade container // 15
     top: y + 10,
-    left: x - 100,
-    height: `${containerSize}px`,
-    width: `${containerSize}px`,
+    left: x,
+    // height: `${containerSize}px`,
+    // width: `${containerSize}px`,
     // display: `${true ? "block" : "none"}`,
     position: "absolute",
     // opacity: `${(appState.embersPerSecond + 1) * 2}%`,
