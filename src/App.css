@@ -21,6 +21,11 @@ body {
   overflow: hidden;
 }
 
+
+.EmbersByClickSec {
+  display: inline-block;
+}
+
 .clicker-area {
   float: none;
   background: aqua;
@@ -98,7 +103,8 @@ body {
 }
 
 .ember-per-second {
-
+  display: inline-block;
+  padding-right: 10px;
 }
 
 .upgrade-container {

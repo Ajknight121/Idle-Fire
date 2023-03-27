@@ -9,7 +9,7 @@ export const gameDataKey = 'gameData';
 const storedState: IGlobalAppState = JSON.parse(localStorage.getItem(gameDataKey) ?? '{}');
 
 const initialAppState = (Object.keys(storedState).length) ? storedState : new GlobalAppState();
-
+const sessionStartTimes = [...initialAppState.sessionStartTimes, new Date().valueOf()]
 export type GlobalContext = {
   appState: GlobalAppState;
   dispatchAppAction: React.Dispatch<IAppAction>;
@@ -17,23 +17,12 @@ export type GlobalContext = {
 };
 
 export const AppStateContext = createContext<GlobalContext>({
-  appState: initialAppState,
+  appState: {...initialAppState, sessionStartTimes},
   dispatchAppAction: () => { },
   confettiFn: () => { }
 });
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
-  // const confettiFunctionSetup = useRef(false);
-  // // let confettiFn = () => { }
-  // // //Here to work around bug in react where app renders twice in strict mode
-  // // useEffect(() => {
-  // //   if (confettiFunctionSetup.current) {
-  // //     return;
-  // //   }
-  // //   confettiFn = SparkClickAnimation() as any
-  // //   // But only once, reason: see
-  // //   confettiFunctionSetup.current = true;
-  // // }, []);
   const [appState, dispatch] = useReducer(AppReducer, initialAppState);
   return (
     <AppStateContext.Provider value={{ appState, dispatchAppAction: dispatch, confettiFn: SparkClickAnimation() }}>

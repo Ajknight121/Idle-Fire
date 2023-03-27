@@ -30,6 +30,10 @@ export default function ClickerButton() {
         <div className={"ember-per-second"}>
           Embers per sec: {appState.embersPerSecond.toLocaleString()}
         </div>
+        <div className={"EmbersByClickSec"}>
+          Embers by click: {appState.gameAnalytics.clicksLastSecond * appState.clickPower}/s
+        </div>
+
       </div>
       <div className="clicker-button" onClick={() => handleClick()}>
         <div className="growing-flame-container">
