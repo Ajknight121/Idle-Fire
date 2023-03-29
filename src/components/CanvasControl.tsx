@@ -2,12 +2,13 @@ import { CSSProperties, useEffect, useState } from "react";
 
 import Confetti from "./svgFire";
 import { createRoot } from "react-dom/client";
+import exp from "constants";
 
 export default function SparkClickAnimation(): Function {
   // const { appState: {currCursorX, currCursorY, showConfetti} } = useContext(AppStateContext);
   // console.log(`SparkClickAnimation`)
   // console.log(showConfetti)
-
+  const FILTER_TIME:number = 600;
   const rootSelector: HTMLElement = document.getElementById("confetti") as HTMLElement
   // if(!showConfetti){
   //   return null
@@ -27,11 +28,15 @@ export default function SparkClickAnimation(): Function {
   });
   useEffect(() => {
     if (elements.length > 0) {
-      const lastElement: any = elements[elements.length - 1];
+      const now = Date.now();
+      let expired = elements.filter((el:any) => now - el.id > FILTER_TIME).length;
       const timeoutId = setTimeout(() => {
-        setElements(prevElements => prevElements.filter((el: any) => el.id !== lastElement.id));
-        rootSelector.removeChild(lastElement.element)
-      }, 600);
+        setElements(prevElements => prevElements.filter((el:any) => now - el.id < FILTER_TIME));
+        for (let i=0; i < expired; i++) {
+          const lastElement: any = elements[i];
+          rootSelector.removeChild(lastElement.element);
+        }
+      }, 200);
 
       return () => {
         clearTimeout(timeoutId);
@@ -51,7 +56,7 @@ export default function SparkClickAnimation(): Function {
     const id = Date.now();
 
     setTimeout(() => {
-      console.log(`Calling timeout on el ${id}`)
+      // console.log(`Calling fadeout on el ${id}`)
       el.style.opacity = "0"
       el.style.transition = `500ms`
     }, 100);
@@ -63,7 +68,7 @@ export default function SparkClickAnimation(): Function {
   };
 
   return (x: number, y: number) => {
-    console.log(`${x}, ${y}`)
+    // console.log(`cursor pos: ${x}, ${y}`)
     addElement(x, y)
   }
 }

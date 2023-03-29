@@ -55,9 +55,9 @@ export class GameAnalytics implements IGameAnalytics {
         // const shouldAffectAnalytics = true;
         let sessionLength = epochNow - mostRecentSession
         let sessionMinLength = Math.floor(sessionLength / 60000)
-        console.log(mostRecentSession)
-        console.log(sessionLength)
-        console.log(sessionMinLength)
+        // console.log(mostRecentSession)
+        // console.log(sessionLength)
+        // console.log(sessionMinLength)
 
         const calculatedClicks = shouldAffectAnalytics ? gameAnalytics.lastMinClicks.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME): gameAnalytics.lastMinClicks.map(item => item + 1000)
         const filterDownSecLastClicks = gameAnalytics.lastSecClicks.filter(clickTime => epochNow - clickTime < 1000)
@@ -66,7 +66,7 @@ export class GameAnalytics implements IGameAnalytics {
 
         const newClickArray = [...calculatedClicks]
         const newCpm = shouldAffectAnalytics ? Math.floor(((oldCpm * sessionMinLength) + newClickArray.length) / (sessionMinLength + 1)) : oldCpm
-        console.log(shouldAffectAnalytics)
+        // console.log(shouldAffectAnalytics)
         const newGameAnalytics = {
             lastMinClicks: newClickArray,
             clicksLastMinute: newClickArray.length,
@@ -83,11 +83,11 @@ export class GameAnalytics implements IGameAnalytics {
 
     }
     static log(gameAnalytics: IGameAnalytics): void {
-        console.log(`
-        clicksLastMinute: ${gameAnalytics.clicksLastMinute},
-        clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
-    
-        `)
+        // console.log(`
+        // clicksLastMinute: ${gameAnalytics.clicksLastMinute},
+        // clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
+        //
+        // `)
     }
 
 }

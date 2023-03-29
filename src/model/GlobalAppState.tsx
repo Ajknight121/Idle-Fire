@@ -54,7 +54,7 @@ export class GlobalAppState implements IGlobalAppState {
   sessionStartTimes: number[] = [new Date().valueOf()];
 
   static logStateToConsole = (state: IGlobalAppState) => {
-    Logger.table(state);
+    // Logger.table(state);
   };
 
   /** Every tick of application logic should increase the number of embers by the number of embers per second
