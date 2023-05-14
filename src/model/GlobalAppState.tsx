@@ -4,6 +4,8 @@ import {Logger} from "../utils/logger";
 import {IClickUpgrade,IEvent, IUpgrade} from "./Upgrade";
 import {gameDataKey} from "../domain/appContext";
 import {GameAnalytics, IGameAnalytics} from "../domain/gameAnalytics";
+import { Fireman } from "./Upgrade";
+const fireMarshalDelay = 10000;
 
 export interface IGlobalAppState {
   clickPower: number; //Increased by ClickPowerUpgrade
@@ -48,9 +50,9 @@ export class GlobalAppState implements IGlobalAppState {
   tickMultiplier = 1;
   globalMultiplier = 1;
   //Events
-  FireMarshal = { unlocked: true, eventName: "Fireman", isActive: false }
+  FireMarshal = new Fireman();
 
-  gameAnalytics = new GameAnalytics()
+  gameAnalytics = new GameAnalytics();
   sessionStartTimes: number[] = [new Date().valueOf()];
 
   static logStateToConsole = (state: IGlobalAppState) => {
@@ -90,23 +92,30 @@ export class GlobalAppState implements IGlobalAppState {
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
     const mostRecentSession = appState.sessionStartTimes[appState.sessionStartTimes.length-1];
     const newGameAnalytics = GameAnalytics.handleAddEmbersPerSecondOnTick(appState.gameAnalytics, mostRecentSession)
+    let newAppState = Object.assign({},appState);
     //Event activation
-    // console.log(appState.totalEmbers % 100);
-    if (appState.totalEmbers % 100 > 40) {
-      // console.log("TOGGLE FIREMAN");
-      GlobalAppState.toggleFireman(appState, true);
+    const currentTime = new Date
+    console.log(currentTime.valueOf() - mostRecentSession.valueOf())
+    if (currentTime.valueOf() - mostRecentSession.valueOf() > fireMarshalDelay && !appState.FireMarshal.unlocked) {
+      console.log("Firemen approach")
+      appState.FireMarshal.unlocked = true
+    }
+    if (appState.FireMarshal.unlocked && !appState.FireMarshal.isActive && currentTime.valueOf() > appState.FireMarshal.nextActivation) {
+      console.log("TOGGLE FIREMAN")
+      console.log(appState.FireMarshal.isActive)
+      newAppState = GlobalAppState.toggleFireman(appState, true)
     }
     const updatedEmbers: IGlobalAppState = {
-      ...appState,
+      ...newAppState,
       embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier),
       totalEmbers: appState.totalEmbers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier),
       gameAnalytics: newGameAnalytics
     };
     const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
-    GlobalAppState.logStateToConsole(finalState);
+    GlobalAppState.logStateToConsole(finalState)
     //Extract once redux side effect is implemented
-    GlobalAppState.saveGameData(appState);
-    return finalState;
+    GlobalAppState.saveGameData(appState)
+    return finalState
   }
 
   static addToEmbersPerSec(
@@ -129,6 +138,7 @@ export class GlobalAppState implements IGlobalAppState {
     const updatedEmbersState: IGlobalAppState = {
       ...appState,
       embers: embers + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
+      totalClicks: totalClicks + 1,
       totalEmbers: totalEmbers + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       embersFromFire: embersFromFire + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       //We'll reset this based on a constant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
@@ -266,18 +276,23 @@ export class GlobalAppState implements IGlobalAppState {
   }
 
   static toggleFireman(
-    appstate: GlobalAppState,
+    appState: GlobalAppState,
     payload: boolean
   ): IGlobalAppState {
-    // console.log("toggling fireman")
+    const currentTime = new Date()
     const newFireman = {
-      ...appstate.FireMarshal,
-      isActive: payload
+      ...appState.FireMarshal,
+      isActive: payload,
+      lastDisable: currentTime.valueOf(),
+      nextActivation: currentTime.valueOf() + fireMarshalDelay
     }
+    console.log("toggling fireman to: " + payload)
+
     const newState: IGlobalAppState = {
-      ...appstate,
+      ...appState,
       FireMarshal: newFireman
     }
+    GlobalAppState.logStateToConsole(newState);
     return newState
   }
 
