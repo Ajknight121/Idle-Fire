@@ -23,7 +23,7 @@ export default function Statistics() {
             <br/>
             Total firemen harassed: {appState.firemenClicked}
             <br/>
-
+            <br/>
             <button onClick={clearGame}>Reset Game</button>
         </div>
     );

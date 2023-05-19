@@ -11,7 +11,6 @@ export default function ClickerButton() {
     console.log(`handle click`)
     confettiFn(appState.currCursorX, appState.currCursorY)
     dispatchAppAction(createActionWithPayload(AppActionsNames.FIRE_CLICK));
-    // spark = Confetti(appState.currCursorX, appState.currCursorY);
   };
 
   /** Use app start to grow the image */
@@ -21,7 +20,6 @@ export default function ClickerButton() {
     // size
     // TODO use Math.log for fire growth
   };
-  // let spark = <div></div>;
   return (
     <div className={"clicker-area"}>
       <div className={"counters"}>

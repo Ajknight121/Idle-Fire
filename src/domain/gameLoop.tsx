@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import ClickerButton from "../components/ClickerButton";
 import UpgradeContainer from "../components/UpgradeContainer";
 import { AppActionsNames, createActionWithPayload } from "./appActions";
@@ -8,9 +8,6 @@ import { AppStateContext } from "./appContext";
 /** Main entry point into game logic */
 export default function GameLoop() {
   const { dispatchAppAction } = useContext(AppStateContext);
-
-  // console.log("Game Loop Started");
-
 
   useEffect(() => {
     const dispatchMousemove = (event: MouseEvent) => {
@@ -31,7 +28,6 @@ export default function GameLoop() {
     }, 1000);
     // }
     return () => {
-      // console.log("clear");
       clearInterval(interval);
       document.removeEventListener("mousemove", dispatchMousemove);
     };

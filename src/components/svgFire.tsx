@@ -1,17 +1,15 @@
-import fireIMG from "../images/fire.svg";
-import { CSSProperties } from "react";
+import {CSSProperties} from "react";
 
 export default function Confetti(cursorX: number, cursorY: number) {
     const randInt = (min: number, max: number) => {
-        const result = Math.floor(Math.random() * (max - min + 1)) + min;
-        return result;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
     const c = {
         type: "circle",
         spin: false,
         drop: 1000, //Bounding box height
         spread: 800, //Bounding box width
-        flakes: 12,
+        flakes: 12, //Number of sparks
         speed: 4000,
         delay: 0,
         fadeout: true,
@@ -51,25 +49,6 @@ export default function Confetti(cursorX: number, cursorY: number) {
             confettiColor = c.colors[randInt(0, c.colors.length - 1)];
         }
 
-        // what type of confetti is it?
-        confettiType = fireIMG;
-        // `<circle id="${conId}" fill="${confettiColor}" cx="0" cy="0" r="${randInt(4, 7)}" filter="url(#blur${randInt(1, 2)})">
-        // ${confettiSpin}
-        // </circle>`;
-
-        // transform="rotate(-10 50 100)
-        // translate(-36 45.5)
-        // skewX(40)
-        // scale(1 0.5)"
-        // console.log(confettiType);
-        // alteredFireAsImsage = `<image href="mdn_logo_only_color.png" height="200" width="200" />`;
-        // const randNum = Math.random()
-
-        // const scaleDecimal = Math.floor(Math.min(.4, randNum) * 1000) / 1000;
-
-        // add confetti to group
-        // console.log("scaleDecimal");
-        // console.log(scaleDecimal);
         const randNum = getRandomArbitrary(0.2, 0.8);
 
         return <g key={key} transform={`translate(${randInt(ww * -0.3, ww * 0.3)} 0)`}><g filter={`url(#blur${randInt(1, 2)})`} id={`${conId}`} transform={`scale(${randNum})`}>
@@ -91,27 +70,15 @@ export default function Confetti(cursorX: number, cursorY: number) {
 
     const centerY: number = cursorY;
     const centerX: number = cursorX;
-    let style: CSSProperties = {
-        left: centerX,
-        pointerEvents: "none",
-        position: "fixed",
-        top: centerY,
-        transform: "translate(-50%,-50%)",
-        transition: `${(c.speed / 10)}ms`,
-        userSelect: "none",
-        zIndex: 99999
-    }
     let overlayId: string = `conf${randInt(0, 1000)}etti${randInt(0, 1000)}ver${randInt(0, 1000)}lay`;
 
     const sizeReduction = .2
-    style = {
+    let style: CSSProperties = {
         height: `${window.innerHeight * sizeReduction}px`,
         width: `${window.innerWidth * (sizeReduction * .7)}px`,
         left: `${-(window.innerWidth * sizeReduction) / 3}px`,
         position: "absolute",
         overflow: "hidden",
-        // height: `${100}px`,
-        // width: `${50}px`,
     }
     let svgDiv = <div style={style}>
         <svg id={overlayId} viewBox={`0 0 ${ww} ${hh}`} preserveAspectRatio={"xMaxYMax"}>

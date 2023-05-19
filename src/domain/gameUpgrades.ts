@@ -9,9 +9,9 @@ export enum UpgradeNames {
   stickThrower = "Stick Thrower",
   lighterThrower = "Lighter Thrower",
   logChucker = "Log Chucker",
-  gasolineThrower = "Gasoline thrower",
-  tireDumper = "Tire dumper",
-  coalShucker = "Coal shucker",
+  gasolineThrower = "Gasoline Thrower",
+  tireDumper = "Tire Dumper",
+  coalShucker = "Coal Shucker",
 }
 
 const descriptions: string[] = [
