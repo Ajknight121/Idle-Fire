@@ -58,7 +58,7 @@ export class GlobalAppState implements IGlobalAppState {
   sessionStartTimes: number[] = [new Date().valueOf()];
 
   static logStateToConsole = (state: IGlobalAppState) => {
-    // Logger.table(state);
+    Logger.table(state);
   };
 
   /** Every tick of application logic should increase the number of embers by the number of embers per second
@@ -96,7 +96,7 @@ export class GlobalAppState implements IGlobalAppState {
     const newGameAnalytics = GameAnalytics.handleAddEmbersPerSecondOnTick(appState.gameAnalytics, mostRecentSession)
     let newAppState = Object.assign({},appState);
     //Event activation
-    const currentTime = new Date
+    const currentTime = new Date()
     console.log(currentTime.valueOf() - mostRecentSession.valueOf())
     if (currentTime.valueOf() - mostRecentSession.valueOf() > initFireMarshalDelay && !appState.FireMarshal.unlocked) {
       console.log("Firemen approach")

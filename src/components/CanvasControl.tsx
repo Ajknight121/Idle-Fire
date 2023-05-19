@@ -29,7 +29,7 @@ export default function SparkClickAnimation(): Function {
         clearTimeout(timeoutId);
       };
     }
-  }, [elements]);
+  }, [elements,rootSelector]);
 
 
 
