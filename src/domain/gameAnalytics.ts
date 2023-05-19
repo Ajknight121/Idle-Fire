@@ -75,13 +75,13 @@ export class GameAnalytics implements IGameAnalytics {
 
     }
     static log(gameAnalytics: IGameAnalytics): void {
-        // console.log(`
-        // clicksLastMinute: ${gameAnalytics.clicksLastMinute},
-        // clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
-        //
-        // `)
+        console.log(`
+        clicksLastMinute: ${gameAnalytics.clicksLastMinute},
+        clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
+
+        `)
     }
 
 }
 
-const epochNowUtil = (): number => { return new Date().valueOf() }
+// const epochNowUtil = (): number => { return new Date().valueOf() }

@@ -1,6 +1,6 @@
 import {CSSProperties} from "react";
 
-export default function Confetti(cursorX: number, cursorY: number) {
+export default function Confetti(count: Number) {
     const randInt = (min: number, max: number) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
@@ -9,7 +9,7 @@ export default function Confetti(cursorX: number, cursorY: number) {
         spin: false,
         drop: 1000, //Bounding box height
         spread: 800, //Bounding box width
-        flakes: 12, //Number of sparks
+        flakes: count, //Number of sparks
         speed: 4000,
         delay: 0,
         fadeout: true,
@@ -29,25 +29,25 @@ export default function Confetti(cursorX: number, cursorY: number) {
     const returnSpark = (key: number) => {
         let conId = `con${randInt(0, 1000)}fet${randInt(0, 1000)}ti${randInt(0, 1000)}`;
         let confettiDur = `${randInt(c.speed / 2, c.speed)}`;
-        let confettiSpin = ``;
-        let confettiType = ``;
-        if (c.spin) {
-            confettiSpin = `<animateTransform attributeName="transform"
-                          attributeType="XML"
-                          type="rotate"
-                          from="0 0 0"
-                          to="${(Math.random() < 0.5 ? -1 : 1) * 360} 0 0"
-                          dur="${randInt(c.speed / 6, c.speed / 2)}ms"
-                          begin="-${randInt(1, 10) / 10}s"
-                          repeatCount="indefinite"/>`;
-        }
-        // are we using an array of colors or random ones?
-        let confettiColor = ``;
-        if (false || !Array.isArray(c.colors)) {
-            confettiColor = `rgb(${randInt(0, 255)}, ${randInt(0, 255)}, ${randInt(0, 255)})`;
-        } else {
-            confettiColor = c.colors[randInt(0, c.colors.length - 1)];
-        }
+        // let confettiSpin = ``;
+        // let confettiType = ``;
+        // if (c.spin) {
+        //     confettiSpin = `<animateTransform attributeName="transform"
+        //                   attributeType="XML"
+        //                   type="rotate"
+        //                   from="0 0 0"
+        //                   to="${(Math.random() < 0.5 ? -1 : 1) * 360} 0 0"
+        //                   dur="${randInt(c.speed / 6, c.speed / 2)}ms"
+        //                   begin="-${randInt(1, 10) / 10}s"
+        //                   repeatCount="indefinite"/>`;
+        // }
+        // // are we using an array of colors or random ones?
+        // let confettiColor = ``;
+        // if (false || !Array.isArray(c.colors)) {
+        //     confettiColor = `rgb(${randInt(0, 255)}, ${randInt(0, 255)}, ${randInt(0, 255)})`;
+        // } else {
+        //     confettiColor = c.colors[randInt(0, c.colors.length - 1)];
+        // }
 
         const randNum = getRandomArbitrary(0.2, 0.8);
 
@@ -64,12 +64,10 @@ export default function Confetti(cursorX: number, cursorY: number) {
     }
 
     // make sure number of flakes is a number
-    if (!c.flakes || Number.isNaN(c.flakes * 1)) {
+    if (!c.flakes || Number.isNaN(c.flakes)) {
         c.flakes = 100;
     }
 
-    const centerY: number = cursorY;
-    const centerX: number = cursorX;
     let overlayId: string = `conf${randInt(0, 1000)}etti${randInt(0, 1000)}ver${randInt(0, 1000)}lay`;
 
     const sizeReduction = .2
