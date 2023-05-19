@@ -34,7 +34,7 @@ export default function SparkClickAnimation(): Function {
 
 
   const getConfetti = (x: number, y: number) => <div style={cssInJs(x, y)}>
-    {Confetti(x, y)}
+    {Confetti(12)}
   </div>
 
   const addElement = (x: number, y: number) => {
