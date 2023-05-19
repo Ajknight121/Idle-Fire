@@ -57,6 +57,7 @@ body {
   background: rgb(255, 199, 90);
   justify-content: center;
   align-content: flex-end;
+  min-width: 400px;
   height: 100vh;
   padding-bottom: 40px;
   overflow: hidden;
@@ -126,21 +127,21 @@ body {
 
 .upgrade-name {
   position: absolute;
-  top: 5px;
-  left: 10px;
-  font-size: large;
+  top: 2px;
+  left: 5px;
+  font-size: 17px;
 }
 
 .upgrade-level {
   position: absolute;
-  right: 10px;
-  top: 5px;
+  right: 5px;
+  top: 2px;
 }
 
 .upgrade-cost {
   position: absolute;
-  right: 10px;
-  bottom: 5px;
+  right: 5px;
+  bottom: 2px;
 }
 
 .upgrades {

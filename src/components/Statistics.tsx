@@ -9,7 +9,7 @@ export default function Statistics() {
     }
     return (
         <div className={"statistics"}>
-            <div className={"statistics-label"}>Stats</div>
+            <div className={"statistics-label"}>Your Stats</div>
             {/*Time played: {appState.time.toLocaleString()} seconds <br />  implement time*/}
             Total embers produced: {appState.totalEmbers.toLocaleString()}
             <br/>
@@ -20,6 +20,8 @@ export default function Statistics() {
             Average Fire clicks per minute: {appState.gameAnalytics.clickRollingAveragePerMinute} clicks
             <br/>
             Total Embers from clicking: {appState.embersFromFire.toLocaleString()}
+            <br/>
+            Total firemen harassed: {appState.firemenClicked}
             <br/>
 
             <button onClick={clearGame}>Reset Game</button>

@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useEffect, useRef } from "react";
+import { CSSProperties, useContext} from "react";
 import { AppStateContext } from "../domain/appContext";
 import flame from "../images/flame.png";
 import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
@@ -16,7 +16,6 @@ export default function ClickerButton() {
 
   /** Use app start to grow the image */
   const flameImageStyle: CSSProperties = {
-    display: "grid",
     placeContent: "center",
     height: `${Math.min((appState.embersPerSecond / 100) + 5, 95)}vh`, //Give it a 3 percent of monitor height first
     // size
@@ -28,7 +27,7 @@ export default function ClickerButton() {
       <div className={"counters"}>
         <div className={"ember-count"}>Embers: {appState.embers.toLocaleString()}</div>
         <div className={"ember-per-second"}>
-          Embers per sec: {appState.embersPerSecond.toLocaleString()}
+          Embers per sec: {appState.embersPerSecond.toLocaleString()} {(appState.FireMarshal.isActive ? "* 0.5": "")}
         </div>
         <div className={"EmbersByClickSec"}>
           Embers by click: {appState.gameAnalytics.clicksLastSecond * appState.clickPower}/s
@@ -45,7 +44,6 @@ export default function ClickerButton() {
           />
         </div>
         <FireMarshal />
-        {/*<img src={flame} alt={"Flame level 1"} draggable="false" />*/}
       </div>
     </div>
   );

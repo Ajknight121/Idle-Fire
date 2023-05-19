@@ -1,7 +1,7 @@
 import {CSSProperties, useContext} from "react";
 import {AppStateContext} from "../domain/appContext";
 import {AppActionsNames, createActionWithPayload} from "../domain/appActions";
-
+import firemanImg from "../images/firemanAndHoseRight.svg"
 
 
 export default function FireMarshal() {
@@ -9,9 +9,8 @@ export default function FireMarshal() {
 
     const containerSize = 60;
     const cssInJs: CSSProperties = {
-        top: 200, //minus 15 for center of cursor
-        left: 200, //400 for upgrade container // 15
-        backgroundColor: "red",
+        bottom: 20, //minus 15 for center of cursor
+        left: "30%", //400 for upgrade container // 15
         height: `${containerSize * 2}px`,
         width: `${containerSize}px`,
         display: `${appState.FireMarshal.isActive ? "block" : "none"}`,
@@ -24,7 +23,7 @@ export default function FireMarshal() {
 
     return (
         <div style={cssInJs} className={"fireman"} onClick={() => handleClick()}>
-            {/*<img src={flame} alt={"spark"} draggable="false" />*/}
+            <img src={firemanImg} alt={"fireman"} height={120}/>
         </div>
     );
 }

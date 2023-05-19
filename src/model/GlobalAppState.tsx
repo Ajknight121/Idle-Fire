@@ -5,7 +5,8 @@ import {IClickUpgrade,IEvent, IUpgrade} from "./Upgrade";
 import {gameDataKey} from "../domain/appContext";
 import {GameAnalytics, IGameAnalytics} from "../domain/gameAnalytics";
 import { Fireman } from "./Upgrade";
-const fireMarshalDelay = 10000;
+const fireMarshalDelay = 120000;
+const initFireMarshalDelay = 40000;
 
 export interface IGlobalAppState {
   clickPower: number; //Increased by ClickPowerUpgrade
@@ -27,6 +28,7 @@ export interface IGlobalAppState {
   globalMultiplier: number;
   //Events
   FireMarshal: IEvent;
+  firemenClicked: number;
   gameAnalytics: IGameAnalytics
   sessionStartTimes: number[];
 }
@@ -51,7 +53,7 @@ export class GlobalAppState implements IGlobalAppState {
   globalMultiplier = 1;
   //Events
   FireMarshal = new Fireman();
-
+  firemenClicked = 0;
   gameAnalytics = new GameAnalytics();
   sessionStartTimes: number[] = [new Date().valueOf()];
 
@@ -96,19 +98,19 @@ export class GlobalAppState implements IGlobalAppState {
     //Event activation
     const currentTime = new Date
     console.log(currentTime.valueOf() - mostRecentSession.valueOf())
-    if (currentTime.valueOf() - mostRecentSession.valueOf() > fireMarshalDelay && !appState.FireMarshal.unlocked) {
+    if (currentTime.valueOf() - mostRecentSession.valueOf() > initFireMarshalDelay && !appState.FireMarshal.unlocked) {
       console.log("Firemen approach")
       appState.FireMarshal.unlocked = true
+      GlobalAppState.toggleFireman(appState,true);
     }
     if (appState.FireMarshal.unlocked && !appState.FireMarshal.isActive && currentTime.valueOf() > appState.FireMarshal.nextActivation) {
-      console.log("TOGGLE FIREMAN")
       console.log(appState.FireMarshal.isActive)
       newAppState = GlobalAppState.toggleFireman(appState, true)
     }
     const updatedEmbers: IGlobalAppState = {
       ...newAppState,
-      embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier),
-      totalEmbers: appState.totalEmbers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier),
+      embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
+      totalEmbers: appState.totalEmbers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
       gameAnalytics: newGameAnalytics
     };
     const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
@@ -290,6 +292,7 @@ export class GlobalAppState implements IGlobalAppState {
 
     const newState: IGlobalAppState = {
       ...appState,
+      firemenClicked: appState.firemenClicked + (!payload ? 1 : 0),
       FireMarshal: newFireman
     }
     GlobalAppState.logStateToConsole(newState);

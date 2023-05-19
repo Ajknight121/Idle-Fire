@@ -54,6 +54,9 @@ function checkStoredState(storedState:GlobalAppState) {
   if (!storedState.FireMarshal) {
     storedState.FireMarshal = new Fireman();
   }
+  if (!storedState.firemenClicked) {
+    storedState.firemenClicked = 0;
+  }
   if (!storedState.gameAnalytics) {
     storedState.gameAnalytics = new GameAnalytics();
   }
