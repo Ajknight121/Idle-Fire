@@ -17,3 +17,20 @@ export interface IClickUpgrade {
   quantity: number; // Number of times upgrade is purchased
   description?: string;
 }
+
+export interface IEvent {
+  classname?: string;
+  unlocked: boolean;
+  nextActivation: number;
+  lastDisable: number;
+  eventName: string; // Should be made to enum list
+  isActive: boolean;
+}
+
+export class Fireman implements IEvent{
+  public unlocked = false
+  public nextActivation = 10000
+  public lastDisable = 0
+  public eventName = "Fireman"
+  public isActive = false
+}

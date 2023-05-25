@@ -1,11 +1,14 @@
-import { IAppAction } from "../domain/appActions";
-import { GameUpgradesFactory } from "../domain/gameUpgrades";
-import { Logger } from "../utils/logger";
-import {IClickUpgrade, IUpgrade} from "./Upgrade";
+import {IAppAction} from "../domain/appActions";
+import {GameUpgradesFactory} from "../domain/gameUpgrades";
+import {Logger} from "../utils/logger";
+import {IClickUpgrade,IEvent, IUpgrade} from "./Upgrade";
 import {gameDataKey} from "../domain/appContext";
+import {GameAnalytics, IGameAnalytics} from "../domain/gameAnalytics";
+import { Fireman } from "./Upgrade";
+const fireMarshalDelay = 120000;
+const initFireMarshalDelay = 40000;
 
 export interface IGlobalAppState {
-  time: number;
   clickPower: number; //Increased by ClickPowerUpgrade
   embers: number; //Currency to accumulate
   embersPerSecond: number; //Increased by EmbersPerSecondUpgrade
@@ -19,10 +22,18 @@ export interface IGlobalAppState {
   currCursorX: number;
   currCursorY: number;
   displayAnimationForClick: boolean;
+  //Multipliers
+  clickMultiplier: number;
+  tickMultiplier: number;
+  globalMultiplier: number;
+  //Events
+  FireMarshal: IEvent;
+  firemenClicked: number;
+  gameAnalytics: IGameAnalytics
+  sessionStartTimes: number[];
 }
 
 export class GlobalAppState implements IGlobalAppState {
-  time = 0;
   clickPower = 1;
   embers = 0;
   embersPerSecond = 0;
@@ -36,6 +47,15 @@ export class GlobalAppState implements IGlobalAppState {
   currCursorX = 0;
   currCursorY = 0;
   displayAnimationForClick = false;
+  //Multiplier
+  clickMultiplier = 1;
+  tickMultiplier = 1;
+  globalMultiplier = 1;
+  //Events
+  FireMarshal = new Fireman();
+  firemenClicked = 0;
+  gameAnalytics = new GameAnalytics();
+  sessionStartTimes: number[] = [new Date().valueOf()];
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
@@ -58,7 +78,7 @@ export class GlobalAppState implements IGlobalAppState {
     localStorage.removeItem(gameDataKey);
   }
 
-  static saveGameData(appState: IGlobalAppState): void{
+  static saveGameData(appState: IGlobalAppState): void {
     localStorage.setItem(gameDataKey, JSON.stringify(appState));
   }
 
@@ -70,20 +90,36 @@ export class GlobalAppState implements IGlobalAppState {
       ),
     };
   }
+  /** Every tick of application logic should increase the number of embers by the number of embers per second */
   static addEmbersPerSecondOnTick(appState: IGlobalAppState): IGlobalAppState {
+    const mostRecentSession = appState.sessionStartTimes[appState.sessionStartTimes.length-1];
+    const newGameAnalytics = GameAnalytics.handleAddEmbersPerSecondOnTick(appState.gameAnalytics, mostRecentSession)
+    let newAppState = Object.assign({},appState);
+    //Event activation
+    const currentTime = new Date()
+    console.log(currentTime.valueOf() - mostRecentSession.valueOf())
+    if (currentTime.valueOf() - mostRecentSession.valueOf() > initFireMarshalDelay && !appState.FireMarshal.unlocked) {
+      console.log("Firemen approach")
+      appState.FireMarshal.unlocked = true
+      GlobalAppState.toggleFireman(appState,true);
+    }
+    if (appState.FireMarshal.unlocked && !appState.FireMarshal.isActive && currentTime.valueOf() > appState.FireMarshal.nextActivation) {
+      console.log(appState.FireMarshal.isActive)
+      newAppState = GlobalAppState.toggleFireman(appState, true)
+    }
     const updatedEmbers: IGlobalAppState = {
-      ...appState,
-      embers: appState.embers + appState.embersPerSecond,
-      totalEmbers: appState.totalEmbers + appState.embersPerSecond,
+      ...newAppState,
+      embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
+      totalEmbers: appState.totalEmbers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
+      gameAnalytics: newGameAnalytics
     };
     const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
-    GlobalAppState.logStateToConsole(finalState);
+    GlobalAppState.logStateToConsole(finalState)
     //Extract once redux side effect is implemented
-    GlobalAppState.saveGameData(appState);
-    return finalState;
+    GlobalAppState.saveGameData(appState)
+    return finalState
   }
 
-  //TODO Is this still used?
   static addToEmbersPerSec(
     appState: IGlobalAppState,
     numberOfEmbersPerSecToAdd: number
@@ -99,21 +135,20 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every time you click the fire, you earn a number of embers based on your click power and we increment the global
    *  count of total clicks for the app game session. */
   static handleUserFireClick = (appState: IGlobalAppState): IGlobalAppState => {
-
     const { embers, clickPower, totalClicks, totalEmbers, embersFromFire } = appState;
+    const newGameAnalytics = GameAnalytics.handleClick(appState.gameAnalytics)
     const updatedEmbersState: IGlobalAppState = {
       ...appState,
-      embers: embers + clickPower,
+      embers: embers + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       totalClicks: totalClicks + 1,
-      totalEmbers: totalEmbers + clickPower,
-      embersFromFire: embersFromFire + clickPower,
+      totalEmbers: totalEmbers + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
+      embersFromFire: embersFromFire + (clickPower * appState.clickMultiplier * appState.globalMultiplier),
       //We'll reset this based on a constant time set in the app //TIME_TO_DISPLAY_CLICK_ANIMATION
       displayAnimationForClick: true,
+      gameAnalytics: newGameAnalytics
     };
-    const updatedUpgrades =
-      GlobalAppState.updateStateUpgrades(updatedEmbersState);
+    const updatedUpgrades = GlobalAppState.updateStateUpgrades(updatedEmbersState);
     GlobalAppState.logStateToConsole(updatedUpgrades);
-    // console.log("fire");
     return updatedUpgrades;
   };
 
@@ -135,12 +170,10 @@ export class GlobalAppState implements IGlobalAppState {
       appState,
       action.payload.cost
     );
-
-    const newState = GlobalAppState.addToEmbersPerSec(
-      deductedEmbersState,
-      action.payload.value
+    return GlobalAppState.addToEmbersPerSec(
+        deductedEmbersState,
+        action.payload.value
     );
-    return newState;
   };
 
   /** Every time you buy something we need to deduct your embers. */
@@ -170,8 +203,8 @@ export class GlobalAppState implements IGlobalAppState {
 
   /** Every time you buy something we need to deduct your embers. */
   static upgradeEmbersPerClick = (
-      appState: GlobalAppState,
-      upgrade: IClickUpgrade
+    appState: GlobalAppState,
+    upgrade: IClickUpgrade
   ): IGlobalAppState => {
     const clickUpgrades = appState.clickUpgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
@@ -189,6 +222,30 @@ export class GlobalAppState implements IGlobalAppState {
       embers: appState.embers - upgrade.upgradeCost,
       clickUpgrades,
       clickPower: clickUpgrades[0].EPC, // TODO give the quantity to add as a parameter
+    };
+    GlobalAppState.logStateToConsole(newState);
+    return newState;
+  }
+  static upgradeGlobalMultiplier = (
+    appState: IGlobalAppState,
+    upgrade: IClickUpgrade
+  ): IGlobalAppState => {
+    const clickUpgrades = appState.clickUpgrades.map((u) => {
+      if (upgrade.upgradeName !== u.upgradeName) {
+        return u;
+      } else {
+        let updatedUpgrade = Object.assign({}, upgrade);
+        updatedUpgrade.quantity += appState.buyQuantity;
+        updatedUpgrade.EPC = ((updatedUpgrade.EPC + 1) * appState.buyQuantity);
+        updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 7) * appState.buyQuantity;
+        return updatedUpgrade;
+      }
+    });
+    const newState = {
+      ...appState,
+      embers: appState.embers - upgrade.upgradeCost,
+      clickUpgrades,
+      globalMultiplier: clickUpgrades[1].EPC, // TODO give the quantity to add as a parameter
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
@@ -220,6 +277,27 @@ export class GlobalAppState implements IGlobalAppState {
     return newState;
   }
 
+  static toggleFireman(
+    appState: GlobalAppState,
+    payload: boolean
+  ): IGlobalAppState {
+    const currentTime = new Date()
+    const newFireman = {
+      ...appState.FireMarshal,
+      isActive: payload,
+      lastDisable: currentTime.valueOf(),
+      nextActivation: currentTime.valueOf() + fireMarshalDelay
+    }
+    console.log("toggling fireman to: " + payload)
+
+    const newState: IGlobalAppState = {
+      ...appState,
+      firemenClicked: appState.firemenClicked + (!payload ? 1 : 0),
+      FireMarshal: newFireman
+    }
+    GlobalAppState.logStateToConsole(newState);
+    return newState
+  }
 
   /** Everytime the cursor moves update state with the last position so we can trigger images and animations based on the new cursor position. */
   static updateStateWithCursorMovement(
@@ -230,6 +308,6 @@ export class GlobalAppState implements IGlobalAppState {
       ...appState,
       currCursorX: event.clientX,
       currCursorY: event.clientY,
-    };
+    }
   }
 }

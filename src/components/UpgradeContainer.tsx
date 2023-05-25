@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
 import { AppStateContext } from "../domain/appContext";
 import { GameUpgradesFactory } from "../domain/gameUpgrades";
@@ -13,7 +13,6 @@ export default function UpgradeContainer() {
     const getClickUpgrades = (
         upgrade: IClickUpgrade,
         index: number,
-        array: IClickUpgrade[]
     ) => {
         const classForUpgrade =
             upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
@@ -26,7 +25,6 @@ export default function UpgradeContainer() {
   const getUpgradeContent = (
     upgrade: IUpgrade,
     index: number,
-    array: IUpgrade[]
   ) => {
     const classForUpgrade =
       upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
@@ -42,7 +40,7 @@ export default function UpgradeContainer() {
     buyQuantity: number
   ): void => {
     dispatchAppAction(
-      createActionWithPayload(AppActionsNames.MULTIPLIER_CHANGE, buyQuantity)
+      createActionWithPayload(AppActionsNames.QUANTITY_CHANGE, buyQuantity)
     );
   };
 

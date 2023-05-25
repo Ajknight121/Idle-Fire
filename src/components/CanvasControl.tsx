@@ -1,24 +1,59 @@
-import { CSSProperties, useContext } from "react";
-import { AppStateContext } from "../domain/appContext";
+import { CSSProperties, useEffect, useState } from "react";
 
-import flame from "../images/flame.png";
+import Confetti from "./svgFire";
+import { createRoot } from "react-dom/client";
 
-export default function SparkClickAnimation() {
-  const { appState } = useContext(AppStateContext);
+export default function SparkClickAnimation(): Function {
+  const FILTER_TIME:number = 600;
+  const rootSelector: HTMLElement = document.getElementById("confetti") as HTMLElement
+  const [elements, setElements] = useState([]);
 
-  const containerSize = 60;
-  const cssInJs: CSSProperties = {
-    top: appState.currCursorY - 70, //minus 15 for center of cursor
-    left: appState.currCursorX - 400 - 15, //400 for upgrade container // 15
-    height: `${containerSize}px`,
-    width: `${containerSize}px`,
-    display: `${true ? "block" : "none"}`,
+  const cssInJs = (x: number, y: number): CSSProperties => ({
+    top: y + 10,
+    left: x,
     position: "absolute",
-    opacity: `${(appState.embersPerSecond + 1) * 2}%`,
+  });
+  useEffect(() => {
+    if (elements.length > 0) {
+      const now = Date.now();
+      let expired = elements.filter((el:any) => now - el.id > FILTER_TIME).length;
+      const timeoutId = setTimeout(() => {
+        setElements(prevElements => prevElements.filter((el:any) => now - el.id < FILTER_TIME));
+        for (let i=0; i < expired; i++) {
+          const lastElement: any = elements[i];
+          rootSelector.removeChild(lastElement.element);
+        }
+      }, 200);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [elements,rootSelector]);
+
+
+
+  const getConfetti = (x: number, y: number) => <div style={cssInJs(x, y)}>
+    {Confetti(12)}
+  </div>
+
+  const addElement = (x: number, y: number) => {
+
+    const el = document.createElement("div");
+    const id = Date.now();
+
+    setTimeout(() => {
+      el.style.opacity = "0"
+      el.style.transition = `500ms`
+    }, 100);
+
+    rootSelector?.appendChild(el)
+    const reactRoot = createRoot(el)
+    reactRoot.render(getConfetti(x, y))
+    setElements(prevElements => [...prevElements, { id, element: el }] as any);
   };
-  return (
-    <div style={cssInJs} className={"spark"}>
-      <img src={flame} alt={"spark"} draggable="false" />
-    </div>
-  );
+
+  return (x: number, y: number) => {
+    addElement(x, y)
+  }
 }
