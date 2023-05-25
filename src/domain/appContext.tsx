@@ -28,10 +28,10 @@ function checkStoredState(storedState:GlobalAppState) {
     storedState.totalEmbers = 0;
   }
   if (!storedState.upgrades) {
-    storedState.upgrades = GameUpgradesFactory.getInitialUpgrades();
+    storedState.upgrades = GameUpgradesFactory.getInitialUpgrades(); // TODO: Add state check to upgrades here or in getInitialUpgrades
   }
   if (!storedState.clickUpgrades) {
-    storedState.clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades();
+    storedState.clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades(); // TODO: Add state check to upgrades here or in getInitialClickUpgrades
   }
   if (!storedState.currCursorX) {
     storedState.currCursorX = 0;
