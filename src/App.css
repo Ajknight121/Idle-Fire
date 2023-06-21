@@ -34,7 +34,7 @@ body {
   background-image: url('images/CedarShadow.png'), url('images/CedarShadow.png');
   background-repeat: no-repeat;
   background-size: 50% 100%, 50% 100%;
-  background-position: -46% top, 150% top;
+  background-position: -46% top, 153% top;
 }
 /*.tree {*/
 /*  position: absolute;*/
@@ -122,7 +122,7 @@ body {
 .upgrade-container {
   position: relative;
   float: left;
-  background: #0C0C0C;
+  background: #000000;
   display: block;
   width: 400px;
   height: 100vh;
