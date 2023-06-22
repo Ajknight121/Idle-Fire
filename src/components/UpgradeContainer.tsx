@@ -47,7 +47,7 @@ export default function UpgradeContainer() {
   return (
     <div className="upgrade-container">
       <div className="upgrade-label">Upgrades</div>
-      <div className="upgrade-label">Total Embers {appState.embers.toLocaleString()}</div>
+      {/* <div className="upgrade-label">Total Embers {appState.embers.toLocaleString()}</div> */}
       <div className={"upgrade-quantity"}>
         Buy:
         <input
@@ -79,7 +79,6 @@ export default function UpgradeContainer() {
             <div className={"click-upgrades"}>
                 {appState.clickUpgrades.map(getClickUpgrades)}
             </div>
-            <hr/>
         {appState.upgrades.map(getUpgradeContent)}
         </div>
       <Statistics />
