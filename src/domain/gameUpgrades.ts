@@ -3,8 +3,8 @@ import { IGlobalAppState } from "../model/GlobalAppState";
 
 export enum UpgradeNames {
   clickPower = "Click Power",
-  globalMultiplier = "Global Multiplier",
-  clickMultiplier = "Click Multiplier",
+  globalMultiplier = "Global Multi",
+  clickMultiplier = "Click Multi",
   grassPlucker = "Grass Plucker",
   stickThrower = "Stick Thrower",
   lighterThrower = "Lighter Thrower",
