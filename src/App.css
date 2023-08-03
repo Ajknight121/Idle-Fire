@@ -42,7 +42,7 @@ body {
   overflow: hidden;
   height: 100vh;
   box-sizing: border-box;
-  background: radial-gradient( 300px 450px at 50% 85.43%, #cb2a27, #ffbd387a 30%, transparent 80%);
+  background: radial-gradient( 300px 450px at 50% 91%, #cb7127, #ffbd3851, transparent 70%);
 }
 /*TODO - make radialGradient apart of javascript*/
 .clicker-button > img {
