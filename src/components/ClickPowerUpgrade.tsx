@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
-import { AppStateContext } from "../domain/appContext";
-import {IClickUpgrade} from "../model/Upgrade";
+import { AppActionsNames, createActionWithPayload } from "../mechanics/appActions";
+import { AppStateContext } from "../mechanics/appContext";
+import { IUpgrade } from "../mechanics/Upgrade";
 import {styled} from "@mui/material/styles";
 import Tooltip, {tooltipClasses, TooltipProps} from "@mui/material/Tooltip";
-import {UpgradeNames} from "../domain/gameUpgrades";
+import {UpgradeNames} from "../mechanics/gameUpgrades";
 
 export interface UpgradeComponentProps {
-    upgradeProps: IClickUpgrade;
+    upgradeProps: IUpgrade;
     classname: string;
 }
 
@@ -59,13 +59,13 @@ export default function ClickPowerUpgrade(props: UpgradeComponentProps) {
         case UpgradeNames.clickPower:
             Description = (
                 <div className={"tooltip-values"}>
-                    <div>{`Each fire click produces ${props.upgradeProps.EPC} ${props.upgradeProps.EPC > 1 ? "embers" : "ember"}`}</div>
+                    <div>{`Each fire click produces ${props.upgradeProps.power} ${props.upgradeProps.power > 1 ? "embers" : "ember"}`}</div>
                 </div>)
             break;
         case UpgradeNames.globalMultiplier:
             Description = (
                 <div className={"tooltip-values"}>
-                    <div>{`Current multiplier: x${props.upgradeProps.EPC}`}</div>
+                    <div>{`Current multiplier: x${props.upgradeProps.power}`}</div>
                 </div>)
             break;
     }

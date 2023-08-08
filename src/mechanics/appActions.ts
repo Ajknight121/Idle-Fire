@@ -1,4 +1,4 @@
-import { GlobalAppState } from "../model/GlobalAppState";
+import { GlobalAppState } from "./GlobalAppState";
 
 export enum AppActionsNames {
   GAME_LOOP_TICK = "GAME_LOOP_TICK",
@@ -31,15 +31,16 @@ export interface IAppAction {
 export const ActionToFuncMap: Record<AppActionsNames, Function> = {
   [AppActionsNames.GAME_LOOP_TICK]: GlobalAppState.addEmbersPerSecondOnTick,
   [AppActionsNames.CLEAR_GAME_DATA]: GlobalAppState.clearGameData,
-
+  [AppActionsNames.TOGGLE_FIREMAN]: GlobalAppState.toggleFireman,
+  
   //User Cursor Actions
   [AppActionsNames.FIRE_CLICK]: GlobalAppState.handleUserFireClick,
   [AppActionsNames.MOUSE_MOVE]: GlobalAppState.updateStateWithCursorMovement,
 
-  //User Left Menu Interactions
+  //User Upgrade Menu Interactions
   [AppActionsNames.UPGRADE_PURCHASE]: GlobalAppState.buyUpgrade,
   [AppActionsNames.QUANTITY_CHANGE]: GlobalAppState.updateBuyQuantity,
   [AppActionsNames.CLICK_PURCHASE]: GlobalAppState.upgradeEmbersPerClick,
   [AppActionsNames.GLOBAL_MULTIPLIER_PURCHASE]: GlobalAppState.upgradeGlobalMultiplier,
-  [AppActionsNames.TOGGLE_FIREMAN]: GlobalAppState.toggleFireman
+  
 };

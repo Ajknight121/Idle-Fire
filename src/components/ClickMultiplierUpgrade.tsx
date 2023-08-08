@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
-import { AppStateContext } from "../domain/appContext";
-import {IClickUpgrade} from "../model/Upgrade";
+import { AppActionsNames, createActionWithPayload } from "../mechanics/appActions";
+import { AppStateContext } from "../mechanics/appContext";
+import { IUpgrade } from "../mechanics/Upgrade";
 
 export interface UpgradeComponentProps {
-    upgradeProps: IClickUpgrade;
+    upgradeProps: IUpgrade;
     classname: string;
 }
 

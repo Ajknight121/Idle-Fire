@@ -1,4 +1,4 @@
-import { IGlobalAppState } from "../model/GlobalAppState";
+import { IGlobalAppState } from "./GlobalAppState";
 import { ActionToFuncMap, IAppAction } from "./appActions";
 
 export const AppReducer = (

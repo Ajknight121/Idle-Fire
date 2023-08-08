@@ -1,4 +1,4 @@
-import { IGlobalAppState } from "../model/GlobalAppState";
+import { IGlobalAppState } from "./GlobalAppState";
 
 export interface IGlobalAppProps {
   appState: IGlobalAppState;

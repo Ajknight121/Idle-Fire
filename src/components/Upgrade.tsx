@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
-import { AppStateContext } from "../domain/appContext";
-import { IUpgrade } from "../model/Upgrade";
+import { AppActionsNames, createActionWithPayload } from "../mechanics/appActions";
+import { AppStateContext } from "../mechanics/appContext";
+import { IUpgrade } from "../mechanics/Upgrade";
 import { styled } from "@mui/material/styles";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
@@ -46,11 +46,11 @@ export default function Upgrade(props: UpgradeComponentProps) {
   if (!props.upgradeProps.unlocked) {
     return <div />;
   } else {
-    const epsDisplay: string = `Each ${props.upgradeProps.upgradeName} produces ${props.upgradeProps.EPS} embers per second`;
+    const epsDisplay: string = `Each ${props.upgradeProps.upgradeName} produces ${props.upgradeProps.power} embers per second`;
     const epsDisplayTotal: string = `${
       props.upgradeProps.upgradeName
     } produces a total of ${
-      props.upgradeProps.EPS * props.upgradeProps.quantity
+      props.upgradeProps.power * props.upgradeProps.quantity
     } embers per second`;
     const upgradeContent = (
       <div className={"tooltip-values"}>

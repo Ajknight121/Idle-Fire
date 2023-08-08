@@ -1,28 +1,29 @@
-# Incremental 
+# Idle Fire
 
-A game that enables you to click and earn points.
+A Clicker game about growing your own fire.
 
-## Goals
+## Overview
+Idle Fire is a clicker game where the aim of the game is to click to create embers and to use those embers to purchase upgrades that help make more embers by either producing embers automatically or increasing the amount of embers you make when you click. Watch out for firemen they want to spoil the fun and slow the growth of your fire.
 
-### Setting up State
+This project was coded in Reactjs and Typescript and uses React's useReducer to follow the Redux design pattern. A factory design pattern is used for managing the game's upgrades.
 
-We should set up a click handler and use context or redux or something... How do we get global data to everywhere it needs to be used.
+## Project Breakdown
+### Managing State
+The game's immutable state is defined in `GlobalAppState.tsx` and keeps track of all game data and functions that control the game.
 
-### TODO Research CSS Grid and create a styled layout based on your designs
+When the user's action needs to modify the `GlobalAppState`, React's `useReducer` hook is used with a Record<> that maps actions to `GlobalAppState` functions that return a new state with modified values. When the action is needed, React.Dispath is used to dispatch an `IAppAction` object that specifies the action and payload to use the the Record<> defined in `appActions.ts`.
 
-### Create EmberDisplayComponent
+Example: \
+When the user clicks on an upgrade a dispatch is made with the "UPGRADE_PURCHASE" action name and a payload of upgradeProps to the reducer which accesses the GlobalAppState.buyUpgrade function through the Record<>. The buyUpgrade() function then return a new state with the updated upgrade.
 
-TODO This will display count of embers, for now display count of clicks, and display embers per second.
+### Storing game data
+All data is stored in `GlobalAppState` which is saved to the browser's LocalStorage.
 
-TODO Bring in the fire icon - display count of embers as in your design - and display embers per second from state
+### Making the game ``idle``
+The games idle feature of adding embers automatically after an upgrade is purchased is done by having a setting a 1 second interval with a dispatch to `addEmbersPerSecondOnTick` in `GlobalAppState` the embers added is a sum that is modified when a upgrade is purchased, multipliers are then applied to the sum.
+Because React re-renders on any values changed the interval is in a React `useEffect` which will not rerender during regular gameplay.
 
-
-### Interfaces
-
-1. Our global app state should be defined in an interface.
-2. started Upgrade interface - Adrian TODO - think about the two types of upgrades and the opportunity to have a shared interface as well as abstract class shared between the two upgrades
-
-
+The game's ember producers and click upgrades implement the `IUpgrade` interface. The default initialization of upgrades and their requirements for being revealed are managed by the `GameUpgradesFactory` in `gameUpgrades.ts`.
 
 # Getting Started with Create React App
 

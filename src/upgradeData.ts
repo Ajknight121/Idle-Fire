@@ -1,11 +1,11 @@
-import {IUpgrade} from "./model/Upgrade";
+import {IUpgrade} from "./mechanics/Upgrade";
 
 export const fireTenders: IUpgrade[] = [
   {
     unlocked: true,
     upgradeName: "Stick Thrower",
     upgradeCost: 20,
-    EPS: 5,
+    power: 5,
     quantity: 1,
     description: "",
   },
@@ -13,7 +13,7 @@ export const fireTenders: IUpgrade[] = [
     unlocked: false,
     upgradeName: "Lighter thrower",
     upgradeCost: 50,
-    EPS: 10,
+    power: 10,
     quantity: 1,
     description: "",
   },
@@ -21,7 +21,7 @@ export const fireTenders: IUpgrade[] = [
     unlocked: false,
     upgradeName: "Log chucker",
     upgradeCost: 100,
-    EPS: 25,
+    power: 25,
     quantity: 0,
     description: "",
   },
@@ -29,7 +29,7 @@ export const fireTenders: IUpgrade[] = [
     unlocked: false,
     upgradeName: "Gasoline thrower",
     upgradeCost: 250 ,
-    EPS: 100,
+    power: 100,
     quantity: 0,
     description: "",
   },
@@ -37,7 +37,7 @@ export const fireTenders: IUpgrade[] = [
     unlocked: false,
     upgradeName: "Tire dumper",
     upgradeCost: 500 ,
-    EPS: 250,
+    power: 250,
     quantity: 0,
     description: "",
   },
@@ -45,7 +45,7 @@ export const fireTenders: IUpgrade[] = [
     unlocked: false,
     upgradeName: "Coal shucker",
     upgradeCost: 1000,
-    EPS: 400,
+    power: 400,
     quantity: 0,
     description: "",
   },

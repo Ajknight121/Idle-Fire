@@ -1,11 +1,11 @@
 export interface IGameAnalytics {
+    storedClicksMinute: number[]
     clicksLastMinute: number
     /** in dev: TODO- the problem is that it resets and needs to be frozen during points of inactivity */
     clickRollingAveragePerMinute: number
-    lastMinClicks: number[]
 
+    storedClicksSecond: number[]
     clicksLastSecond: number
-    lastSecClicks: number[]
 }
 export class GameAnalytics implements IGameAnalytics {
     public static readonly FILTER_TIME = 30000
@@ -13,58 +13,60 @@ export class GameAnalytics implements IGameAnalytics {
     /** Clicks per minute **/
     public clicksLastMinute: number = 0
     public clickRollingAveragePerMinute: number = 0
-    public lastMinClicks: number[] = []
+    public storedClicksMinute: number[] = []
     /** Clicks per Second **/
     public clicksLastSecond: number = 0
-    public lastSecClicks: number[] = []
+    public storedClicksSecond: number[] = []
 
     static handleClick(gameAnalytics: IGameAnalytics): IGameAnalytics {
         const now = new Date()
         const epochNow = now.valueOf()
 
-        const mostRecentTime = gameAnalytics.lastMinClicks[gameAnalytics.lastMinClicks.length - 1]
+        const mostRecentTime = gameAnalytics.storedClicksMinute[gameAnalytics.storedClicksMinute.length - 1]
         const shouldAffectAnalytics = GameAnalytics._shouldTrackAnalytics(epochNow, mostRecentTime)
-
+        
+        // Remove expired clicks
         /** Only remove clicks from tracked clicks per minute while active or inactivity buffer not expired */
         const clickCollection = shouldAffectAnalytics ?
-            gameAnalytics.lastMinClicks.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME) :
-            gameAnalytics.lastMinClicks
-        const clickSecCollection = gameAnalytics.lastSecClicks.filter(clickTime => epochNow - clickTime < 1000)
-
-        const newSecClickArray = [...clickSecCollection, epochNow]
+            gameAnalytics.storedClicksMinute.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME) :
+            gameAnalytics.storedClicksMinute
+        const clickSecCollection = gameAnalytics.storedClicksSecond.filter(clickTime => epochNow - clickTime < 1000)
+        // Store new click
         const newClickArray = [...clickCollection, epochNow]
-        //What to do here
+        const newSecClickArray = [...clickSecCollection, epochNow]
+        // Return new state of GameAnalytics
         const newGameAnalytics = {
-            lastMinClicks: newClickArray,
+            storedClicksMinute: newClickArray,
             clicksLastMinute: newClickArray.length,
             clickRollingAveragePerMinute: gameAnalytics.clickRollingAveragePerMinute,
             clicksLastSecond: newSecClickArray.length,
-            lastSecClicks: newSecClickArray
+            storedClicksSecond: newSecClickArray
         }
         GameAnalytics.log(newGameAnalytics)
         return newGameAnalytics
     }
+    
     static handleAddEmbersPerSecondOnTick(gameAnalytics: IGameAnalytics, mostRecentSession: number): IGameAnalytics {
         const oldCpm = gameAnalytics.clicksLastMinute
         const epochNow = new Date().valueOf()
-        const mostRecentTime = gameAnalytics.lastMinClicks[gameAnalytics.lastMinClicks.length - 1]
+        const mostRecentTime = gameAnalytics.storedClicksMinute[gameAnalytics.storedClicksMinute.length - 1]
         const shouldAffectAnalytics = (epochNow - mostRecentTime) < GameAnalytics.INACTIVITY_TRACKER_TIMOUT
         let sessionLength = epochNow - mostRecentSession
         let sessionMinLength = Math.floor(sessionLength / 60000)
 
-        const calculatedClicks = shouldAffectAnalytics ? gameAnalytics.lastMinClicks.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME): gameAnalytics.lastMinClicks.map(item => item + 1000)
-        const filterDownSecLastClicks = gameAnalytics.lastSecClicks.filter(clickTime => epochNow - clickTime < 1000)
+        const calculatedClicks = shouldAffectAnalytics ? gameAnalytics.storedClicksMinute.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME): gameAnalytics.storedClicksMinute.map(item => item + 1000)
+        const filterDownSecLastClicks = gameAnalytics.storedClicksSecond.filter(clickTime => epochNow - clickTime < 1000)
 
         const newSecClickArray = [...filterDownSecLastClicks]
 
         const newClickArray = [...calculatedClicks]
         const newCpm = shouldAffectAnalytics ? Math.floor(((oldCpm * sessionMinLength) + newClickArray.length) / (sessionMinLength + 1)) : oldCpm
         const newGameAnalytics = {
-            lastMinClicks: newClickArray,
+            storedClicksMinute: newClickArray,
             clicksLastMinute: newClickArray.length,
             clickRollingAveragePerMinute: newCpm,
             clicksLastSecond: newSecClickArray.length,
-            lastSecClicks: newSecClickArray
+            storedClicksSecond: newSecClickArray
         }
         GameAnalytics.log(newGameAnalytics)
         return newGameAnalytics
@@ -75,13 +77,13 @@ export class GameAnalytics implements IGameAnalytics {
 
     }
     static log(gameAnalytics: IGameAnalytics): void {
-        console.log(`
-        clicksLastMinute: ${gameAnalytics.clicksLastMinute},
-        clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
-
-        `)
+        if (false) {
+            console.log(`
+            clicksLastMinute: ${gameAnalytics.clicksLastMinute},
+            clickRollingAveragePerMinute: ${gameAnalytics.clickRollingAveragePerMinute},
+    
+            `)
+        }
+        
     }
-
 }
-
-// const epochNowUtil = (): number => { return new Date().valueOf() }

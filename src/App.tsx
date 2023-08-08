@@ -1,6 +1,6 @@
 import "./App.css";
-import { AppStateProvider } from "./domain/appContext";
-import GameLoop from "./domain/gameLoop";
+import { AppStateProvider } from "./mechanics/appContext";
+import GameLoop from "./mechanics/gameLoop";
 
 function App() {
   return (
