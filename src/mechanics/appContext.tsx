@@ -63,6 +63,9 @@ function checkStoredState(storedState:GlobalAppState) {
   if (!storedState.sessionStartTimes) {
     storedState.sessionStartTimes = [new Date().valueOf()];
   }
+  if (!storedState.version) {
+    storedState.version = new GlobalAppState().version;
+  }
   return storedState
 }
 
@@ -70,7 +73,12 @@ export const gameDataKey = 'gameData';
 // TODO implement service for all localStorage actions (separate file, could be by api/web request).
 const storedState: IGlobalAppState = JSON.parse(localStorage.getItem(gameDataKey) ?? '{}')
 
-let initialAppState = (Object.keys(storedState).length) ? storedState : new GlobalAppState()
+let initialAppState = new GlobalAppState()
+if (storedState.version === undefined || initialAppState.version > storedState.version) {
+  initialAppState = new GlobalAppState()
+} else {
+  initialAppState = storedState
+}
 initialAppState = checkStoredState(initialAppState)
 
 const sessionStartTimes = [...initialAppState.sessionStartTimes, new Date().valueOf()]
