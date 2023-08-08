@@ -1,6 +1,6 @@
 import {useContext} from "react";
-import {AppStateContext} from "../domain/appContext";
-import {AppActionsNames, createActionWithPayload} from "../domain/appActions";
+import {AppStateContext} from "../mechanics/appContext";
+import {AppActionsNames, createActionWithPayload} from "../mechanics/appActions";
 
 export default function Statistics() {
     const {appState, dispatchAppAction} = useContext(AppStateContext);

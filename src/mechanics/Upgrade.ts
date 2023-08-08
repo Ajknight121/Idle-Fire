@@ -3,19 +3,9 @@ export interface IUpgrade {
   unlocked: boolean;
   upgradeName: string;
   upgradeCost: number;
-  EPS: number; // Ember per second value added on purchase
+  power: number; // Ember per second value added on purchase or click power
   quantity: number; // Number of times upgrade is purchased
   description: string;
-}
-
-export interface IClickUpgrade {
-  classname?: string;
-  unlocked: boolean;
-  upgradeName: string;
-  upgradeCost: number;
-  EPC: number; // Tracks click power
-  quantity: number; // Number of times upgrade is purchased
-  description?: string;
 }
 
 export interface IEvent {

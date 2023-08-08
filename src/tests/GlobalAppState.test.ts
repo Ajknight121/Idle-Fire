@@ -1,6 +1,6 @@
-import { GlobalAppState } from "../model/GlobalAppState";
-import {IClickUpgrade, IUpgrade} from "../model/Upgrade";
-import {UpgradeNames} from "../domain/gameUpgrades";
+import { GlobalAppState } from "../mechanics/GlobalAppState";
+import {IUpgrade} from "../mechanics/Upgrade";
+import {UpgradeNames} from "../mechanics/gameUpgrades";
 /** The global app state is our SUT aka subject under test, so all assertions in this test suite should be on our SUT */
 describe("global app state", () => {
   it("addToEmbersPerSec", () => {
@@ -76,11 +76,11 @@ describe("global app state", () => {
   });
   describe("upgradeEmbersPerClick", () => {
     const mockEmbers = 10;
-    const mockUpgrade: IClickUpgrade = {
+    const mockUpgrade: IUpgrade = {
       unlocked: true,
       upgradeName: UpgradeNames.clickPower,
       upgradeCost: 50,
-      EPC: 2,
+      power: 2,
       quantity: 1,
       description: "Each upgrade doubles click power"
     }
@@ -106,7 +106,7 @@ describe("global app state", () => {
         mockUpgrade
       );
       //Assert
-      expect(newState.clickPower).toBe(mockUpgrade.EPC * 2);
+      expect(newState.clickPower).toBe(mockUpgrade.power * 2);
     });
     describe("Purchases multiple click upgrades", () => {
       //Act
@@ -115,7 +115,7 @@ describe("global app state", () => {
           mockUpgrade
       );
       //Assert
-      expect(newState.clickPower).toBe(mockUpgrade.EPC * 2);
+      expect(newState.clickPower).toBe(mockUpgrade.power * 2);
     });
   });
 });

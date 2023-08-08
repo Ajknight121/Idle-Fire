@@ -32,7 +32,7 @@ export default function SparkClickAnimation(): Function {
   }, [elements,rootSelector]);
 
 
-
+  // TODO: Pass clickPower level from global app state for conditional confetti
   const getConfetti = (x: number, y: number) => <div style={cssInJs(x, y)}>
     {Confetti(12)}
   </div>

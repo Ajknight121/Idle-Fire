@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { AppActionsNames, createActionWithPayload } from "../domain/appActions";
-import { AppStateContext } from "../domain/appContext";
-import { GameUpgradesFactory } from "../domain/gameUpgrades";
-import {IClickUpgrade, IUpgrade} from "../model/Upgrade";
+import { AppActionsNames, createActionWithPayload } from "../mechanics/appActions";
+import { AppStateContext } from "../mechanics/appContext";
+import { GameUpgradesFactory } from "../mechanics/gameUpgrades";
+import { IUpgrade} from "../mechanics/Upgrade";
 import Statistics from "./Statistics";
 import Upgrade from "./Upgrade";
 import ClickPowerUpgrade from "./ClickPowerUpgrade";
@@ -11,7 +11,7 @@ export default function UpgradeContainer() {
   const { appState, dispatchAppAction } = useContext(AppStateContext);
 
     const getClickUpgrades = (
-        upgrade: IClickUpgrade,
+        upgrade: IUpgrade,
         index: number,
     ) => {
         const classForUpgrade =
@@ -49,31 +49,31 @@ export default function UpgradeContainer() {
       <div className="upgrade-label">Upgrades</div>
       {/* <div className="upgrade-label">Total Embers {appState.embers.toLocaleString()}</div> */}
       <div className={"upgrade-quantity"}>
-        Buy:
+        {"Buy:"}
         <input
           type={"radio"}
           value={"1"}
           name={"quantity"}
           onChange={(event) => upgradeQuantity(event, 1)}
           checked={appState.buyQuantity === 1}
-        />{" "}
-        x1
+        />
+        {"x1 "}
         <input
           type={"radio"}
           value={"10"}
           name={"quantity"}
           onChange={(event) => upgradeQuantity(event, 10)}
           checked={appState.buyQuantity === 10}
-        />{" "}
-        x10
+        />
+        {"x10 "}
         <input
           type={"radio"}
           value={"100"}
           name={"quantity"}
           onChange={(event) => upgradeQuantity(event, 100)}
           checked={appState.buyQuantity === 100}
-        />{" "}
-        x100
+        />
+        {"x100"}
       </div>
         <div className={"upgrades"}>
             <div className={"click-upgrades"}>

@@ -1,7 +1,7 @@
 import { CSSProperties, useContext} from "react";
-import { AppStateContext } from "../domain/appContext";
+import { AppStateContext } from "../mechanics/appContext";
 import flame from "../images/flame.png";
-import { AppActionsNames, createActionWithPayload } from '../domain/appActions';
+import { AppActionsNames, createActionWithPayload } from '../mechanics/appActions';
 import FireMarshal from "./FireMarshal";
 
 export default function ClickerButton() {

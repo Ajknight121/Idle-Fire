@@ -1,9 +1,9 @@
-import {IAppAction} from "../domain/appActions";
-import {GameUpgradesFactory} from "../domain/gameUpgrades";
+import {IAppAction} from "./appActions";
+import {GameUpgradesFactory, UpgradeType} from "./gameUpgrades";
 import {Logger} from "../utils/logger";
-import {IClickUpgrade,IEvent, IUpgrade} from "./Upgrade";
-import {gameDataKey} from "../domain/appContext";
-import {GameAnalytics, IGameAnalytics} from "../domain/gameAnalytics";
+import {IEvent, IUpgrade} from "./Upgrade";
+import {gameDataKey} from "./appContext";
+import {GameAnalytics, IGameAnalytics} from "./gameAnalytics";
 import { Fireman } from "./Upgrade";
 const fireMarshalDelay = 120000;
 const initFireMarshalDelay = 40000;
@@ -17,7 +17,7 @@ export interface IGlobalAppState {
   totalEmbers: number;
   buyQuantity: number;
   upgrades: IUpgrade[];
-  clickUpgrades: IClickUpgrade[];
+  clickUpgrades: IUpgrade[];
   //Cursor
   currCursorX: number;
   currCursorY: number;
@@ -41,8 +41,8 @@ export class GlobalAppState implements IGlobalAppState {
   totalClicks = 0;
   buyQuantity = 1;
   totalEmbers = 0;
-  upgrades = GameUpgradesFactory.getInitialUpgrades()
-  clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades()
+  upgrades = GameUpgradesFactory.getInitialUpgrades(this, UpgradeType.PRODUCER_UPGRADE)
+  clickUpgrades = GameUpgradesFactory.getInitialUpgrades(this, UpgradeType.CLICK_UPGRADE)
   //Cursor
   currCursorX = 0;
   currCursorY = 0;
@@ -86,7 +86,7 @@ export class GlobalAppState implements IGlobalAppState {
     return {
       ...appState,
       upgrades: appState.upgrades.map((u) =>
-        GameUpgradesFactory.getEmberBasedUpgrade(u, appState.totalEmbers)
+        GameUpgradesFactory.updateEmberBasedUpgrade(u, appState.totalEmbers)
       ),
     };
   }
@@ -204,7 +204,7 @@ export class GlobalAppState implements IGlobalAppState {
   /** Every time you buy something we need to deduct your embers. */
   static upgradeEmbersPerClick = (
     appState: GlobalAppState,
-    upgrade: IClickUpgrade
+    upgrade: IUpgrade
   ): IGlobalAppState => {
     const clickUpgrades = appState.clickUpgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
@@ -212,7 +212,7 @@ export class GlobalAppState implements IGlobalAppState {
       } else {
         let updatedUpgrade = Object.assign({}, upgrade);
         updatedUpgrade.quantity += appState.buyQuantity;
-        updatedUpgrade.EPC = ((updatedUpgrade.EPC * 2) * appState.buyQuantity);
+        updatedUpgrade.power = ((updatedUpgrade.power * 2) * appState.buyQuantity);
         updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 1.5) * appState.buyQuantity;
         return updatedUpgrade;
       }
@@ -221,14 +221,14 @@ export class GlobalAppState implements IGlobalAppState {
       ...appState,
       embers: appState.embers - upgrade.upgradeCost,
       clickUpgrades,
-      clickPower: clickUpgrades[0].EPC, // TODO give the quantity to add as a parameter
+      clickPower: clickUpgrades[0].power, // TODO give the quantity to add as a parameter
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
   }
   static upgradeGlobalMultiplier = (
     appState: IGlobalAppState,
-    upgrade: IClickUpgrade
+    upgrade: IUpgrade
   ): IGlobalAppState => {
     const clickUpgrades = appState.clickUpgrades.map((u) => {
       if (upgrade.upgradeName !== u.upgradeName) {
@@ -236,7 +236,7 @@ export class GlobalAppState implements IGlobalAppState {
       } else {
         let updatedUpgrade = Object.assign({}, upgrade);
         updatedUpgrade.quantity += appState.buyQuantity;
-        updatedUpgrade.EPC = ((updatedUpgrade.EPC + 1) * appState.buyQuantity);
+        updatedUpgrade.power = ((updatedUpgrade.power + 1) * appState.buyQuantity);
         updatedUpgrade.upgradeCost += Math.ceil(updatedUpgrade.upgradeCost * 7) * appState.buyQuantity;
         return updatedUpgrade;
       }
@@ -245,7 +245,7 @@ export class GlobalAppState implements IGlobalAppState {
       ...appState,
       embers: appState.embers - upgrade.upgradeCost,
       clickUpgrades,
-      globalMultiplier: clickUpgrades[1].EPC, // TODO give the quantity to add as a parameter
+      globalMultiplier: clickUpgrades[1].power, // TODO give the quantity to add as a parameter
     };
     GlobalAppState.logStateToConsole(newState);
     return newState;
@@ -270,7 +270,7 @@ export class GlobalAppState implements IGlobalAppState {
       embers: appState.embers - upgrade.upgradeCost * appState.buyQuantity,
       upgrades,
       embersPerSecond:
-        appState.embersPerSecond + upgrade.EPS * appState.buyQuantity,
+        appState.embersPerSecond + upgrade.power * appState.buyQuantity,
       // embersPerSecond: appState.embersPerSecond + upgrade.embersPerSecond, //need to add embers per second for that particular upgrade or decide how to track it
     };
     GlobalAppState.logStateToConsole(newState);

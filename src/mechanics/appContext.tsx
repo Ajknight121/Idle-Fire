@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from "react";
-import { GlobalAppState, IGlobalAppState } from "../model/GlobalAppState";
+import { GlobalAppState, IGlobalAppState } from "./GlobalAppState";
 import { IAppAction } from "./appActions";
 import { AppReducer } from "./appReducer";
 import SparkClickAnimation from "../components/CanvasControl";
-import { Fireman } from "../model/Upgrade";
-import {GameUpgradesFactory} from "./gameUpgrades";
+import { Fireman } from "./Upgrade";
+import {GameUpgradesFactory, UpgradeType} from "./gameUpgrades";
 import {GameAnalytics} from "./gameAnalytics";
 
 function checkStoredState(storedState:GlobalAppState) {
@@ -28,10 +28,10 @@ function checkStoredState(storedState:GlobalAppState) {
     storedState.totalEmbers = 0;
   }
   if (!storedState.upgrades) {
-    storedState.upgrades = GameUpgradesFactory.getInitialUpgrades();
+    storedState.upgrades = GameUpgradesFactory.getInitialUpgrades(storedState, UpgradeType.PRODUCER_UPGRADE);
   }
   if (!storedState.clickUpgrades) {
-    storedState.clickUpgrades = GameUpgradesFactory.getInitialClickUpgrades();
+    storedState.clickUpgrades = GameUpgradesFactory.getInitialUpgrades(storedState, UpgradeType.CLICK_UPGRADE);
   }
   if (!storedState.currCursorX) {
     storedState.currCursorX = 0;
@@ -67,13 +67,14 @@ function checkStoredState(storedState:GlobalAppState) {
 }
 
 export const gameDataKey = 'gameData';
-//TO DO implement service for all localStorage actions (separate file, could be by api/web request).
+// TODO implement service for all localStorage actions (separate file, could be by api/web request).
 const storedState: IGlobalAppState = JSON.parse(localStorage.getItem(gameDataKey) ?? '{}')
 
 let initialAppState = (Object.keys(storedState).length) ? storedState : new GlobalAppState()
 initialAppState = checkStoredState(initialAppState)
 
 const sessionStartTimes = [...initialAppState.sessionStartTimes, new Date().valueOf()]
+
 export type GlobalContext = {
   appState: GlobalAppState;
   dispatchAppAction: React.Dispatch<IAppAction>;
