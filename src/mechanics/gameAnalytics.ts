@@ -49,8 +49,8 @@ export class GameAnalytics implements IGameAnalytics {
     static handleAddEmbersPerSecondOnTick(gameAnalytics: IGameAnalytics, mostRecentSession: number): IGameAnalytics {
         const oldCpm = gameAnalytics.clicksLastMinute
         const epochNow = new Date().valueOf()
-        const mostRecentTime = gameAnalytics.storedClicksMinute[gameAnalytics.storedClicksMinute.length - 1]
-        const shouldAffectAnalytics = (epochNow - mostRecentTime) < GameAnalytics.INACTIVITY_TRACKER_TIMOUT
+        // const mostRecentTime = gameAnalytics.storedClicksMinute[gameAnalytics.storedClicksMinute.length - 1]
+        // const shouldAffectAnalytics = (epochNow - mostRecentTime) < GameAnalytics.INACTIVITY_TRACKER_TIMOUT
         let sessionLength = epochNow - mostRecentSession
         let sessionMinLength = Math.floor(sessionLength / 60000)
 
