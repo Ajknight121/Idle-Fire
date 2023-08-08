@@ -15,7 +15,7 @@ export default function Statistics() {
             <br/>
             Fire clicks: {appState.totalClicks.toLocaleString()}
             <br/>
-            Fire Clicks this second/minute: {appState.gameAnalytics.clicksLastSecond} clicks
+            Fire Clicks this second: {appState.gameAnalytics.clicksLastSecond} clicks
             <br/>
             Fire Clicks this minute: {appState.gameAnalytics.clicksLastMinute} clicks
             <br/>
