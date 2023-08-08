@@ -8,7 +8,7 @@ export interface IGameAnalytics {
     clicksLastSecond: number
 }
 export class GameAnalytics implements IGameAnalytics {
-    public static readonly FILTER_TIME = 30000
+    public static readonly FILTER_TIME = 60000
     public static readonly INACTIVITY_TRACKER_TIMOUT = 10000
     /** Clicks per minute **/
     public clicksLastMinute: number = 0
@@ -54,13 +54,13 @@ export class GameAnalytics implements IGameAnalytics {
         let sessionLength = epochNow - mostRecentSession
         let sessionMinLength = Math.floor(sessionLength / 60000)
 
-        const calculatedClicks = shouldAffectAnalytics ? gameAnalytics.storedClicksMinute.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME): gameAnalytics.storedClicksMinute.map(item => item + 1000)
+        const calculatedClicks = gameAnalytics.storedClicksMinute.filter(clickTime => epochNow - clickTime < GameAnalytics.FILTER_TIME)
         const filterDownSecLastClicks = gameAnalytics.storedClicksSecond.filter(clickTime => epochNow - clickTime < 1000)
 
         const newSecClickArray = [...filterDownSecLastClicks]
 
         const newClickArray = [...calculatedClicks]
-        const newCpm = shouldAffectAnalytics ? Math.floor(((oldCpm * sessionMinLength) + newClickArray.length) / (sessionMinLength + 1)) : oldCpm
+        const newCpm = Math.floor(((oldCpm * sessionMinLength) + newClickArray.length) / (sessionMinLength + 1))
         const newGameAnalytics = {
             storedClicksMinute: newClickArray,
             clicksLastMinute: newClickArray.length,

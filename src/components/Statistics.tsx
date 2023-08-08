@@ -15,9 +15,9 @@ export default function Statistics() {
             <br/>
             Fire clicks: {appState.totalClicks.toLocaleString()}
             <br/>
-            Fire Clicks this second/minute: {appState.gameAnalytics.clicksLastSecond} / {appState.gameAnalytics.clicksLastMinute} clicks
+            Fire Clicks this second/minute: {appState.gameAnalytics.clicksLastSecond} clicks
             <br/>
-            Average Fire clicks per minute: {appState.gameAnalytics.clickRollingAveragePerMinute} clicks
+            Fire Clicks this minute: {appState.gameAnalytics.clicksLastMinute} clicks
             <br/>
             Total Embers from clicking: {appState.embersFromFire.toLocaleString()}
             <br/>
