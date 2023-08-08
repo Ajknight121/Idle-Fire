@@ -31,6 +31,7 @@ export interface IGlobalAppState {
   firemenClicked: number;
   gameAnalytics: IGameAnalytics
   sessionStartTimes: number[];
+  version: number; // enabled when state change causes crash
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -56,6 +57,7 @@ export class GlobalAppState implements IGlobalAppState {
   firemenClicked = 0;
   gameAnalytics = new GameAnalytics();
   sessionStartTimes: number[] = [new Date().valueOf()];
+  version = 1;
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
