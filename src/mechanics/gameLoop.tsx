@@ -37,8 +37,8 @@ export default function GameLoop() {
       {/*<Header />*/}
       {/* NOTE: For local dev only */}
       {/* <div>App Component {JSON.stringify(appState)}</div> */}
-      <UpgradeContainer />
       <ClickerButton />
+      <UpgradeContainer />
     </>
   );
 }
