@@ -132,6 +132,9 @@ body {
   overflow: scroll;
 }
 
+.ember-count::-webkit-scrollbar {
+  display: none;
+}
 .ember-per-second {
   display: inline-block;
   font-size: x-large;
