@@ -131,6 +131,9 @@ body {
   /* line-height: min(1.5em, 120%); */
   overflow: scroll;
 }
+.ember-count::-webkit-scrollbar {
+  display: none;
+}
 
 .ember-per-second {
   display: inline-block;
