@@ -21,10 +21,16 @@ body {
   height: 100vh;
   width: 100%;
   margin: 0;
+  background: #042A2B;
   background-size: cover;
   display: flex;
   flex-direction: row-reverse;
   overflow: auto;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
 }
 
 @media screen and (max-width:1000px) {
@@ -33,6 +39,8 @@ body {
   }
   .upgrade-container {
     width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }
 
@@ -45,8 +53,9 @@ body {
   display: block;
   position: relative;
   width: 100%;
-  min-height: 80%;
-  overflow: auto;
+  height: 100%;
+  min-height: 65%;
+  overflow: hidden;
   background-image: url('images/CedarShadow.png'), url('images/CedarShadow.png');
   background-repeat: no-repeat;
   background-size: 50% 100%, 50% 100%;
@@ -110,15 +119,17 @@ body {
   position: absolute;
   width: 100%;
   height: 70px;
-  padding-top: 10px;
+  margin-top: 50px;
   box-sizing: border-box;
   /* font-size: 3vw; */
   z-index: 9;
 }
 
+
 .ember-count {
   font-size: xx-large;
   /* line-height: min(1.5em, 120%); */
+  overflow: scroll;
 }
 
 .ember-per-second {
@@ -130,16 +141,32 @@ body {
 .EmbersByClickSec {
   font-size: x-large;
 }
+@media screen and (max-width:500px) {
+  .counters {
+    margin-top: 70px;
+  }
+  .ember-count {
+    font-size: medium;
+  }
+  .ember-per-second {
+    font-size: medium;
+  }
+  .EmbersByClickSec {
+    font-size: medium;
+  }
+}
 
 .upgrade-container {
   position: relative;
   float: left;
   background: #000000;
   display: block;
-  min-width: 410px;
+  min-width: 100px;
   height: 100vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  
+}
+.upgrade-container::-webkit-scrollbar {
+  display: none;
 }
 
 .upgrade-quantity {
@@ -151,6 +178,13 @@ body {
   color: #F47D20;
   margin-top: 30px;
   margin-bottom: 20px;
+
+  overflow: scroll;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: block;
+  line-height: 1em; /* a */
+  max-height: 1em;
 }
 
 .upgrade-name {
@@ -173,6 +207,13 @@ body {
   color: white;
   right: 20px;
   bottom: 5px;
+
+  overflow: hidden;
+  text-overflow: scroll;
+  word-wrap: break-word;
+  display: block;
+  line-height: 1em; /* a */
+  max-height: 1em;
 }
 
 .upgrades {
@@ -269,7 +310,6 @@ body {
 
 .statistics {
   background: antiquewhite;
-  width: 90%;
   border-style: double;
   margin: 0 20px;
 }

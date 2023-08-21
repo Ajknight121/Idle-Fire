@@ -28,7 +28,7 @@ export default function ClickerButton() {
           Embers per sec: {appState.embersPerSecond.toLocaleString()} {(appState.FireMarshal.isActive ? "* 0.5": "")}
         </div>
         <div className={"EmbersByClickSec"}>
-          Embers by click: {appState.gameAnalytics.clicksLastSecond * appState.clickPower}/s
+          Embers by click: {(appState.gameAnalytics.clicksLastSecond * appState.clickPower).toLocaleString()}/s
         </div>
 
       </div>

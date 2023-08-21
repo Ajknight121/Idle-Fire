@@ -32,6 +32,9 @@ export interface IGlobalAppState {
   gameAnalytics: IGameAnalytics
   sessionStartTimes: number[];
   version: number; // enabled when state change causes crash
+  //Meta
+  currScreenX: number;
+  currScreenY: number;
 }
 
 export class GlobalAppState implements IGlobalAppState {
@@ -58,6 +61,9 @@ export class GlobalAppState implements IGlobalAppState {
   gameAnalytics = new GameAnalytics();
   sessionStartTimes: number[] = [new Date().valueOf()];
   version = 1;
+  //meta
+  currScreenX = window.innerWidth;
+  currScreenY = window.innerHeight;
 
   static logStateToConsole = (state: IGlobalAppState) => {
     Logger.table(state);
@@ -99,7 +105,7 @@ export class GlobalAppState implements IGlobalAppState {
     let newAppState = Object.assign({},appState);
     //Event activation
     const currentTime = new Date()
-    console.log(currentTime.valueOf() - mostRecentSession.valueOf())
+    // console.log(currentTime.valueOf() - mostRecentSession.valueOf())
     if (currentTime.valueOf() - mostRecentSession.valueOf() > initFireMarshalDelay && !appState.FireMarshal.unlocked) {
       console.log("Firemen approach")
       appState.FireMarshal.unlocked = true
@@ -113,7 +119,9 @@ export class GlobalAppState implements IGlobalAppState {
       ...newAppState,
       embers: appState.embers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
       totalEmbers: appState.totalEmbers + (appState.embersPerSecond * appState.tickMultiplier * appState.globalMultiplier * (appState.FireMarshal.isActive ? .5: 1)),
-      gameAnalytics: newGameAnalytics
+      gameAnalytics: newGameAnalytics,
+      currScreenX: window.innerWidth,
+      currScreenY: window.innerHeight
     };
     const finalState = GlobalAppState.updateStateUpgrades(updatedEmbers);
     GlobalAppState.logStateToConsole(finalState)
@@ -309,7 +317,7 @@ export class GlobalAppState implements IGlobalAppState {
     return {
       ...appState,
       currCursorX: event.clientX,
-      currCursorY: event.clientY,
+      currCursorY: event.clientY
     }
   }
 }

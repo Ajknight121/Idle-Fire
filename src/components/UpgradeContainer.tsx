@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppActionsNames, createActionWithPayload } from "../mechanics/appActions";
 import { AppStateContext } from "../mechanics/appContext";
 import { GameUpgradesFactory } from "../mechanics/gameUpgrades";
-import { IUpgrade} from "../mechanics/Upgrade";
+import { IUpgrade } from "../mechanics/Upgrade";
 import Statistics from "./Statistics";
 import Upgrade from "./Upgrade";
 import ClickPowerUpgrade from "./ClickPowerUpgrade";
@@ -10,22 +10,20 @@ import ClickPowerUpgrade from "./ClickPowerUpgrade";
 export default function UpgradeContainer() {
   const { appState, dispatchAppAction } = useContext(AppStateContext);
 
-    const getClickUpgrades = (
-        upgrade: IUpgrade,
-        index: number,
-    ) => {
-        const classForUpgrade =
-            upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
-                ? "click-upgrade-available"
-                : "click-upgrade-unavailable";
-        return (
-            <ClickPowerUpgrade key={index} upgradeProps={upgrade} classname={classForUpgrade} />
-        );
-    };
-  const getUpgradeContent = (
-    upgrade: IUpgrade,
-    index: number,
-  ) => {
+  const getClickUpgrades = (upgrade: IUpgrade, index: number) => {
+    const classForUpgrade =
+      upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
+        ? "click-upgrade-available"
+        : "click-upgrade-unavailable";
+    return (
+      <ClickPowerUpgrade
+        key={index}
+        upgradeProps={upgrade}
+        classname={classForUpgrade}
+      />
+    );
+  };
+  const getUpgradeContent = (upgrade: IUpgrade, index: number) => {
     const classForUpgrade =
       upgrade.unlocked && GameUpgradesFactory.canAfford(upgrade, appState)
         ? "upgrade-available"
@@ -46,7 +44,7 @@ export default function UpgradeContainer() {
 
   return (
     <div className="upgrade-container">
-      <div className="upgrade-label">Upgrades</div>
+      {/* <div className="upgrade-label">Upgrades</div> */}
       {/* <div className="upgrade-label">Total Embers {appState.embers.toLocaleString()}</div> */}
       <div className={"upgrade-quantity"}>
         {"Buy:"}
@@ -75,12 +73,12 @@ export default function UpgradeContainer() {
         />
         {"x100"}
       </div>
-        <div className={"upgrades"}>
-            <div className={"click-upgrades"}>
-                {appState.clickUpgrades.map(getClickUpgrades)}
-            </div>
-        {appState.upgrades.map(getUpgradeContent)}
+      <div className={"upgrades"}>
+        <div className={"click-upgrades"}>
+          {appState.clickUpgrades.map(getClickUpgrades)}
         </div>
+        {appState.upgrades.map(getUpgradeContent)}
+      </div>
       <Statistics />
     </div>
   );

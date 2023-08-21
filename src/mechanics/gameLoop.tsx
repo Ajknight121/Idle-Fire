@@ -1,8 +1,7 @@
 import { useContext, useEffect } from "react";
-import ClickerButton from "../components/ClickerButton";
-import UpgradeContainer from "../components/UpgradeContainer";
 import { AppActionsNames, createActionWithPayload } from "./appActions";
 import { AppStateContext } from "./appContext";
+import GameWrapper from "../components/GameWrapper";
 
 // let countOfGameLoopInvocations = 0;
 /** Main entry point into game logic */
@@ -37,8 +36,7 @@ export default function GameLoop() {
       {/*<Header />*/}
       {/* NOTE: For local dev only */}
       {/* <div>App Component {JSON.stringify(appState)}</div> */}
-      <ClickerButton />
-      <UpgradeContainer />
+      <GameWrapper />
     </>
   );
 }
