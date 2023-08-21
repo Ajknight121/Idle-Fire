@@ -148,7 +148,7 @@ export class GameUpgradesFactory {
   }
 
   static isUnlocked(u: IUpgrade | Partial<IUpgrade>, e: number): boolean {
-    return u.unlocked === true || (u.upgradeCost ?? 999) * 0.15 <= e;
+    return u.unlocked === true || (u.upgradeCost ?? 999) * 0.3 <= e;
   }
 
   static updateEmberBasedUpgrade(
@@ -160,33 +160,4 @@ export class GameUpgradesFactory {
       unlocked: GameUpgradesFactory.isUnlocked(customProps, totalEmbers),
     } as IUpgrade;
   }
-
-  // static getInitialClickUpgrades(): IClickUpgrade[] {
-  //   return [
-  //     {
-  //       unlocked: true,
-  //       upgradeName: UpgradeNames.clickPower,
-  //       upgradeCost: 50,
-  //       EPC: 1,
-  //       quantity: 1,
-  //       description: "Each upgrade doubles click power"
-  //     },
-  //     {
-  //       unlocked: true,
-  //       upgradeName: UpgradeNames.globalMultiplier,
-  //       upgradeCost: 150,
-  //       EPC: 1,
-  //       quantity: 1,
-  //       description: "Multiplies ember gain from all sources!"
-  //     }
-  //     // {
-  //     //   unlocked: true,
-  //     //   upgradeName: UpgradeNames.clickMultiplier,
-  //     //   upgradeCost: 5000,
-  //     //   EPC: 1.0,
-  //     //   quantity: 0,
-  //     //     description: "Each upgrade raises the maximum click multiplier"
-  //     // },
-  //   ];
-  // }
 }

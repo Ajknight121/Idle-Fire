@@ -23,7 +23,7 @@ export default function FireMarshal() {
 
     return (
         <div style={cssInJs} className={"fireman"} onClick={() => handleClick()}>
-            <img src={firemanImg} alt={"fireman"} height={120}/>
+            <img src={firemanImg} alt={"fireman"} height={120} draggable="false"/>
         </div>
     );
 }
