@@ -1,4 +1,4 @@
-import {CSSProperties, useContext} from "react";
+import {CSSProperties, useContext, useState} from "react";
 import {AppStateContext} from "../mechanics/appContext";
 import {AppActionsNames, createActionWithPayload} from "../mechanics/appActions";
 import firemanImg from "../images/firemanAndHoseRight.svg"
@@ -6,11 +6,11 @@ import firemanImg from "../images/firemanAndHoseRight.svg"
 
 export default function FireMarshal() {
     const { appState, dispatchAppAction } = useContext(AppStateContext);
-
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const containerSize = 60;
     const cssInJs: CSSProperties = {
-        bottom: 20, //minus 15 for center of cursor
-        left: "30%", //400 for upgrade container // 15
+        bottom: windowWidth <= 500 ? 50 : 20, //minus 15 for center of cursor
+        left: windowWidth <= 500 ? "5%" : "30%",
         height: `${containerSize * 2}px`,
         width: `${containerSize}px`,
         display: `${appState.FireMarshal.isActive ? "block" : "none"}`,

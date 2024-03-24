@@ -70,6 +70,12 @@ body {
   box-sizing: border-box;
   background: radial-gradient( 300px 450px at 50% 91%, #cb7127, #ffbd3851, transparent 70%);
 }
+@media screen and (max-width: 500px) {
+  .clicker-button {
+    padding-bottom: 50px;
+
+  }
+}
 /*TODO - make radialGradient apart of javascript*/
 .clicker-button > img {
   height: 100%;
