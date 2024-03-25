@@ -94,7 +94,7 @@ export default function PersistentDrawerLeft() {
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: "100%",
             height: "100%",
             justifyContent: "space-between",
             boxSizing: "border-box",
