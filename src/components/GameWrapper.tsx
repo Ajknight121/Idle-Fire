@@ -11,6 +11,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ClickerButton from "./ClickerButton";
 import UpgradeContainer from "./UpgradeContainer";
+import { useEffect, useState } from "react";
 
 let drawerWidth = (window.innerWidth < 450) ? window.innerWidth : 450;
 
@@ -69,6 +70,20 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const [drawerWidth, setWindowWidth] = useState((window.innerWidth < 450) ? window.innerWidth : 450);
+
+  useEffect(() => {
+    const handleResize = () => {
+        setWindowWidth((window.innerWidth < 450) ? window.innerWidth : 450);
+    };
+  
+    window.addEventListener('resize', handleResize);
+  
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className="wrapper">
@@ -94,7 +109,7 @@ export default function PersistentDrawerLeft() {
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: "100%",
+            width: drawerWidth,
             height: "100%",
             justifyContent: "space-between",
             boxSizing: "border-box",
