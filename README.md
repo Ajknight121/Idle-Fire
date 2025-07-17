@@ -1,6 +1,6 @@
 # Idle Fire
 
-A Clicker game about growing your own fire. Link to game HERE: <a>https://www.aokspace.com/</a>
+A Clicker game about growing your own fire. Link to game HERE: [https://www.aokspace.com/](https://idle-fire.aokspace.com/)
 
 ## Overview
 Idle Fire is a clicker game where the aim of the game is to click to create embers and to use those embers to purchase upgrades that help make more embers by either producing embers automatically or increasing the amount of embers you make when you click. Watch out for firemen they want to spoil the fun and slow the growth of your fire.
